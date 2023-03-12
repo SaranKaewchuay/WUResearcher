@@ -64,7 +64,6 @@ export default function Head() {
             <Paper
                 component="form"
                 sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '33rem' }}
-                // elevation="3"
             >
                 <InputBase
                     sx={{ ml: 1, flex: 1, flexDirection: 'column' }}
@@ -73,7 +72,6 @@ export default function Head() {
                 <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
                     <SearchIcon />
                 </IconButton>
-
                 <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             </Paper>
             <FormControl sx={{ mt: 1, width: 200 }}>
