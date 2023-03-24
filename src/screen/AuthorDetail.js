@@ -100,6 +100,7 @@ export default function AuthorDetail() {
                 <SubTable />
               </div>
               <div class="row">
+              <Graph/>
                 {/* {posts.map((post) => (
                   <div>
                     {post.citation_by.map((cite) => (

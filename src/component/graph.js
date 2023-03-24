@@ -1,6 +1,6 @@
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip} from "recharts";
-import data from "./data";
+import data1 from "./data";
 import "../style/styles.css";
 import { useLocation } from "react-router-dom";
 
@@ -12,7 +12,7 @@ function Graph() {
 
 
   return (
-    <BarChart width={300} height={165} data={data} className="m-0">
+    <BarChart width={300} height={165} data={data1} className="m-0">
       <Bar dataKey="citations" fill="#0d6efd" />
       <XAxis dataKey="year" />
       <YAxis />
