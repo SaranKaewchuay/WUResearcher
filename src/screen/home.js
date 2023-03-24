@@ -18,36 +18,6 @@ const baseURL = "http://localhost:8080/authors";
 
 function Home() {
   const [posts, setPosts] = useState([]);
-  const [image, setImage] = useState([]);
-
-  // const image_enhancer = (url) => {
-    
-    
-  //     axios
-  //       .post(
-  //         "https://techhk.aoscdn.com/api/tasks/visual/scale",
-  //         {
-  //           sync: "1",
-  //           image_url:url,
-  //           type: "clean",
-  //         },
-  //         {
-  //           headers: {
-  //             "X-API-KEY": "wx57p4y1gk89clyby",
-  //           },
-  //         }
-  //       )
-  //       .then((response) => {
-  //         console.log(response.data);
-  //         setImage(response.data.image)
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });
- 
-  
-  //   return image;
-  // };
 
   useEffect(() => {
     axios
