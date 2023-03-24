@@ -25,22 +25,6 @@ export default function Home() {
       });
   }, []);
 
-  // const field = [
-  //   "",
-  //   "",
-  //   "Authors",
-  //   "Publication date",
-  //   "Journal",
-  //   "Volume",
-  //   "Issue",
-  //   "Pages",
-  //   "Publisher",
-  //   "Description",
-  //   "Total citations",
-  //   "Reference",
-  //   "",
-  // ];
-
   return (
     <div>
       <div class="row">
