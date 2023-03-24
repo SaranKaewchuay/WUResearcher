@@ -2,13 +2,13 @@ import "../style/styles.css";
 
 function SubTable() {
   return (
-    <div>
-      <table class="table table-responsive-sm">
+    <div class="table-responsive">
+      <table class="table">
         <thead>
           <tr>
-            <td scope="col"></td>
-            <td scope="col">All</td>
-            <td scope="col">Since 2018</td>
+            <th scope="col"></th>
+            <th scope="col">All</th>
+            <th scope="col">Since 2018</th>
           </tr>
         </thead>
         <tbody>

@@ -13,7 +13,7 @@ const baseURL = "http://localhost:8080/authors/";
 export default function AuthorDetail() {
   const [posts, setPosts] = React.useState([]);
 
-  console.log(posts);
+  console.log("posts = ", posts);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
@@ -30,84 +30,65 @@ export default function AuthorDetail() {
       });
   }, []);
 
-  const getData = () => {
-    getData();
-    console.log("posts = ", posts);
-  };
-
   return (
     <div>
       <Container maxWidth="lg" className="mb-0 mt-5">
         <div
           class="shadow p-3 mb-5 bg-white rounded"
-          style={{ width: "100%", height: "365px" }}
+          style={{ width: "100%", minHeight: "365px" }}
         >
           <div class="row">
-            <div class="col-4 d-flex align-items-center justify-content-center">
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center justify-content-center">
               <div
                 class="shadow-sm p-3 mb-5 bg-white rounded"
-                style={{ width: "300px", height: "330px" }}
+                style={{ width: "100%", maxWidth: "300px", height: "330px" }}
               >
                 <img
                   src={posts.image}
                   class="img-thumbnail"
                   style={{
-                    width: "270px",
-                    height: "300px",
+                    width: "100%",
+                    height: "100%",
                     objectFit: "contain",
                   }}
                 />
               </div>
             </div>
-            <div class="col-4  mt-5 p-0">
+            <div class="col-lg-4 col-md-6 col-sm-12 mt-5 p-0">
               <h5 class="some-text blue">{posts.author_name}</h5>
               <br />
               <h6 class="some-text gray ">{posts.department}</h6>
               <div
-                class="border border-primary rounded-pill p-2  mt-4"
+                class="border border-primary rounded-pill p-2  mt-4 text-center"
                 style={{ width: "200px" }}
               >
-                <div class="text-center">
-                  <span class="blue" st>
-                    <b>Research Articles: </b>
-                  </span>
-                  <span class="blue">6</span>
-                </div>
+                <span class="blue ">
+                  <b>Research Articles: </b>
+                </span>
+                <span class="blue">6</span>
               </div>
-              {/* {posts.subjectArea.map((area) => (
-              
-                  <div>
-                    <span class="">{area.toUpperCase() +", "}</span>
-                  </div>
-             
-              ))} */}
-
               <div
                 class="border border-primary rounded-pill p-2 mt-2"
                 style={{ width: "150px" }}
               >
                 <div class="text-center">
-                  <span class="blue" st>
+                  <span class="blue">
                     <b>h-index: </b>
                   </span>
-                  {/* <span class="blue">{posts.citation_by.table[1].h_index.all}</span> */}
                 </div>
               </div>
             </div>
 
-            <div class="col-4 pr-5 m-0">
-              <div class="row-2 pr-5">
-                <SubTable />
+            <div class="col-lg-4 col-md-12 pr-5 m-0">
+              <div class="row mb-4">
+                <div class="col-12">
+                  <SubTable />
+                </div>
               </div>
               <div class="row">
-              <Graph/>
-                {/* {posts.map((post) => (
-                  <div>
-                    {post.citation_by.map((cite) => (
-                      <Graph key={cite.id} data={cite.graph} />
-                    ))}
-                  </div>
-                ))} */}
+                <div class="col-12">
+                  <Graph />
+                </div>
               </div>
             </div>
           </div>
