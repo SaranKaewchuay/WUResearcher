@@ -1,6 +1,9 @@
 .no-underline {
     text-decoration: none;
 }
+.text{
+    font-family: 'Sarabun', sans-serif;
+}
 
 .some-text {
     font-family: 'Sarabun', sans-serif;

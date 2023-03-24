@@ -82,10 +82,10 @@ function Home() {
                   alt={post.author_name}
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {post.author_name}
+                  <Typography>
+                    <h5 class="text">{post.author_name}</h5>
                   </Typography>
-                  <Typography>{post.department}</Typography>
+                  <Typography class="text">{post.department}</Typography>
                 </CardContent>
               </Card>
             </Link>

@@ -55,7 +55,7 @@ export default function AuthorDetail() {
               </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12 mt-5 p-2">
-              <h5 class="some-text blue">{posts.author_name}</h5>
+              <h5 class="some-text blue"><b>{posts.author_name}</b></h5>
               <br />
               <h6 class="some-text gray ">{posts.department}</h6>
               <div class="d-flex flex-wrap ">
