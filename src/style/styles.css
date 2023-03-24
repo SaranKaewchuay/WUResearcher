@@ -1,0 +1,45 @@
+.no-underline {
+    text-decoration: none;
+}
+
+.some-text {
+    font-family: 'Sarabun', sans-serif;
+    color: "#0B66A2";
+}
+
+.blue {
+    color: #0B66A2;
+}
+
+.gray {
+    color: #706A66;
+}
+
+.label {
+    text-align: "center",
+
+}
+
+.black {
+    color: "black"
+}
+
+.no-underline {
+    text-decoration: none;
+}
+
+
+
+.table {
+    font-size: 16px;
+}
+
+.table th {
+    font-size: 16px;
+}
+
+.table td p{
+    font-size: 16px;
+    padding: 0;
+    margin: 0;
+}

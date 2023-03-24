@@ -74,7 +74,7 @@ export default function Head() {
                 </IconButton>
                 <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             </Paper>
-            <FormControl sx={{ mt: 1, width: 200 }}>
+            {/* <FormControl sx={{ mt: 1, width: 200 }}>
                 <InputLabel id="demo-multiple-name-label">Department</InputLabel>
                 <Select
                     labelId="demo-multiple-name-label"
@@ -95,7 +95,7 @@ export default function Head() {
                         </MenuItem>
                     ))}
                 </Select>
-            </FormControl>
+            </FormControl> */}
         </Container>
     );
 }

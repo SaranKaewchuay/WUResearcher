@@ -5,11 +5,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import logo from "../img/logo.png";
-
+import "../style/styles.css";
+import { Link } from 'react-router-dom';
 
 export default function Nav() {
     return (
         <AppBar position="relative" sx={{ padding: '5px', height: '5rem' }}>
+            <Link to='/' className="no-underline black">
             <Container fixed>
                 <Toolbar disableGutters>
                     <Box
@@ -22,25 +24,26 @@ export default function Nav() {
                     />
                     <Typography
                         variant="h6"
+                        className='some-text'
                         noWrap
                         component="a"
-                        href="/"
                         sx={{
                             ml: 2,
                             display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
+                            // fontFamily: 'monospace',
                             fontSize: '1rem',
                             fontWeight: 500,
                             letterSpacing: '.1rem',
-                            color: 'inherit',
+                            color: 'white',
                             textDecoration: 'none',
                         }}
                     >
-                        WALAILAK UNIVERSITY <br /> RESEARCH
+                        WALAILAK UNIVERSITY <br /> RESEARCHER
 
                     </Typography>
                     <Typography
                         variant="h5"
+                        className='some-text'
                         noWrap
                         component="a"
                         href=""
@@ -48,19 +51,20 @@ export default function Nav() {
                             ml: 2,
                             display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
-                            fontFamily: 'monospace',
+                            //fontFamily: 'monospace',
                             fontWeight: 500,
                             fontSize: '1rem',
                             letterSpacing: '.1rem',
-                            color: 'inherit',
+                            color: 'white',
                             textDecoration: 'none',
                         }}
                     >
-                        RESEARCH <br />
+                        RESEARCHER <br />
                         WALAILAK UNIVERSITY
                     </Typography>
                 </Toolbar>
             </Container>
+            </Link>
         </AppBar>
     );
 }
