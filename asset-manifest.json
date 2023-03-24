@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/webscraping.github.io/static/css/main.d99ad3c0.css",
+    "main.js": "/webscraping.github.io/static/js/main.52441a98.js",
+    "static/js/787.a7649d7c.chunk.js": "/webscraping.github.io/static/js/787.a7649d7c.chunk.js",
+    "static/media/logo.png": "/webscraping.github.io/static/media/logo.668a84170d06e430e963.png",
+    "index.html": "/webscraping.github.io/index.html",
+    "main.d99ad3c0.css.map": "/webscraping.github.io/static/css/main.d99ad3c0.css.map",
+    "main.52441a98.js.map": "/webscraping.github.io/static/js/main.52441a98.js.map",
+    "787.a7649d7c.chunk.js.map": "/webscraping.github.io/static/js/787.a7649d7c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d99ad3c0.css",
+    "static/js/main.52441a98.js"
+  ]
+}
