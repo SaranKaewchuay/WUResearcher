@@ -4,8 +4,21 @@ import Container from "@mui/material/Container";
 import axios from "axios";
 import "../style/styles.css";
 import { useLocation } from "react-router-dom";
+import { styled } from "@mui/system";
+import { Box } from "@mui/material";
+import LinkIcon from "@mui/icons-material/Link";
+import { Typography } from "@mui/material";
 
 const baseURL = "http://localhost:8080/articles/articleId/";
+
+const ResponsiveBox = styled(Box)({
+  overflow: "auto",
+  margin: "0 auto",
+  padding: "20px",
+  maxWidth: "100%",
+  minWidth: "280px",
+  width: "90%",
+});
 
 export default function Home() {
   const [posts, setPosts] = React.useState([]);
@@ -28,6 +41,7 @@ export default function Home() {
 
 
   return (
+    <ResponsiveBox>
     <div>
       <div class="row">
         <div>
@@ -65,6 +79,7 @@ export default function Home() {
                           key !== "__v"
                             ? (key.charAt(0).toUpperCase() + key.slice(1)).replace("_"," ")
                             : null}
+                            
                         </p>
                       </div>
                       <div className="col-10">
@@ -77,9 +92,12 @@ export default function Home() {
                               {key === "author" ? (
                                 <p className="some-text">{value + ", "}</p>
                               ) : key === "url" ? (
-                                <a href={value} className="some-text" target="_blank" rel="noopener noreferrer">
+                                <Typography variant="body1" align="left">
+                                  <LinkIcon />
+                                <a href={value} target="_blank" rel="noopener noreferrer">
                                   Read More
                                 </a>
+                              </Typography>
                               ) : (
                                 <p className="some-text">{value}</p>
                               )}
@@ -95,5 +113,6 @@ export default function Home() {
         </div>
       </div>
     </div>
+    </ResponsiveBox>
   );
 }
