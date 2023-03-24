@@ -9,12 +9,12 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-import Container from '@mui/material/Container';
+import Paper from "@mui/material/Paper";
+import InputBase from "@mui/material/InputBase";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import Container from "@mui/material/Container";
 
 import "../style/styles.css";
 
@@ -24,33 +24,28 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const [personName, setPersonName] = React.useState();
 
+
   const handleChange = (event) => {
-    const {target: { value },} = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-    
-    if(personName == ""){
-      axios
-      .get("http://localhost:8080/authors")
+    const {
+      target: { value },
+    } = event;
+    setPersonName(typeof value === "string" ? value.split(",") : value);
+    let url;
+
+    console.log("personName.length = ",personName)
+    if (personName==='') {
+      url = "http://localhost:8080/authors";
+    } else {
+      url = "http://localhost:8080/authors/author/" + personName;
+    }
+    axios
+      .get(url)
       .then((response) => {
         setPosts(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
-    }else{
-      axios
-    .get("http://localhost:8080/authors/author/" + personName)
-    .then((response) => {
-      setPosts(response.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-    }
- 
   };
 
   useEffect(() => {
@@ -64,17 +59,6 @@ function Home() {
         console.error(error);
       });
   }, []);
-
-  // const search = (str) => {
-  //   axios
-  //     .get("http://localhost:8080/authors/author/" + str)
-  //     .then((response) => {
-  //       setPosts(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
 
   return (
     <div>
