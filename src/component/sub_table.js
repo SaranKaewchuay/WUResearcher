@@ -3,7 +3,7 @@ import "../style/styles.css";
 function SubTable() {
   return (
     <div class="table-responsive">
-      <table class="table">
+      <table class="table center">
         <thead>
           <tr>
             <th scope="col"></th>
