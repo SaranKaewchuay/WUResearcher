@@ -68,34 +68,14 @@ export default function Head() {
                 <InputBase
                     sx={{ ml: 1, flex: 1, flexDirection: 'column' }}
                     placeholder="Search Researcher"
+                    onChange={handleChange}
                 />
                 <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-                    <SearchIcon />
+                    <SearchIcon/>
                 </IconButton>
                 <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             </Paper>
-            {/* <FormControl sx={{ mt: 1, width: 200 }}>
-                <InputLabel id="demo-multiple-name-label">Department</InputLabel>
-                <Select
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    multiple
-                    value={personName}
-                    onChange={handleChange}
-                    input={<OutlinedInput label="Department" />}
-                    MenuProps={MenuProps}
-                >
-                    {names.map((name) => (
-                        <MenuItem
-                            key={name}
-                            value={name}
-                            style={getStyles(name, personName, theme)}
-                        >
-                            {name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl> */}
+    
         </Container>
     );
 }
