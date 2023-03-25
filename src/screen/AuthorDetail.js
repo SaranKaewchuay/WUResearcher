@@ -73,23 +73,23 @@ export default function AuthorDetail() {
               </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12 mt-5 p-2 mx-auto d-block">
-              <h5 class="some-text blue">
+              <h5 class="some-text color-blue">
                 <b>{posts.author_name}</b>
               </h5>
               <br />
               <h6 class="some-text gray ">{posts.department}</h6>
               <div class="d-flex flex-wrap ">
-                <div class="border border-primary btn p-2 mt-4 text-center me-1">
-                  <span class="blue ">
+                <div class="border-blue  p-2 mt-4 text-center me-1">
+                  <span class=" color-blue ">
                     <b>Research Articles: </b>
                   </span>
-                  <span class="blue">{length}</span>
+                  <span class="color-blue">{length}</span>
                 </div>
-                <div class="border border-primary btn p-2 mt-4 text-center me-1">
+                <div class="border-blue  p-2 mt-4 text-center me-1">
                   <div class="text-center">
-                    <span class="blue">
+                    <span class=" color-blue">
                       <b>h-index: </b>
-                      <span class="blue">
+                      <span class="color-blue">
                         {data.find((item) => item.h_index)?.h_index?.all}
                       </span>
                     </span>
@@ -97,10 +97,10 @@ export default function AuthorDetail() {
                 </div>
               </div>
 
-              <div class="d-flex flex-wrap ">
+              <div class="d-flex flex-wrap">
                 {subjectArea.map((data) => (
                   <div class="border btn mt-4 text-center me-1 p-1 ">
-                    <span class="blue">{data}</span>
+                    <span class="color-blue">{data}</span>
                   </div>
                 ))}
               </div>

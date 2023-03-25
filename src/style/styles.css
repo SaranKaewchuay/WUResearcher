@@ -46,16 +46,22 @@
 
 .table th {
     font-size: 16px;
+    color: #0a4275;
 }
 
 .table td p{
     font-size: 16px;
     padding: 0;
     margin: 0;
+    color: #0a4275;
 }
 .color-blue{
     color: #0a4275;
 }
 .ubutu{
     font-family: 'Ubuntu', sans-serif
+}
+.border-blue{
+    border: 2px solid #0a4275;
+    border-radius: 10px;
 }

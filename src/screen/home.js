@@ -39,7 +39,7 @@ function Home() {
   }, [searchQuery]);
 
   return (
-    <Container maxWidth="md" sx={{ paddingTop: "3rem" }}>
+    <Container maxWidth="lg" sx={{ paddingTop: "3rem" }}>
       <Typography variant="h4" sx={{ mb: 2 }} class="color-blue">
         Search Researcher
       </Typography>
@@ -60,7 +60,7 @@ function Home() {
       <Divider sx={{ my: 4 }} />
       <Grid container spacing={4}>
         {posts.map((post) => (
-          <Grid key={post._id} item xs={12} sm={6} md={4}>
+          <Grid key={post._id} item xs={12} sm={6} md={3}>
             <Link to={`/author-detail?id=${post._id}`} className="no-underline">
               <Card
                 sx={{
