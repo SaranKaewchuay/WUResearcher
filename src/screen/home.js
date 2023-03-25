@@ -14,8 +14,9 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import "../style/styles.css";
+const host = "https://apricot-rabbit-wig.cyclic.app/"
 
-const baseURL = "https://dull-tan-dove-hose.cyclic.app/authors";
+const baseURL = host+"authors";
 
 function Home() {
   const [posts, setPosts] = useState([]);

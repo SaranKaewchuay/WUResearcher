@@ -10,12 +10,14 @@ import "../style/styles.css";
 import { Link } from "react-router-dom";
 import { Row, Col } from 'react-bootstrap';
 
+const host = "https://apricot-rabbit-wig.cyclic.app/"
+
 function Table(props) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     axios
-      .get("https://dull-tan-dove-hose.cyclic.app/articles/getByArthorId/" + props.id)
+      .get(host+"articles/getByArthorId/" + props.id)
       .then((response) => {
         setData(response.data);
 
@@ -54,7 +56,7 @@ function Table(props) {
                   <td>
                     <Link
                       to={`/article-detail?id=${document._id}`}
-                      className="no-underline blue"
+                      className="no-underline color-blue"
                     >
                       {document.article_name}
                     </Link>

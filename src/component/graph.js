@@ -10,7 +10,8 @@ import {
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
-const baseURL = "https://dull-tan-dove-hose.cyclic.app/authors/";
+const host = "https://apricot-rabbit-wig.cyclic.app/"
+const baseURL = host + "authors/";
 
 function Graph() {
   const location = useLocation();

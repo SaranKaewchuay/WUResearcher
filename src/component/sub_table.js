@@ -3,9 +3,9 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import "../style/styles.css";
 
+const host = "https://apricot-rabbit-wig.cyclic.app/"
 
-
-const baseURL = "https://dull-tan-dove-hose.cyclic.app/authors/";
+const baseURL = host + "authors/";
 
 
 function SubTable() {
