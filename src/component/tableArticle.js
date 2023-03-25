@@ -15,7 +15,7 @@ function Table(props) {
 
   useEffect(() => {
     axios
-      .get("https://dull-tan-dove-hose.cyclic.app/getByArthorId/" + props.id)
+      .get("https://dull-tan-dove-hose.cyclic.app/articles/getByArthorId/" + props.id)
       .then((response) => {
         setData(response.data);
 
