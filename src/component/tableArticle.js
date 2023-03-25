@@ -8,7 +8,7 @@ import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
 import "../style/styles.css";
 import { Link } from "react-router-dom";
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 function Table(props) {
   const [data, setData] = useState([]);
