@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 export default function Nav() {
     return (
-        <AppBar position="relative" sx={{ padding: '5px', height: '5rem' }}>
+        <AppBar position="relative" sx={{ padding: '5px', height: '5rem' }} style={{ backgroundColor: '#0a4275' }}>
             <Link to='/' className="no-underline black">
             <Container fixed>
                 <Toolbar disableGutters>

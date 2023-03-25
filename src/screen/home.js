@@ -26,8 +26,7 @@ function Home() {
   };
 
   useEffect(() => {
-    const url =
-      searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
+    const url = searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
 
     axios
       .get(url)
@@ -41,7 +40,7 @@ function Home() {
 
   return (
     <Container maxWidth="md" sx={{ paddingTop: "3rem" }}>
-      <Typography variant="h4" sx={{ mb: 2 }}>
+      <Typography variant="h4" sx={{ mb: 2 }} class="color-blue">
         Search Researcher
       </Typography>
       <TextField
@@ -83,9 +82,9 @@ function Home() {
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography>
-                    <h5 class="text">{post.author_name}</h5>
+                    <h5 class="ubutu color-blue">{post.author_name}</h5>
                   </Typography>
-                  <Typography class="text">{post.department}</Typography>
+                  <Typography class="ubutu gray">{post.department}</Typography>
                 </CardContent>
               </Card>
             </Link>
