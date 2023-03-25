@@ -1,6 +1,33 @@
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 import "../style/styles.css";
 
+
+
+const baseURL = "http://localhost:8080/authors/";
+
+
 function SubTable() {
+
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const id = (queryParams.get("id"));
+  
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(baseURL + id)
+      .then((response) => {
+        setData(response.data.citation_by.table);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    })
+
   return (
     <div class="table-responsive">
       <table class="table center">
@@ -23,8 +50,8 @@ function SubTable() {
                 </p>
               </a>
             </td>
-            <td class="">95</td>
-            <td class="">31</td>
+            <td>{data.find((item) => item.citations)?.citations?.all}</td>
+            <td>{data.find((item) => item.citations)?.citations?.since_2018}</td>
           </tr>
           <tr>
             <td>
@@ -37,8 +64,8 @@ function SubTable() {
                 </p>
               </a>
             </td>
-            <td>5</td>
-            <td class="">3</td>
+            <td>{data.find((item) => item.h_index)?.h_index?.all}</td>
+            <td>{data.find((item) => item.h_index)?.h_index?.since_2018}</td>
           </tr>
           <tr>
             <td>
@@ -51,8 +78,8 @@ function SubTable() {
                 </p>
               </a>
             </td>
-            <td>3</td>
-            <td>1</td>
+            <td>{data.find((item) => item.i10_index)?.i10_index?.all}</td>
+            <td>{data.find((item) => item.i10_index)?.i10_index?.since_2018}</td>
           </tr>
         </tbody>
       </table>

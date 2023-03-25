@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import Table from "../component/tableArticle";
 import Graph from "../component/graph";
 import SubTable from "../component/sub_table";
@@ -13,6 +13,7 @@ const baseURL = "http://localhost:8080/authors/";
 export default function AuthorDetail() {
   const [posts, setPosts] = React.useState([]);
   const [data, setData] = React.useState([]);
+  const [subjectArea, setSubjectArea] = React.useState([]);
 
   console.log("posts = ", posts);
   const location = useLocation();
@@ -27,6 +28,7 @@ export default function AuthorDetail() {
       .then((response) => {
         setPosts(response.data);
         setData(response.data.citation_by.table);
+        setSubjectArea(response.data.subject_area);
       })
       .catch((error) => {
         console.error(error);
@@ -45,7 +47,7 @@ export default function AuthorDetail() {
         console.error(error);
       });
   }, [id]);
-  
+
   return (
     <div>
       <Container maxWidth="lg" className="mb-0 mt-5">
@@ -87,35 +89,32 @@ export default function AuthorDetail() {
                   <div class="text-center">
                     <span class="blue">
                       <b>h-index: </b>
-                      <span class="blue">{data.find((item) => item.h_index)?.h_index?.all}</span>
+                      <span class="blue">
+                        {data.find((item) => item.h_index)?.h_index?.all}
+                      </span>
                     </span>
                   </div>
                 </div>
               </div>
 
               <div class="d-flex flex-wrap ">
-                <div class="border btn mt-4 text-center me-1 p-1 ">
-                  <span class="blue">
-                    Efficacy and safety of herbal medicines
-                  </span>
-                </div>
-                <div class="border btn mt-4 text-center me-1  p-1">
-                  <div class="text-center  ">
-                    <span class="blue">rigor of clinical trials</span>
+                {subjectArea.map((data) => (
+                  <div class="border btn mt-4 text-center me-1 p-1 ">
+                    <span class="blue">{data}</span>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
 
             <div class="col-lg-4 col-md-12 pr-5 m-0 p-4">
               <div class="row mb-4">
                 <div class="col-12">
-                  <SubTable />
+                  <SubTable id={id} />
                 </div>
               </div>
               <div class="row">
                 <div class="col-12">
-                  <Graph />
+                  <Graph id={id} />
                 </div>
               </div>
             </div>
@@ -124,6 +123,7 @@ export default function AuthorDetail() {
       </Container>
 
       <Table id={id} />
+      
     </div>
   );
 }

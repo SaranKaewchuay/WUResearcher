@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -7,18 +7,33 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import data1 from "./data";
-import "../style/styles.css";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
+
+const baseURL = "http://localhost:8080/authors/";
 
 function Graph() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const data = queryParams.get("data");
+  const id = (queryParams.get("id"));
+  
+  const [dataGraph, setDataGraph] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(baseURL + id)
+      .then((response) => {
+        setDataGraph(response.data.citation_by.graph);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [id]);
+
 
   return (
     <ResponsiveContainer width="100%" height={165}>
-      <BarChart data={data1} className="m-0">
+      <BarChart data={dataGraph} className="m-0">
         <Bar dataKey="citations" fill="#0d6efd" />
         <XAxis dataKey="year" />
         <YAxis />
