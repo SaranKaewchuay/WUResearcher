@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery/dist/jquery.min.js";
-import Container1 from "@mui/material/Container";
+import Container from "@mui/material/Container";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
@@ -34,41 +34,42 @@ function Table(props) {
   };
 
   return (
-    <Container1 fluid className="mb-0 mt-5">
-      <div className="shadow p-4 mb-5 bg-white rounded">
-        <Row>
-          <Col>
-            <table id="example" className="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Document title</th>
-                  <th>Cited By</th>
-                  <th>Year</th>
+    <Container maxWidth="xl" fluid className="mb-0 mt-5">
+    <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
+      <Row>
+        <Col>
+          <table id="example" className="table table-striped">
+            <thead>
+              <tr>
+                <th className="text-nowrap">#</th>
+                <th className="text-nowrap">Document title</th>
+                <th className="text-nowrap">Cited By</th>
+                <th className="text-nowrap">Year</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((document, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>
+                    <Link
+                      to={`/article-detail?id=${document._id}`}
+                      className="no-underline blue"
+                    >
+                      {document.article_name}
+                    </Link>
+                  </td>
+                  <td>{document.total_citations}</td>
+                  <td>{split_year(document.publication_date)}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {data.map((document, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>
-                      <Link
-                        to={`/article-detail?id=${document._id}`}
-                        className="no-underline blue"
-                      >
-                        {document.article_name}
-                      </Link>
-                    </td>
-                    <td>{document.total_citations}</td>
-                    <td>{split_year(document.publication_date)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Col>
-        </Row>
-      </div>
-    </Container1>
+              ))}
+            </tbody>
+          </table>
+        </Col>
+      </Row>
+    </div>
+  </Container>
+  
   );
 }
 

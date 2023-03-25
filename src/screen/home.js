@@ -40,7 +40,7 @@ function Home() {
 
   return (
     <Container maxWidth="lg" sx={{ paddingTop: "3rem" }}>
-      <Typography variant="h4" sx={{ mb: 2 }} class="color-blue">
+      <Typography variant="h4" sx={{ mb: 2 }} class="color-blue pb-3">
         Search Researcher
       </Typography>
       <TextField

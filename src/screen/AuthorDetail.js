@@ -50,7 +50,7 @@ export default function AuthorDetail() {
 
   return (
     <div>
-      <Container maxWidth="lg" className="mb-0 mt-5">
+      <Container maxWidth="xl" className="mb-0 mt-5">
         <div
           class="shadow p-3 mb-5 bg-white rounded"
           style={{ width: "100%", minHeight: "365px" }}
@@ -72,24 +72,24 @@ export default function AuthorDetail() {
                 />
               </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 mt-5 p-2 mx-auto d-block">
-              <h5 class="some-text color-blue">
+            <div class="col-lg-4 col-md-6 col-sm-12 mt-5 p-2 mx-auto d-block justify-content-center">
+              <h5 class="ubutu color-blue">
                 <b>{posts.author_name}</b>
               </h5>
               <br />
-              <h6 class="some-text gray ">{posts.department}</h6>
+              <h6 class="ubutu gray">{posts.department}</h6>
               <div class="d-flex flex-wrap ">
                 <div class="border-blue  p-2 mt-4 text-center me-1">
-                  <span class=" color-blue ">
+                  <span class=" color-blue ubutu">
                     <b>Research Articles: </b>
                   </span>
                   <span class="color-blue">{length}</span>
                 </div>
                 <div class="border-blue  p-2 mt-4 text-center me-1">
                   <div class="text-center">
-                    <span class=" color-blue">
+                    <span class=" color-blue ubutu">
                       <b>h-index: </b>
-                      <span class="color-blue">
+                      <span class="color-blue ubutu">
                         {data.find((item) => item.h_index)?.h_index?.all}
                       </span>
                     </span>
@@ -100,7 +100,7 @@ export default function AuthorDetail() {
               <div class="d-flex flex-wrap">
                 {subjectArea.map((data) => (
                   <div class="border btn mt-4 text-center me-1 p-1 ">
-                    <span class="color-blue">{data}</span>
+                    <span class="color-blue ubutu">{data}</span>
                   </div>
                 ))}
               </div>
