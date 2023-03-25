@@ -54,7 +54,7 @@ export default function AuthorDetail() {
           style={{ width: "100%", minHeight: "365px" }}
         >
           <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center justify-content-center">
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center justify-content-center ">
               <div
                 class="shadow-sm p-3 mb-5 bg-white rounded"
                 style={{ width: "100%", maxWidth: "300px", height: "330px" }}
@@ -70,7 +70,7 @@ export default function AuthorDetail() {
                 />
               </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 mt-5 p-2">
+            <div class="col-lg-4 col-md-6 col-sm-12 mt-5 p-2 mx-auto d-block">
               <h5 class="some-text blue">
                 <b>{posts.author_name}</b>
               </h5>
