@@ -104,6 +104,7 @@ export default function Home() {
                                       href={value}
                                       target="_blank"
                                       rel="noopener noreferrer"
+                                      class="color-blue"
                                     >
                                       Read More
                                     </a>
