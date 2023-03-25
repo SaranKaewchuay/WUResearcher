@@ -5,7 +5,7 @@ import "../style/styles.css";
 
 
 
-const baseURL = "http://localhost:8080/authors/";
+const baseURL = "https://dull-tan-dove-hose.cyclic.app/authors/";
 
 
 function SubTable() {

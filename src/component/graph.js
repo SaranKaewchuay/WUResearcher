@@ -10,7 +10,7 @@ import {
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
-const baseURL = "http://localhost:8080/authors/";
+const baseURL = "https://dull-tan-dove-hose.cyclic.app/authors/";
 
 function Graph() {
   const location = useLocation();

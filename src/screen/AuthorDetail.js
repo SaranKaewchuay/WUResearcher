@@ -8,7 +8,7 @@ import "../style/styles.css";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-const baseURL = "http://localhost:8080/authors/";
+const baseURL = "https://dull-tan-dove-hose.cyclic.app/authors/";
 
 export default function AuthorDetail() {
   const [posts, setPosts] = React.useState([]);
@@ -39,7 +39,7 @@ export default function AuthorDetail() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/articles/getByArthorId/` + id)
+      .get(`https://dull-tan-dove-hose.cyclic.app/articles/getByArthorId/` + id)
       .then((response) => {
         setLength(response.data.length);
       })

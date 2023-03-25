@@ -9,7 +9,7 @@ import { Box } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
 import { Typography } from "@mui/material";
 
-const baseURL = "http://localhost:8080/articles/articleId/";
+const baseURL = "https://dull-tan-dove-hose.cyclic.app/articles/articleId/";
 
 const ResponsiveBox = styled(Box)({
   overflow: "auto",

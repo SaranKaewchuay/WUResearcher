@@ -15,7 +15,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import "../style/styles.css";
 
-const baseURL = "http://localhost:8080/authors";
+const baseURL = "https://dull-tan-dove-hose.cyclic.app/authors";
 
 function Home() {
   const [posts, setPosts] = useState([]);
