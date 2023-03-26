@@ -11,9 +11,10 @@ import { Link } from "react-router-dom";
 export default function Nav() {
   return (
     <AppBar
-      position="relative"
+      position="fixed"
       sx={{ padding: "5px", height: "5rem" }}
       style={{ backgroundColor: "#0a4275" }}
+ 
     >
       <Container maxWidth="xl">
         <Link to="/" className="no-underline black">

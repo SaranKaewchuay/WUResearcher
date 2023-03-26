@@ -36,7 +36,7 @@ function Table(props) {
   };
 
   return (
-    <Container maxWidth="xl" fluid className="mb-0 mt-5">
+    <Container maxWidth="xl" fluid className="mb-0 ">
       <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
         <Row>
           <Col>

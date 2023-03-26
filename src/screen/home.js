@@ -14,84 +14,122 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import "../style/styles.css";
-const host = "https://scrap-backend.vercel.app/"
+import "../style/loader.css";
 
-const baseURL = host+"authors";
+const host = "https://scrap-backend.vercel.app/";
+
+const baseURL = host + "authors";
 
 function Home() {
   const [posts, setPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
   useEffect(() => {
-    const url = searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
+    const url =
+      searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
+
+    if (searchQuery === "") {
+      setIsLoading(true);
+    }
 
     axios
       .get(url)
       .then((response) => {
         setPosts(response.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error(error);
+        setIsLoading(false);
       });
   }, [searchQuery]);
 
   return (
-    <Container maxWidth="lg" sx={{ paddingTop: "3rem" }}>
-      <Typography variant="h4" sx={{ mb: 2 }} class="color-blue pb-3">
-        Search Researcher
-      </Typography>
-      <TextField
-        variant="outlined"
-        label="Enter researcher name"
-        fullWidth
-        value={searchQuery}
-        onChange={handleChange}
-        InputProps={{
-          endAdornment: (
-            <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-          ),
-        }}
-      />
-      <Divider sx={{ my: 4 }} />
-      <Grid container spacing={4}>
-        {posts.map((post) => (
-          <Grid key={post._id} item xs={12} sm={6} md={3}>
-            <Link to={`/author-detail?id=${post._id}`} className="no-underline">
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  sx={{
-                    pt: "56.25%",
-                    padding: "0",
-                    width: "100%",
-                    height: "290px",
-                  }}
-                  image={post.image}
-                  alt={post.author_name}
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography>
-                    <h5 class="ubutu color-blue">{post.author_name}</h5>
-                  </Typography>
-                  <Typography class="ubutu gray">{post.department}</Typography>
-                </CardContent>
-              </Card>
-            </Link>
+    <Container maxWidth="lg" sx={{ paddingTop: "3rem" }} style={{marginTop:"65px"}}>
+      {isLoading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <div class="loader">
+            <div></div>
+
+            <div></div>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <Typography variant="h4" sx={{ mb: 2 }} class="color-blue pb-3">
+            Search Researcher
+          </Typography>
+          <TextField
+            variant="outlined"
+            label="Enter researcher name"
+            fullWidth
+            value={searchQuery}
+            onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <IconButton
+                  type="submit"
+                  sx={{ p: "10px" }}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+              ),
+            }}
+          />
+          <Divider sx={{ my: 4 }} />
+          <Grid container spacing={4}>
+            {posts.map((post) => (
+              <Grid key={post._id} item xs={12} sm={6} md={3}>
+                <Link
+                  to={`/author-detail?id=${post._id}`}
+                  className="no-underline"
+                >
+                  <Card
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      sx={{
+                        pt: "56.25%",
+                        padding: "0",
+                        width: "100%",
+                        height: "290px",
+                      }}
+                      image={post.image}
+                      alt={post.author_name}
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography>
+                        <h5 class="ubutu color-blue">{post.author_name}</h5>
+                      </Typography>
+                      <Typography class="ubutu gray">
+                        {post.department}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </div>
+      )}
     </Container>
   );
 }

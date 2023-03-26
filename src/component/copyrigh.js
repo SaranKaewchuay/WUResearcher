@@ -12,6 +12,8 @@ export default function footer() {
       <MDBFooter
         className="text-center text-white mt-5"
         style={{ backgroundColor: "#0a4275" }}
+
+        position="relative"
       >
         <MDBContainer className="p-4 pb-0">
           <section className="">
