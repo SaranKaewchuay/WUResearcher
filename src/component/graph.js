@@ -10,14 +10,14 @@ import {
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
-const host = "https://apricot-rabbit-wig.cyclic.app/"
+const host = "https://scrap-backend.vercel.app/";
 const baseURL = host + "authors/";
 
 function Graph() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const id = (queryParams.get("id"));
-  
+  const id = queryParams.get("id");
+
   const [dataGraph, setDataGraph] = useState([]);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ function Graph() {
       });
   }, [id]);
 
-// #0d6efd
+  // #0d6efd
   return (
     <ResponsiveContainer width="100%" height={165}>
       <BarChart data={dataGraph} className="m-0">

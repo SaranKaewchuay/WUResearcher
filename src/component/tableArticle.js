@@ -8,16 +8,16 @@ import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
 import "../style/styles.css";
 import { Link } from "react-router-dom";
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col } from "react-bootstrap";
 
-const host = "https://apricot-rabbit-wig.cyclic.app/"
+const host = "https://scrap-backend.vercel.app/";
 
 function Table(props) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     axios
-      .get(host+"articles/getByArthorId/" + props.id)
+      .get(host + "articles/getByArthorId/" + props.id)
       .then((response) => {
         setData(response.data);
 
@@ -37,41 +37,40 @@ function Table(props) {
 
   return (
     <Container maxWidth="xl" fluid className="mb-0 mt-5">
-    <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
-      <Row>
-        <Col>
-          <table id="example" className="table table-striped">
-            <thead>
-              <tr>
-                <th className="text-nowrap">#</th>
-                <th className="text-nowrap">Document title</th>
-                <th className="text-nowrap">Cited By</th>
-                <th className="text-nowrap">Year</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((document, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <Link
-                      to={`/article-detail?id=${document._id}`}
-                      className="no-underline color-blue"
-                    >
-                      {document.article_name}
-                    </Link>
-                  </td>
-                  <td>{document.total_citations}</td>
-                  <td>{split_year(document.publication_date)}</td>
+      <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
+        <Row>
+          <Col>
+            <table id="example" className="table table-striped">
+              <thead>
+                <tr>
+                  <th className="text-nowrap">#</th>
+                  <th className="text-nowrap">Document title</th>
+                  <th className="text-nowrap">Cited By</th>
+                  <th className="text-nowrap">Year</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </Col>
-      </Row>
-    </div>
-  </Container>
-  
+              </thead>
+              <tbody>
+                {data.map((document, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>
+                      <Link
+                        to={`/article-detail?id=${document._id}`}
+                        className="no-underline color-blue"
+                      >
+                        {document.article_name}
+                      </Link>
+                    </td>
+                    <td>{document.total_citations}</td>
+                    <td>{split_year(document.publication_date)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Col>
+        </Row>
+      </div>
+    </Container>
   );
 }
 

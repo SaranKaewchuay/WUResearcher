@@ -3,18 +3,16 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import "../style/styles.css";
 
-const host = "https://apricot-rabbit-wig.cyclic.app/"
+const host = "https://scrap-backend.vercel.app/";
 
 const baseURL = host + "authors/";
 
-
 function SubTable() {
-
-
+  
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const id = (queryParams.get("id"));
-  
+  const id = queryParams.get("id");
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -26,7 +24,7 @@ function SubTable() {
       .catch((error) => {
         console.error(error);
       });
-    })
+  });
 
   return (
     <div class="table-responsive">
@@ -51,7 +49,9 @@ function SubTable() {
               </a>
             </td>
             <td>{data.find((item) => item.citations)?.citations?.all}</td>
-            <td>{data.find((item) => item.citations)?.citations?.since_2018}</td>
+            <td>
+              {data.find((item) => item.citations)?.citations?.since_2018}
+            </td>
           </tr>
           <tr>
             <td>
@@ -79,7 +79,9 @@ function SubTable() {
               </a>
             </td>
             <td>{data.find((item) => item.i10_index)?.i10_index?.all}</td>
-            <td>{data.find((item) => item.i10_index)?.i10_index?.since_2018}</td>
+            <td>
+              {data.find((item) => item.i10_index)?.i10_index?.since_2018}
+            </td>
           </tr>
         </tbody>
       </table>

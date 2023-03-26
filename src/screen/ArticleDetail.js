@@ -9,9 +9,9 @@ import { Box } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
 import { Typography } from "@mui/material";
 
-const host = "https://apricot-rabbit-wig.cyclic.app/"
+const host = "https://scrap-backend.vercel.app/";
 
-const baseURL = host+"articles/articleId/";
+const baseURL = host + "articles/articleId/";
 
 const ResponsiveBox = styled(Box)({
   overflow: "auto",
@@ -63,9 +63,7 @@ export default function Home() {
                 {Object.entries(posts).map(([key, value], index) => (
                   <div class="row">
                     <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
-                      <span
-                        class="ubutu gray color-blue"
-                      >
+                      <span class="ubutu gray color-blue">
                         <b>
                           {key !== "_id" &&
                           key !== "article_name" &&

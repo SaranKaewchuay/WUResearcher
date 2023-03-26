@@ -8,7 +8,7 @@ import "../style/styles.css";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-const host = "https://apricot-rabbit-wig.cyclic.app/"
+const host = "https://scrap-backend.vercel.app/";
 
 export default function AuthorDetail() {
   const [posts, setPosts] = React.useState([]);
@@ -24,7 +24,7 @@ export default function AuthorDetail() {
 
   useEffect(() => {
     axios
-      .get(host+ "authors/" + id)
+      .get(host + "authors/" + id)
       .then((response) => {
         setPosts(response.data);
         setData(response.data.citation_by.table);
@@ -39,7 +39,7 @@ export default function AuthorDetail() {
 
   useEffect(() => {
     axios
-      .get(host +`articles/getByArthorId/` + id)
+      .get(host + `articles/getByArthorId/` + id)
       .then((response) => {
         setLength(response.data.length);
       })
@@ -123,7 +123,6 @@ export default function AuthorDetail() {
       </Container>
 
       <Table id={id} />
-      
     </div>
   );
 }
