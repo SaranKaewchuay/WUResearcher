@@ -1,23 +1,31 @@
 import React, { useState, useEffect, useContext } from "react";
 import Graph from "../component/graph";
 import SubTable from "../component/sub_table";
-import Table from "../component/tableArticle";
 import Container from "@mui/material/Container";
 import axios from "axios";
 import "../style/styles.css";
 import "../style/loader.css";
 import { useLocation } from "react-router-dom";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "jquery/dist/jquery.min.js";
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/jquery.dataTables.min.css";
+import $ from "jquery";
+import { Link } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 
 const host = "https://scrap-backend.vercel.app/";
 
 
-export default function AuthorDetail() {
 
+
+export default function AuthorDetail() {
   const [posts, setPosts] = React.useState([]);
   const [data, setData] = React.useState([]);
   const [subjectArea, setSubjectArea] = React.useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [datatable, setDataTable] = useState([]);
 
   console.log("posts = ", posts);
   const location = useLocation();
@@ -28,6 +36,19 @@ export default function AuthorDetail() {
 
   useEffect(() => {
     setIsLoading(true);
+      axios
+      .get(host + `articles/getByArthorId/` + id)
+      .then((response) => {
+        setLength(response.data.length);
+        setDataTable(response.data);
+        $(document).ready(function () {
+          $("#table").DataTable();
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
       axios
       .get(host + "authors/" + id)
       .then((response) => {
@@ -45,18 +66,17 @@ export default function AuthorDetail() {
 
   const [length, setLength] = useState(0);
 
-  useEffect(() => {
-    axios
-    .get(host + `articles/getByArthorId/` + id)
-    .then((response) => {
-      setLength(response.data.length);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  }, [id]);
+  // useEffect(() => {
+   
+  // }, [id]);
 
-
+  // useEffect(() => {
+  //   if (datatable.length > 0) {
+  //     $(document).ready(function () {
+  //       $("#table").DataTable();
+  //     });
+  //   }
+  // }, [datatable]);
 
   const split_year = (date) => {
     const data = date.split("/");
@@ -156,11 +176,43 @@ export default function AuthorDetail() {
                 </div>
               </div>
             </div>
+
+            <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
+              <Row>
+                <Col>
+                  <table id="table" className="table table-striped">
+                    <thead>
+                      <tr>
+                        <th className="text-nowrap">#</th>
+                        <th className="text-nowrap">Document title</th>
+                        <th className="text-nowrap">Cited By</th>
+                        <th className="text-nowrap">Year</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {datatable.map((document, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>
+                            <Link
+                              to={`/article-detail?id=${document._id}`}
+                              className="no-underline color-blue"
+                            >
+                              {document.article_name}
+                            </Link>
+                          </td>
+                          <td>{document.total_citations}</td>
+                          <td>{split_year(document.publication_date)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </Col>
+              </Row>
+            </div>
           </Container>
         )}
-        <Table id={id}/>
       </div>
     </div>
   );
-  
 }
