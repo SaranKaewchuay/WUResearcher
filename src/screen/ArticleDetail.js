@@ -63,7 +63,7 @@ export default function Home() {
                   class="shadow-sm p-3 bg-white rounded mb-3"
                   style={{ width: "100%" }}
                 >
-                  <h2 class="ubutu blue">
+                  <h2 class="ubutu color-blue">
                     <b>{posts.article_name}</b>
                   </h2>
                 </div>

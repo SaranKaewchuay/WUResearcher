@@ -50,7 +50,11 @@ function Home() {
   }, [searchQuery]);
 
   return (
-    <Container maxWidth="lg" sx={{ paddingTop: "3rem" }} style={{marginTop:"65px"}}>
+    <Container
+      maxWidth="lg"
+      sx={{ paddingTop: "3rem" }}
+      style={{ marginTop: "65px" }}
+    >
       {isLoading ? (
         <div
           style={{
@@ -115,6 +119,7 @@ function Home() {
                       image={post.image}
                       alt={post.author_name}
                     />
+
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Typography>
                         <h5 class="ubutu color-blue">{post.author_name}</h5>

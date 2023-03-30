@@ -10,6 +10,7 @@ import "../style/styles.css";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
+
 const host = "https://scrap-backend.vercel.app/";
 
 function Table(props) {
@@ -20,7 +21,6 @@ function Table(props) {
       .get(host + "articles/getByArthorId/" + props.id)
       .then((response) => {
         setData(response.data);
-
         $(document).ready(function () {
           $("#example").DataTable();
         });

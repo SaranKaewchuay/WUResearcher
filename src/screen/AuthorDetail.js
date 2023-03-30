@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import Table from "../component/tableArticle";
+import React, { useState, useEffect, useContext } from "react";
 import Graph from "../component/graph";
 import SubTable from "../component/sub_table";
 import Container from "@mui/material/Container";
@@ -7,15 +6,26 @@ import axios from "axios";
 import "../style/styles.css";
 import "../style/loader.css";
 import { useLocation } from "react-router-dom";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "jquery/dist/jquery.min.js";
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/jquery.dataTables.min.css";
+import $ from "jquery";
 import { Link } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 
 const host = "https://scrap-backend.vercel.app/";
+
+
+
 
 export default function AuthorDetail() {
   const [posts, setPosts] = React.useState([]);
   const [data, setData] = React.useState([]);
   const [subjectArea, setSubjectArea] = React.useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [dataTable, setDataTable] = useState([]);
 
   console.log("posts = ", posts);
   const location = useLocation();
@@ -26,7 +36,6 @@ export default function AuthorDetail() {
 
   useEffect(() => {
     setIsLoading(true);
-
     axios
       .get(host + "authors/" + id)
       .then((response) => {
@@ -44,19 +53,27 @@ export default function AuthorDetail() {
   const [length, setLength] = useState(0);
 
   useEffect(() => {
-    // setIsLoading(true);
     axios
       .get(host + `articles/getByArthorId/` + id)
       .then((response) => {
         setLength(response.data.length);
+        setDataTable(response.data);
+        $(document).ready(function () {
+          $("#example").DataTable();
+        });
       })
       .catch((error) => {
         console.error(error);
       });
   }, [id]);
 
+  const split_year = (date) => {
+    const data = date.split("/");
+    return data[0];
+  };
+
   return (
-    <div style={{marginTop:"110px"}}>
+    <div style={{ marginTop: "110px" }}>
       <div>
         {isLoading ? (
           <div
@@ -91,7 +108,7 @@ export default function AuthorDetail() {
                   >
                     <img
                       src={posts.image}
-                      class="img-thumbnail"
+                      className="img-thumbnail"
                       style={{
                         width: "100%",
                         height: "100%",
@@ -111,7 +128,7 @@ export default function AuthorDetail() {
                       <span class=" color-blue ubutu">
                         <b>Research Articles: </b>
                       </span>
-                      <span class="color-blue">{length}</span>
+                      <span class="color-blue">{length} </span>
                     </div>
                     <div class="border-blue  p-2 mt-4 text-center me-1">
                       <div class="text-center">
@@ -148,9 +165,42 @@ export default function AuthorDetail() {
                 </div>
               </div>
             </div>
+
+            <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
+              <Row>
+                <Col>
+                  <table id="example" className="table table-striped">
+                    <thead>
+                      <tr>
+                        <th className="text-nowrap">#</th>
+                        <th className="text-nowrap">Document title</th>
+                        <th className="text-nowrap">Cited By</th>
+                        <th className="text-nowrap">Year</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dataTable.map((document, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>
+                            <Link
+                              to={`/article-detail?id=${document._id}`}
+                              className="no-underline color-blue"
+                            >
+                              {document.article_name}
+                            </Link>
+                          </td>
+                          <td>{document.total_citations}</td>
+                          <td>{split_year(document.publication_date)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </Col>
+              </Row>
+            </div>
           </Container>
         )}
-        <Table id={id} />
       </div>
     </div>
   );
