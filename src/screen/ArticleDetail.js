@@ -4,8 +4,6 @@ import Container from "@mui/material/Container";
 import axios from "axios";
 import "../style/styles.css";
 import { useLocation } from "react-router-dom";
-import { styled } from "@mui/system";
-import { Box } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
 import { Typography } from "@mui/material";
 
