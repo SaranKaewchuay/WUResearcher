@@ -7,7 +7,8 @@ import { useLocation } from "react-router-dom";
 import LinkIcon from "@mui/icons-material/Link";
 import { Typography } from "@mui/material";
 
-const host = "https://scrap-backend.vercel.app/";
+// const host = "https://scrap-backend.vercel.app/";
+const host = "http://localhost:8080/";
 
 const baseURL = host + "articles/articleId/";
 

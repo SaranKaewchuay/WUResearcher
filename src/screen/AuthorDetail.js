@@ -9,8 +9,8 @@ import "../style/loader.css";
 import { useLocation } from "react-router-dom";
 
 
-const host = "https://scrap-backend.vercel.app/";
-
+// const host = "https://scrap-backend.vercel.app/";
+const host = "http://localhost:8080/";
 
 export default function AuthorDetail() {
 

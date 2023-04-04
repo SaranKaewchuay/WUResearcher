@@ -11,7 +11,9 @@ import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
 
-const host = "https://scrap-backend.vercel.app/";
+// const host = "https://scrap-backend.vercel.app/";
+const host = "http://localhost:8080/";
+
 
 function Table(props) {
   const [data, setData] = useState([]);

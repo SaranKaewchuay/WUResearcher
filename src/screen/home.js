@@ -16,8 +16,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import "../style/styles.css";
 import "../style/loader.css";
 
-const host = "https://scrap-backend.vercel.app/";
-let check ;
+// const host = "https://scrap-backend.vercel.app/";
+const host = "http://localhost:8080/";
+
 const baseURL = host + "authors";
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -32,12 +33,14 @@ function Home() {
     const url =
       searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
 
-    if (searchQuery === "") {
-      setIsLoading(true);
-      check = 1;
-    }else if(check == 1){
-      setIsLoading(false);
-    }
+    // if (searchQuery === "") {
+    //   setIsLoading(true);
+    //   check = 1;
+    // }else if(check == 1){
+    //   setIsLoading(false);
+    // }
+
+    setIsLoading(false);
     axios
       .get(url)
       .then((response) => {
