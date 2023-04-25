@@ -16,8 +16,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import "../style/styles.css";
 import "../style/loader.css";
 
-// const host = "https://scrap-backend.vercel.app/";
-const host = "http://localhost:8080/";
+const host = "https://scrap-backend.vercel.app/";
+// const host = "http://localhost:8080/";
 
 const baseURL = host + "authors";
 function Home() {

@@ -10,8 +10,8 @@ import {
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
-// const host = "https://scrap-backend.vercel.app/";
-const host = "http://localhost:8080/";
+const host = "https://scrap-backend.vercel.app/";
+//const host = "http://localhost:8080/";
 
 const baseURL = host + "authors/";
 

@@ -11,8 +11,8 @@ import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
 
-// const host = "https://scrap-backend.vercel.app/";
-const host = "http://localhost:8080/";
+const host = "https://scrap-backend.vercel.app/";
+//const host = "http://localhost:8080/";
 
 
 function Table(props) {
@@ -33,8 +33,12 @@ function Table(props) {
   }, [props.id]);
 
   const split_year = (date) => {
-    const data = date.split("/");
-    return data[0];
+    if(date){
+      const data = date.split("/");
+      return data[0];
+    }else{
+      return "-";
+    }
   };
 
   return (
@@ -63,7 +67,7 @@ function Table(props) {
                         {document.article_name}
                       </Link>
                     </td>
-                    <td>{document.total_citations}</td>
+                    <td>{document.total_citations == null ? '-' : document.total_citations}</td>
                     <td>{split_year(document.publication_date)}</td>
                   </tr>
                 ))}
