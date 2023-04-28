@@ -102,7 +102,7 @@ function Home() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              height: "47vh",
+              height: "50vh",
             }}>
               <p className="font color-blue not-found ubutu">Not Found Researcher</p>
             </div>

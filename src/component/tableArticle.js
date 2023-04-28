@@ -67,8 +67,8 @@ function Table(props) {
                         {document.article_name}
                       </Link>
                     </td>
-                    <td>{document.total_citations == null ? '-' : document.total_citations}</td>
-                    <td>{split_year(document.publication_date)}</td>
+                    <td class="text-center">{document.total_citations == null ? '-' : document.total_citations}</td>
+                    <td class="text-center">{split_year(document.publication_date)}</td>
                   </tr>
                 ))}
               </tbody>
