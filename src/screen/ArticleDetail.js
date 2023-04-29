@@ -12,7 +12,6 @@ const host = "https://scrap-backend.vercel.app/";
 
 const baseURL = host + "articles/articleId/";
 
-
 export default function Home() {
   const [posts, setPosts] = React.useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +36,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Container sx={{ py: 8 }} maxWidth="xl" style={{marginTop:"56px"}}>
+    <Container sx={{ py: 8 }} maxWidth="xl" style={{ marginTop: "56px" }}>
       {isLoading ? (
         <div
           style={{
@@ -72,7 +71,7 @@ export default function Home() {
             <div class="row">
               <div class="col">
                 <div class="shadow-sm p-5 mb-5 bg-white rounded ">
-                  {Object.entries(posts).map(([key, value], index) => (
+                  {Object.entries(posts).map(([key, value], index, arr) => (
                     <div class="row">
                       <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
                         <span class="ubutu gray color-blue">
@@ -105,7 +104,19 @@ export default function Home() {
                             key !== "author_id" && (
                               <>
                                 {key === "authors" ? (
-                                  <p className="ubutu">{value + ","}</p>
+                                  <>
+                                    {Object.entries(value).map(
+                                      ([key, value], index, arr) => (
+                                        <span className="ubutu">
+                                          {value}
+                                          {index === arr.length - 1
+                                            ? " "
+                                            : ", "}
+                                        </span>
+                                      )
+                                    )}
+                                    <p></p>
+                                  </>
                                 ) : key === "url" ? (
                                   <Typography
                                     variant="body1"
