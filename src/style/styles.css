@@ -23,6 +23,22 @@
 
 }
 
+.card-horizontal {
+    display:flex;
+    flex: 1 1 auto;
+}
+
+
+@media (max-width: 600px) {
+    .card-horizontal {
+      display: contents;
+      flex: 1 1 auto;
+    }
+  }
+.card_container {
+    margin: 20px;
+}
+
 .black {
     color: "black"
 }
