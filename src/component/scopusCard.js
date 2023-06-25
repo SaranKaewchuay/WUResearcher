@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { CardMedia, Typography } from "@mui/material";
 
+
 const ScopusCard = ({ post }) => {
   return (
     <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
@@ -22,10 +23,10 @@ const ScopusCard = ({ post }) => {
                   height: "450px",
                   "@media (min-width: 600px)": {
                     width: "150px",
-                    height: "210px",
+                    height: "250px",
                   },
                 }}
-                image="https://scholar.googleusercontent.com/citations/images/avatar_scholar_128.png"
+                image={"https://img.freepik.com/vetores-premium/avatar-que-veste-um-tampao-da-graduacao-sobre-o-fundo-da-cerceta-ilustracao-vetorial_24877-19950.jpg?w=360"}
                 alt={post.name}
               />
             </div>

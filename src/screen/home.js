@@ -45,14 +45,15 @@ function Home() {
       searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
     fetchData(url);
 
-    let img
+    let img;
 
     if (selectedOption === "scopus") {
-      img = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
-    }else{
-      img = "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
+      img =
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
+    } else {
+      img =
+        "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
     }
-
 
     setImg(img);
   }, [searchQuery]);
@@ -64,15 +65,18 @@ function Home() {
       setIsLoading(true);
       setPosts(authors);
       setPostsLength(authors.length);
-      const img = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
+      const img =
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
       setImg(img);
       setTimeout(() => {
         setIsLoading(false);
       }, 2000);
     } else {
-      const url = searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
+      const url =
+        searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
       fetchData(url);
-      const img = "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
+      const img =
+        "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
       setImg(img);
     }
   };
@@ -88,7 +92,7 @@ function Home() {
         style={{ width: "100%", minHeight: "365px" }}
       >
         <div className="row">
-          <div className="col">
+          <div className="col-sm col-md col-lg col-xl">
             <Typography variant="h4" className="color-blue pb-3">
               Search Researcher
             </Typography>
@@ -96,7 +100,7 @@ function Home() {
               variant="outlined"
               label="Enter researcher name"
               fullWidth
-              sx={{  maxWidth: "85%", height: "auto" }}
+              sx={{ maxWidth: "85%", height: "auto" }}
               value={searchQuery}
               onChange={handleChange}
               InputProps={{
@@ -113,12 +117,12 @@ function Home() {
             />
           </div>
 
-          <div className="col p-2 mt-2">
+          <div className="col-sm col-md col-lg col-xl p-2 mt-2">
             <div className="form-group row ml-5">
-              <span className="color-blue ubutu">Select Source</span>
+              <span className="color-blue ubuntu pb-2">Select Source</span>
               <select
-                className="form-control"
-                style={{ width: "250px" }}
+                className="form-select"
+                style={{ maxWidth: "50%", height: "auto" }}
                 value={selectedOption}
                 onChange={handleSelectChange}
               >
@@ -127,17 +131,14 @@ function Home() {
               </select>
             </div>
             <div className="row">
-              <div className=" p-2 mt-1 col">
-                <h4
-                  className="color-blue ubutu"
-                  style={{ fontWeight: "bolder" }}
-                >
-                  {postsLength} Researchers
-                </h4>
+              <div className="p-2 mt-1 col">
+                <h5 className="color-blue ubuntu">{postsLength} Researchers</h5>
               </div>
               <div className="p-2 col">
-              <img src={img} style={{ maxWidth: "85%", height: "auto" }} />
-
+                <img
+                  src={img}
+                  style={{ maxWidth: "85%", minWidth: "65%", height: "auto" }}
+                />
               </div>
             </div>
           </div>

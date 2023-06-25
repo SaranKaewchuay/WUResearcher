@@ -18,7 +18,7 @@ import { Row, Col } from "react-bootstrap";
 const host = "https://scrap-backend.vercel.app/";
 //const host = "http://localhost:8080/";
 
-export default function AuthorDetail() {
+export default function AuthorScholarDetail() {
   const [posts, setPosts] = React.useState([]);
   const [data, setData] = React.useState([]);
   const [subjectArea, setSubjectArea] = React.useState([]);

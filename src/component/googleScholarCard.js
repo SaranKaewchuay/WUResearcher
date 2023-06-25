@@ -22,7 +22,7 @@ const GoogleScholarCard = ({ post}) => {
                   height: "450px",
                   "@media (min-width: 600px)": {
                     width: "150px",
-                    height: "210px",
+                    height: "200px",
                   },
                 }}
                 image={post.image}
