@@ -146,7 +146,7 @@ export default function JournalDetail() {
                 <select
                   className="form-select"
                   aria-label="Default select example"
-                  style={{ maxWidth: "20%", height: "auto" }}
+                  style={{ maxWidth: "50%", height: "auto" }}
                 >
                   <option value="1">2022</option>
                   <option value="2">2021</option>
@@ -156,49 +156,52 @@ export default function JournalDetail() {
               </div>
             </div>
             <div className="row">
-              <div className="border btn text-center col-2 m-1 mb-3">
-                <h1 className="color-blue ubutu">0.99</h1>
+              <div className="border btn text-center col-12 col-sm-6 col-md-4 col-lg-3 m-1 mb-3 p-0">
+                <p
+                  className="color-blue ubutu p-0"
+                  style={{ fontSize: "40px" }}
+                >
+                  0.99
+                </p>
               </div>
             </div>
 
-            <Row>
-              <Col>
-                <table id="example" className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th className="text-nowrap">#</th>
-                      <th className="text-nowrap">Category</th>
-                      <th className="text-nowrap">Sub Category</th>
-                      <th className="text-nowrap">Rank</th>
-                      <th className="text-nowrap">Percentile</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Earth and Planetary Sciences</td>
-                      <td>General Earth and Planetary Sciences</td>
-                      <td>#150/192</td>
-                      <td>22nd</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Environmental Science</td>
-                      <td>General Environmental Science</td>
-                      <td>#182/227</td>
-                      <td>20th</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Earth and Planetary Sciences</td>
-                      <td>General Earth and Planetary Sciences</td>
-                      <td>#150/192</td>
-                      <td>22nd</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Col>
-            </Row>
+            <div className="table-responsive">
+              <table id="example" className="table table-striped">
+                <thead>
+                  <tr>
+                    <th className="text-nowrap">#</th>
+                    <th className="text-nowrap">Category</th>
+                    <th className="text-nowrap">Sub Category</th>
+                    <th className="text-nowrap">Rank</th>
+                    <th className="text-nowrap">Percentile</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Earth and Planetary Sciences</td>
+                    <td>General Earth and Planetary Sciences</td>
+                    <td>#150/192</td>
+                    <td>22nd</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Environmental Science</td>
+                    <td>General Environmental Science</td>
+                    <td>#182/227</td>
+                    <td>20th</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Earth and Planetary Sciences</td>
+                    <td>General Earth and Planetary Sciences</td>
+                    <td>#150/192</td>
+                    <td>22nd</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </Container>
       </React.Fragment>
