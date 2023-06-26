@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import Graph from "../component/graph";
+import Graph from "../component/graphScholar";
 import SubTable from "../component/sub_table";
 import Container from "@mui/material/Container";
 import axios from "axios";
@@ -108,18 +108,18 @@ export default function AuthorScholarDetail() {
                     />
                   </div>
                 </div>
-                <div className="col-lg-4 col-md-6 col-sm-12 mt-5 p-2 mx-auto d-block justify-content-center">
+                <div className="col-lg-4 col-md-6 col-sm-12 mt-3 p-2 mx-auto d-flex flex-column align-items-center">
                   <h5 className="ubutu color-blue">
                     <b>{posts.author_name}</b>
                   </h5>
                   <br />
                   <h6 className="ubutu gray">{posts.department}</h6>
-                  <div className="d-flex flex-wrap ">
+                  <div className="d-flex flex-wrap justify-content-center">
                     <div className="border-blue p-2 mt-4 text-center me-1">
                       <span className="color-blue ubutu">
                         <b>Research Articles: </b>
                       </span>
-                      <span className="color-blue ubutu">{length} </span>
+                      <span className="color-blue ubutu">{length}</span>
                     </div>
                     <div className="border-blue p-2 mt-4 text-center me-1">
                       <div className="text-center">
@@ -133,7 +133,7 @@ export default function AuthorScholarDetail() {
                     </div>
                   </div>
 
-                  <div className="d-flex flex-wrap">
+                  <div className="d-flex flex-wrap justify-content-center">
                     {subjectArea.map((data) => (
                       <div
                         className="border btn mt-4 text-center me-1 p-1"
@@ -145,7 +145,7 @@ export default function AuthorScholarDetail() {
                   </div>
                 </div>
 
-                <div className="col-lg-4 col-md-12 pr-5 m-0 p-4">
+                <div className="col-lg-4 col-md-12 pr-5 m-0 p-1">
                   <div className="row mb-4">
                     <div className="col-12">
                       <SubTable id={id} />

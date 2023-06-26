@@ -7,7 +7,7 @@ const ScopusCard = ({ post }) => {
   return (
     <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
       <Link
-        to={`/authors-scopus-detail?id=${post.name.split(",")[0]}`}
+        to={`/authors-scopus-detail?id=${post._id}`}
         className="no-underline"
       >
         <div class="card">
@@ -31,9 +31,9 @@ const ScopusCard = ({ post }) => {
               />
             </div>
             <div class="card-body p-5">
-              <h4 className="ubutu color-blue">{post.name}</h4>
+              <h4 className="ubutu color-blue">{post.author_name}</h4>
               <Typography className="ubutu gray" style={{ fontSize: "17px" }}>
-              {post.citation} citations by {post.citations_by}
+              {post.citations} citations by {post.citations_by}
               </Typography>
               
               <div className="d-flex flex-wrap ">

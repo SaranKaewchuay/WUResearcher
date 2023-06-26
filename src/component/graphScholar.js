@@ -35,7 +35,7 @@ function Graph() {
 
   // #0d6efd
   return (
-    <ResponsiveContainer width="100%" height={165}>
+    <ResponsiveContainer width="95%" height={165}>
       <BarChart data={dataGraph} className="m-0">
         <Bar dataKey="citations" fill="#0a4275" />
         <XAxis dataKey="year" />

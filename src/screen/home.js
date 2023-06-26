@@ -6,7 +6,6 @@ import { Container, Typography, TextField, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import "../style/styles.css";
 import "../style/loader.css";
-import authors from "../json/Scopus_Author";
 
 const host = "https://scrap-backend.vercel.app/";
 // const host = "http://localhost:8080/";
@@ -19,68 +18,62 @@ function Home() {
   const [img, setImg] = useState();
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Default select");
-
+  const [selectedOption, setSelectedOption] = useState("scholar");
+  
+  const fetchData = async (url) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(url);
+      setPosts(response.data);
+      setPostsLength(response.data.length);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  };
+  
   const handleChange = (event) => {
     setSearchQuery(event.target.value);
   };
-
-  const fetchData = (url) => {
-    setIsLoading(true);
-    axios
-      .get(url)
-      .then((response) => {
-        setPosts(response.data);
-        setPostsLength(response.data.length);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setIsLoading(false);
-      });
-  };
-
+  
   useEffect(() => {
-    const url =
-      searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
-    fetchData(url);
-
+    let url;
     let img;
-
+  
     if (selectedOption === "scopus") {
-      img =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
+      url = searchQuery === "" ? `${baseURL}Scoupus/` : `${baseURL}Scoupus/author/${searchQuery}`;
+      img = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
     } else {
-      img =
-        "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
+      url = searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
+      img = "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
     }
-
+  
+    fetchData(url);
     setImg(img);
-  }, [searchQuery]);
-
+  }, [searchQuery, selectedOption]);
+  
   const handleSelectChange = (event) => {
-    setSelectedOption(event.target.value);
-
-    if (event.target.value === "scopus") {
-      setIsLoading(true);
-      setPosts(authors);
-      setPostsLength(authors.length);
-      const img =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
-      setImg(img);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
+    const value = event.target.value;
+    setSelectedOption(value);
+    setSearchQuery("");
+    setIsLoading(true);
+  
+    let url;
+    let img;
+  
+    if (value === "scopus") {
+      url = `${baseURL}Scoupus/`;
+      img = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
     } else {
-      const url =
-        searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
-      fetchData(url);
-      const img =
-        "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
-      setImg(img);
+      url = `${baseURL}/author/`;
+      img = "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
     }
+  
+    fetchData(url);
+    setImg(img);
   };
-
+  
   return (
     <Container
       maxWidth="xl"

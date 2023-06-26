@@ -6,51 +6,55 @@ import "../style/styles.css";
 import { useLocation } from "react-router-dom";
 import LinkIcon from "@mui/icons-material/Link";
 import { Typography } from "@mui/material";
-import journal from "../json/Scopus_Journal";
-import authors from "../json/Scopus_Author";
 import { Link } from "react-router-dom";
 const host = "https://scrap-backend.vercel.app/";
 //const host = "http://localhost:8080/";
 
-const baseURL = host + "articles/articleId/";
+const baseURL = host + "articlesScopus/articleId/";
 
 export default function ArticleScopusDetail() {
   const [posts, setPosts] = React.useState([]);
+  const [sourceID, setSourceID] = React.useState();
   const [journalName, setJournal] = React.useState();
-
-  const [isLoading, setIsLoading] = useState(false);
-
+  const [isLoading, setIsLoading] = React.useState(false);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const name = queryParams.get("id");
+  const id = queryParams.get("id");
+
+  const fetchJournalNames = async (source_id) => {
+    try {
+      const response = await axios.get(
+        `https://scrap-backend.vercel.app/journal/getBySourceId/${source_id}`
+      );
+      let journalNames = response.data.map((item) => item.journal_name);
+      if (journalNames.length === 0) {
+        journalNames = null;
+      }
+      return journalNames;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  };
 
   React.useEffect(() => {
-    setIsLoading(true);
-    const authorsData = authors.filter(
-      (item) => item.name.split(",")[0] === name
-    );
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(`${baseURL}${id}`);
+        const journalName = await fetchJournalNames(response.data.source_id);
+        setSourceID(response.data.source_id);
+        setJournal(journalName);
+        setPosts(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
+      }
+    };
 
-    setPosts(authorsData.length > 0 ? authorsData[0].articles[0] : null);
-    setJournal(journal[0].journal_name);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+    fetchData();
   }, []);
-
-  // React.useEffect(() => {
-  //   setIsLoading(true);
-
-  //   axios
-  //     .get(baseURL + id)
-  //     .then((response) => {
-  //       setPosts(response.data);
-  //       setIsLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //       setIsLoading(false);
-  //     });
-  // }, []);
 
   return (
     <Container sx={{ py: 8 }} maxWidth="xl" style={{ marginTop: "56px" }}>
@@ -76,7 +80,7 @@ export default function ArticleScopusDetail() {
               style={{ width: "100%" }}
             >
               <h2 className="ubuntu color-blue">
-                <b>{posts.name}</b>
+                <b>{posts.article_name}</b>
               </h2>
             </div>
 
@@ -95,85 +99,92 @@ export default function ArticleScopusDetail() {
                   />
                 </div>
               </div>
-              <div className="row">
-                <div className="col-xl-2 col-lg-3 col-md-4 col-sm-4 mt-2">
-                  <span className="ubuntu gray color-blue">
-                    <b>Journal Name</b>
-                  </span>
-                </div>
-                <div className="col-12 col-sm">
-                  <Link
-                    to={`/journal-detail?sourceid=test11122`}
-                    className="no-underline color-blue"
-                  >
-                    <p
-                      className="ubuntu color-blue"
-                      style={{
-                        fontSize: "20px",
-                        fontWeight: "bolder",
-                        textDecoration: "underline",
-                      }}
-                    >
-                      {journalName}
-                    </p>
-                  </Link>
-                </div>
-              </div>
+              {journalName ? (
+                <Link
+                  to={`/journal-detail?sourceid=${sourceID}`}
+                  className="no-underline color-blue"
+                >
+                  <div className="row">
+                    <div className="col-xl-2 col-lg-3 col-md-4 col-sm-4 mt-2">
+                      <span className="ubuntu gray color-blue">
+                        <b>Journal Name</b>
+                      </span>
+                    </div>
+                    <div className="col-12 col-sm">
+                      <p
+                        className="ubuntu color-blue"
+                        style={{
+                          fontSize: "20px",
+                          fontWeight: "bolder",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        {journalName}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ) : null}
 
               {Object.entries(posts).map(([key, value], index) => (
                 <React.Fragment key={index}>
-                  {key !== "id" && key !== "name" && (
-                    <div className="row">
-                      <div className="col-xl-2 col-lg-3 col-md-4 col-sm-4">
-                        <span className="ubuntu gray color-blue">
-                          <b>
-                            {(
-                              key.charAt(0).toUpperCase() + key.slice(1)
-                            ).replace("_", " ")}
-                          </b>
-                          {key === "url" && (
-                            <Typography variant="body1">
-                              <div>
-                                <LinkIcon />
-                              </div>
-                            </Typography>
-                          )}
-                        </span>
-                      </div>
-                      <div className="col-xl-10 col-lg-9 col-md-8 col-sm-8">
-                        {key === "co_author" ? (
-                          <>
-                            {Object.entries(value).map(
-                              ([key, value], index, arr) => (
-                                <span className="ubuntu" key={index}>
-                                  {value}
-                                  {index !== arr.length - 1 && " | "}
-                                </span>
-                              )
+                  {key !== "_id" &&
+                    key !== "name" &&
+                    key !== "source_id" &&
+                    key !== "author_id" &&
+                    key !== "article_name" &&
+                    key !== "__v" && (
+                      <div className="row">
+                        <div className="col-xl-2 col-lg-3 col-md-4 col-sm-4">
+                          <span className="ubuntu gray color-blue">
+                            <b>
+                              {(
+                                key.charAt(0).toUpperCase() + key.slice(1)
+                              ).replace("_", " ")}
+                            </b>
+                            {key === "url" && (
+                              <Typography variant="body1">
+                                <div>
+                                  <LinkIcon />
+                                </div>
+                              </Typography>
                             )}
-                            <p></p>
-                          </>
-                        ) : key === "url" ? (
-                          <Typography
-                            variant="body1"
-                            align="left"
-                            className="ubuntu"
-                          >
-                            <a
-                              href={value}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="color-blue"
+                          </span>
+                        </div>
+                        <div className="col-xl-10 col-lg-9 col-md-8 col-sm-8">
+                          {key === "co_author" ? (
+                            <>
+                              {Object.entries(value).map(
+                                ([key, value], index, arr) => (
+                                  <span className="ubuntu" key={index}>
+                                    {value}
+                                    {index !== arr.length - 1 && " | "}
+                                  </span>
+                                )
+                              )}
+                              <p></p>
+                            </>
+                          ) : key === "url" ? (
+                            <Typography
+                              variant="body1"
+                              align="left"
+                              className="ubuntu"
                             >
-                              Read More
-                            </a>
-                          </Typography>
-                        ) : (
-                          <p className="ubuntu">{value}</p>
-                        )}
+                              <a
+                                href={value}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="color-blue"
+                              >
+                                Read More
+                              </a>
+                            </Typography>
+                          ) : (
+                            <p className="ubuntu">{value}</p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </React.Fragment>
               ))}
             </div>

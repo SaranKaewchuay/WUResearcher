@@ -29,7 +29,7 @@ function SubTable() {
 
   return (
     <div class="table-responsive">
-      <table class="table center">
+      <table class="table center" style={{width:"95%"}}>
         <thead>
           <tr>
             <th scope="col"></th>
