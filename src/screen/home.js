@@ -29,7 +29,6 @@ function Home() {
       setIsLoading(false);
     } catch (error) {
       console.error(error);
-      setIsLoading(false);
     }
   };
   
@@ -57,7 +56,6 @@ function Home() {
     const value = event.target.value;
     setSelectedOption(value);
     setSearchQuery("");
-    setIsLoading(true);
   
     let url;
     let img;
@@ -130,6 +128,7 @@ function Home() {
               <div className="p-2 col">
                 <img
                   src={img}
+                  alt="source" 
                   style={{ maxWidth: "85%", minWidth: "65%", height: "auto" }}
                 />
               </div>
