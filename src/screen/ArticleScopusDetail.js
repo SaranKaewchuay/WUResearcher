@@ -99,7 +99,7 @@ export default function ArticleScopusDetail() {
                   />
                 </div>
               </div>
-              {journalName ? (
+              {sourceID ? (
                 <Link
                   to={`/journal-detail?sourceid=${sourceID}`}
                   className="no-underline color-blue"
@@ -119,7 +119,7 @@ export default function ArticleScopusDetail() {
                           textDecoration: "underline",
                         }}
                       >
-                        {journalName}
+                        {journalName} {" "}  ({sourceID})
                       </p>
                     </div>
                   </div>
