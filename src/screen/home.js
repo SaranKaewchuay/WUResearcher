@@ -56,6 +56,7 @@ function Home() {
     const value = event.target.value;
     setSelectedOption(value);
     setSearchQuery("");
+    setPostsLength(0)
   
     let url;
     let img;
@@ -137,7 +138,7 @@ function Home() {
         </div>
 
         <div className="row"></div>
-        {postsLength === 0 ? (
+        {postsLength === 0 && isLoading === false ? (
           <div
             style={{
               display: "flex",
@@ -146,7 +147,7 @@ function Home() {
               height: "50vh",
             }}
           >
-            <p className="font color-blue not-found ubutu">
+            <p className="font color-blue not-found ubutu text-center">
               Not Found Researcher
             </p>
           </div>
@@ -158,7 +159,7 @@ function Home() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  height: "100vh",
+                  height: "50vh",
                 }}
               >
                 <div className="loader">
