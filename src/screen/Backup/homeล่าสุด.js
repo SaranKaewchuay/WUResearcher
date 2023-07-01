@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import debounce from "lodash/debounce";
 import GoogleScholarCard from "../component/googleScholarCard";
 import JournalCard from "../component/scopusJournalCard";
 import ScopusCard from "../component/scopusCard";
@@ -21,11 +20,6 @@ const host = "https://scrap-backend.vercel.app/";
 
 const baseURL = host + "authors";
 
-
-const debounceSearch = debounce((query, fetchData) => {
-  fetchData(query);
-}, 500);
-
 function Home() {
   const [posts, setPosts] = useState([]);
   const [postsLength, setPostsLength] = useState(0);
@@ -37,6 +31,26 @@ function Home() {
   const [selectedOption, setSelectedOption] = useState("scholar");
   const [selectedButton, setSelectedButton] = useState("author");
 
+  const handleScroll = () => {
+    const isBottom =
+      window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 1;
+
+    if (isBottom) {
+      console.log("isBottom");
+      if (!searchQuery) {
+        setPage((prevPage) => prevPage + 1);
+        setIsLoadingAdd(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleScrollEvent = () => handleScroll();
+
+    window.addEventListener("scroll", handleScrollEvent);
+    return () => window.removeEventListener("scroll", handleScrollEvent);
+  }, [handleScroll]);
+
   const fetchData = async (url) => {
     setIsLoading(true);
 
@@ -44,17 +58,9 @@ function Home() {
       const response = await axios.get(`${url}?page=${page}`);
       const newPosts = response.data;
 
-      if(page===1){
-        setPosts([]);
-        setPosts(newPosts);
-        setPostsLength(newPosts.length);
-      }else{
-        setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-        setPostsLength((prevPostsLength) => prevPostsLength + newPosts.length);
-      }
-      // setPosts((prevPosts) => page === 1 ? newPosts : [...prevPosts, ...newPosts]);
-      // setPostsLength((prevPostsLength) =>page === 1 ? newPosts.length : prevPostsLength + newPosts.length);
-      
+      setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+      console.log("Posts = ",newPosts)
+      setPostsLength((prevPostsLength) => prevPostsLength + newPosts.length);
       setIsLoading(false);
       setIsLoadingAdd(false);
     } catch (error) {
@@ -65,7 +71,7 @@ function Home() {
   const fetchSearchData = async (url) => {
     setPosts([]);
     setIsLoading(true);
-    setPage(1);
+
     try {
       const response = await axios.get(`${url}`);
       const newPosts = response.data;
@@ -78,77 +84,20 @@ function Home() {
     }
   };
 
-  const handleScroll = () => {
-    const isBottom =
-      window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 1;
-
-    if (isBottom) {
-      if (searchQuery=== "") {
-        setPage((prevPage) => prevPage + 1);
-        setIsLoadingAdd(true);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const handleScrollEvent = () => handleScroll();
-
-    window.addEventListener("scroll", handleScrollEvent);
-    return () => window.removeEventListener("scroll", handleScrollEvent);
-  }, []);
-
-  useEffect(() => {
-    let url;
-    let imgUrl;
-
-    if (selectedOption === "scopus") {
-      if (selectedButton === "author") {
-        url =
-          searchQuery === ""
-            ? `${baseURL}Scoupus/`
-            : `${baseURL}Scoupus/author/${searchQuery}`;
-        imgUrl =
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
-      } else {
-        url = `${host}journal/`;
-        imgUrl =
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
-      }
-    } else {
-      url = searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
-      imgUrl =
-        "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
-    }
-
-    if (searchQuery) {
-      fetchSearchData(url);
-    } else {
-      fetchData(url);
-    }
-
-    setImg(imgUrl);
-  }, [searchQuery, selectedOption, page]);
-
   const handleChange = (event) => {
-    const value = event.target.value;
-    setSearchQuery(value);
+    setSearchQuery(event.target.value);
 
-    if (!value) {
+    if(!event.target.value){
+      console.log("เข้า")
       setPostsLength(0);
       setPosts([]);
       setPage(1);
-      let url;
-
       if (selectedOption === "scopus") {
-        url = `${baseURL}Scoupus/`;
-      } else {
-        url = `${baseURL}`;
+        fetchData( `${baseURL}Scoupus/`);
+      }else{
+        fetchData(`${baseURL}`);
       }
-
-      fetchData(url);
-    } else {
-      debounceSearch(value, fetchData);
+      
     }
   };
 
@@ -157,22 +106,47 @@ function Home() {
     setPostsLength(0);
     setPosts([]);
     setPage(1);
-
-    setSelectedButton(buttonType);
-    // if (selectedButton !== buttonType) {
-    //   setSelectedButton(buttonType);
-    // }
-
     let url;
-
+    if (selectedButton !== buttonType) {
+      setSelectedButton(buttonType);
+    }
     if (buttonType === "author") {
       url = `${baseURL}Scoupus/`;
     } else if (buttonType === "journal") {
       url = `${host}journal/`;
     }
 
-    fetchData(url);
+    fetchData(url)
   };
+
+  useEffect(() => {
+    let url;
+    let img;
+    if (selectedOption === "scopus") {
+      if (selectedButton == "author") {
+        url =
+          searchQuery === ""
+            ? `${baseURL}Scoupus/`
+            : `${baseURL}Scoupus/author/${searchQuery}`;
+        img ="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
+      }else{
+        url = `${host}journal/`;
+        img ="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
+      }
+    } else {
+      url = searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
+      img =
+        "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
+    }
+    console.log("searchQuery = ", searchQuery);
+    if (searchQuery) {
+      fetchSearchData(url);
+    } else {
+      fetchData(url);
+    }
+
+    setImg(img);
+  }, [searchQuery, selectedOption, page]);
 
   const handleSelectChange = (event) => {
     const value = event.target.value;
@@ -181,23 +155,23 @@ function Home() {
     setPostsLength(0);
     setPosts([]);
     setPage(1);
-    setSelectedButton("author");
 
     let url;
-    let imgUrl;
+    let img;
 
     if (value === "scopus") {
+      setSelectedButton("author")
       url = `${baseURL}Scoupus/`;
-      imgUrl =
+      img =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
     } else {
       url = `${baseURL}/author/`;
-      imgUrl =
+      img =
         "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
     }
 
     fetchData(url);
-    setImg(imgUrl);
+    setImg(img);
   };
   return (
     <Container

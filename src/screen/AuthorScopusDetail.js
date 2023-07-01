@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect} from "react";
 import GraphScopus from "../component/graphScopus";
 
 import Container from "@mui/material/Container";
@@ -10,7 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
-import $, { post } from "jquery";
+import $  from "jquery";
 import "../style/styles.css";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
