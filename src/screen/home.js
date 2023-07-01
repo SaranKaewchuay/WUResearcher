@@ -39,36 +39,36 @@ function Home() {
 
   const fetchData = async (url) => {
     setIsLoading(true);
-
+  
     try {
       const response = await axios.get(`${url}?page=${page}`);
       const newPosts = response.data;
-
-      if(page===1){
+  
+      if (page === 1) {
         setPosts([]);
         setPosts(newPosts);
         setPostsLength(newPosts.length);
-      }else{
+      } else {
         setPosts((prevPosts) => [...prevPosts, ...newPosts]);
         setPostsLength((prevPostsLength) => prevPostsLength + newPosts.length);
       }
-      // setPosts((prevPosts) => page === 1 ? newPosts : [...prevPosts, ...newPosts]);
-      // setPostsLength((prevPostsLength) =>page === 1 ? newPosts.length : prevPostsLength + newPosts.length);
-      
+  
       setIsLoading(false);
       setIsLoadingAdd(false);
     } catch (error) {
       console.error(error);
     }
   };
-
+  
   const fetchSearchData = async (url) => {
     setPosts([]);
     setIsLoading(true);
     setPage(1);
+  
     try {
-      const response = await axios.get(`${url}`);
+      const response = await axios.get(url);
       const newPosts = response.data;
+  
       setPosts(newPosts);
       setPostsLength(newPosts.length);
       setIsLoading(false);
@@ -77,103 +77,78 @@ function Home() {
       console.error(error);
     }
   };
-
+  
   const handleScroll = () => {
     const isBottom =
       window.innerHeight + document.documentElement.scrollTop >=
       document.documentElement.offsetHeight - 1;
-
-    if (isBottom) {
-      if (searchQuery=== "") {
-        setPage((prevPage) => prevPage + 1);
-        setIsLoadingAdd(true);
-      }
+  
+    if (isBottom && searchQuery === "") {
+      setPage((prevPage) => prevPage + 1);
+      setIsLoadingAdd(true);
     }
   };
-
+  
   useEffect(() => {
     const handleScrollEvent = () => handleScroll();
-
+  
     window.addEventListener("scroll", handleScrollEvent);
     return () => window.removeEventListener("scroll", handleScrollEvent);
   }, []);
-
+  
   useEffect(() => {
     let url;
     let imgUrl;
-
+  
     if (selectedOption === "scopus") {
       if (selectedButton === "author") {
-        url =
-          searchQuery === ""
-            ? `${baseURL}Scoupus/`
-            : `${baseURL}Scoupus/author/${searchQuery}`;
-        imgUrl =
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
+        url = searchQuery === "" ? `${baseURL}Scoupus/` : `${baseURL}Scoupus/author/${searchQuery}`;
       } else {
         url = `${host}journal/`;
-        imgUrl =
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
       }
+  
+      imgUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
     } else {
       url = searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
-      imgUrl =
-        "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
+      imgUrl = "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
     }
-
+  
     if (searchQuery) {
       fetchSearchData(url);
     } else {
       fetchData(url);
     }
-
+  
     setImg(imgUrl);
   }, [searchQuery, selectedOption, page]);
-
+  
   const handleChange = (event) => {
     const value = event.target.value;
     setSearchQuery(value);
-
+  
     if (!value) {
       setPostsLength(0);
       setPosts([]);
       setPage(1);
-      let url;
-
-      if (selectedOption === "scopus") {
-        url = `${baseURL}Scoupus/`;
-      } else {
-        url = `${baseURL}`;
-      }
-
+  
+      let url = selectedOption === "scopus" ? `${baseURL}Scoupus/` : `${baseURL}`;
       fetchData(url);
     } else {
       debounceSearch(value, fetchData);
     }
   };
-
+  
   const handleButtonClick = (buttonType) => {
     setSearchQuery("");
     setPostsLength(0);
     setPosts([]);
     setPage(1);
-
     setSelectedButton(buttonType);
-    // if (selectedButton !== buttonType) {
-    //   setSelectedButton(buttonType);
-    // }
-
-    let url;
-
-    if (buttonType === "author") {
-      url = `${baseURL}Scoupus/`;
-    } else if (buttonType === "journal") {
-      url = `${host}journal/`;
-    }
-
+  
+    let url = buttonType === "author" ? `${baseURL}Scoupus/` : `${host}journal/`;
     fetchData(url);
   };
-
+  
   const handleSelectChange = (event) => {
     const value = event.target.value;
     setSelectedOption(value);
@@ -182,23 +157,22 @@ function Home() {
     setPosts([]);
     setPage(1);
     setSelectedButton("author");
-
+  
     let url;
     let imgUrl;
-
+  
     if (value === "scopus") {
       url = `${baseURL}Scoupus/`;
-      imgUrl =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
+      imgUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
     } else {
       url = `${baseURL}/author/`;
-      imgUrl =
-        "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
+      imgUrl = "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
     }
-
+  
     fetchData(url);
     setImg(imgUrl);
   };
+  
   return (
     <Container
       maxWidth="xl"
