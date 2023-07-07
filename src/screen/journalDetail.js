@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 const host = "https://scrap-backend.vercel.app/";
 //const host = "http://localhost:8080/";
 
-const baseURL = host + "journal/getBySourceId/";
+const baseURL = host + "journals/getBySourceId/";
 
 export default function JournalDetail() {
   const [journalData, setJournal] = useState([]);
@@ -32,12 +32,14 @@ export default function JournalDetail() {
       $("#example").DataTable();
     });
   };
+
   React.useEffect(() => {
     const fetchData = () => {
       setIsLoading(true);
       axios
         .get(`${baseURL}${source_id}`)
         .then((response) => {
+
           setJournal(response.data);
           setCiteSource(response.data[0].cite_source);
           setIsLoading(false);

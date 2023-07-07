@@ -24,7 +24,7 @@ export default function ArticleScopusDetail() {
   const fetchJournalNames = async (source_id) => {
     try {
       const response = await axios.get(
-        `https://scrap-backend.vercel.app/journal/getBySourceId/${source_id}`
+        `https://scrap-backend.vercel.app/journals/getBySourceId/${source_id}`
       );
       let journalNames = response.data.map((item) => item.journal_name);
       if (journalNames.length === 0) {
@@ -46,6 +46,7 @@ export default function ArticleScopusDetail() {
         setSourceID(response.data.source_id);
         setJournal(journalName);
         setPosts(response.data);
+        console.log("response.data == ", response.data);
         setIsLoading(false);
       } catch (error) {
         console.error(error);
@@ -119,7 +120,7 @@ export default function ArticleScopusDetail() {
                           textDecoration: "underline",
                         }}
                       >
-                        {journalName} {" "}  ({sourceID})
+                        {journalName} ({sourceID})
                       </p>
                     </div>
                   </div>
@@ -133,7 +134,8 @@ export default function ArticleScopusDetail() {
                     key !== "source_id" &&
                     key !== "author_id" &&
                     key !== "article_name" &&
-                    key !== "__v" && (
+                    key !== "__v" &&
+                    key !== "author_scopus_id" && (
                       <div className="row">
                         <div className="col-xl-2 col-lg-3 col-md-4 col-sm-4">
                           <span className="ubuntu gray color-blue">

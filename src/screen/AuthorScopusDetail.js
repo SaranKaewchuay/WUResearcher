@@ -27,16 +27,15 @@ export default function AuthorScopusDetail() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
-
   useEffect(() => {
     setIsLoading(true);
     Promise.all([
-      axios.get(host + "authorsScoupus/" + id),
+      axios.get(host + "authorsScopus/" + id),
       axios.get(host + `articlesScopus/getByArthorId/` + id),
     ])
       .then((response) => {
-        setPosts(response[0].data);
-        setSubjectArea(response[0].data.subject_area);
+        setPosts(response[0].data[0]);
+        setSubjectArea(response[0].data[0].subject_area);
         setDataTable(response[1].data);
         setIsLoading(false);
         $(document).ready(function () {

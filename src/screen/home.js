@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import debounce from "lodash/debounce";
 import GoogleScholarCard from "../component/googleScholarCard";
 import JournalCard from "../component/scopusJournalCard";
 import ScopusCard from "../component/scopusCard";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import {
   Container,
   Typography,
@@ -21,14 +22,9 @@ const host = "https://scrap-backend.vercel.app/";
 
 const baseURL = host + "authors";
 
-
-const debounceSearch = debounce((query, fetchData) => {
-  fetchData(query);
-}, 500);
-
 function Home() {
   const [posts, setPosts] = useState([]);
-  const [postsLength, setPostsLength] = useState(0);
+  const [postsLength, setPostsLength] = useState("0");
   const [img, setImg] = useState();
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -36,34 +32,72 @@ function Home() {
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
   const [selectedOption, setSelectedOption] = useState("scholar");
   const [selectedButton, setSelectedButton] = useState("author");
+  const [click, setClick] = useState(false);
 
+  const handleScroll = () => {
+    const isBottom =
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - 1;
+  
+    if (isBottom && !searchQuery) {
+      setPage(prevPage => prevPage + 1);
+      setIsLoadingAdd(true);
+    }
+  };
+
+
+  useEffect(() => {
+    const handleScrollEvent = () => handleScroll();
+
+    window.addEventListener("scroll", handleScrollEvent);
+    return () => window.removeEventListener("scroll", handleScrollEvent);
+  }, [handleScroll]);
+  
+  const fetchTotal = async () => {
+    try {
+      let url;
+      if (selectedOption === "scopus") {
+        if (selectedButton === "author") {
+          url = `${baseURL}Scopus/getTotal`;
+        } else if (selectedButton === "journal") {
+          url = `${host}journals/getTotal`;
+        }
+      } else {
+        url = `${baseURL}/getTotal`;
+      }
+  
+      const response = await axios.get(url);
+      const newPosts = response.data.count;
+  
+      return newPosts;
+    } catch (error) {
+      console.error(error);
+      throw error; 
+    }
+  };
+  
+  
   const fetchData = async (url) => {
     setIsLoading(true);
-  
     try {
       const response = await axios.get(`${url}?page=${page}`);
       const newPosts = response.data;
+      const length = await fetchTotal();
   
-      if (page === 1) {
-        setPosts([]);
-        setPosts(newPosts);
-        setPostsLength(newPosts.length);
-      } else {
-        setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-        setPostsLength((prevPostsLength) => prevPostsLength + newPosts.length);
-      }
-  
+      setPostsLength(length);
+      setPosts((prevPosts) => (page === 1 ? newPosts : [...prevPosts, ...newPosts]));
       setIsLoading(false);
       setIsLoadingAdd(false);
     } catch (error) {
       console.error(error);
+      throw error; 
     }
   };
   
-  const fetchSearchData = async (url) => {
+  
+  const fetchSearchData = async url => {
     setPosts([]);
     setIsLoading(true);
-    setPage(1);
   
     try {
       const response = await axios.get(url);
@@ -73,44 +107,65 @@ function Home() {
       setPostsLength(newPosts.length);
       setIsLoading(false);
       setIsLoadingAdd(false);
+      setClick(false);
     } catch (error) {
       console.error(error);
     }
   };
   
-  const handleScroll = () => {
-    const isBottom =
-      window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 1;
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setSearchQuery(value);
+    let url;
   
-    if (isBottom && searchQuery === "") {
-      setPage((prevPage) => prevPage + 1);
-      setIsLoadingAdd(true);
+    if (!value) {
+      setPostsLength("0");
+      setPosts([]);
+      setPage(1);
+      url =
+        selectedOption === "scopus" && selectedButton === "journal"
+          ? `${host}journals/`
+          : `${baseURL}`;
+  
+      fetchData(url);
     }
   };
   
-  useEffect(() => {
-    const handleScrollEvent = () => handleScroll();
+  const handleClickSearch = () => {
+    setClick(true);
+  };
   
-    window.addEventListener("scroll", handleScrollEvent);
-    return () => window.removeEventListener("scroll", handleScrollEvent);
-  }, []);
+  const handleButtonClick = (buttonType) => {
+    setPostsLength("0");
+    setSearchQuery("");
+    setPosts([]);
+    setPage(1);
+    setSelectedButton(buttonType);
+  
+    let url;
+    if (buttonType === "author") {
+      url = `${baseURL}Scopus/`;
+    } else if (buttonType === "journal") {
+      url = `${host}journals/`;
+    }
+    fetchData(url);
+  };
+  
   
   useEffect(() => {
     let url;
-    let imgUrl;
+    let img;
   
     if (selectedOption === "scopus") {
       if (selectedButton === "author") {
-        url = searchQuery === "" ? `${baseURL}Scoupus/` : `${baseURL}Scoupus/author/${searchQuery}`;
+        url = searchQuery === "" ? `${baseURL}Scopus/` : `${baseURL}Scopus/author/${searchQuery}`;
       } else {
-        url = `${host}journal/`;
+        url = searchQuery === "" ? `${host}journals/` : `${host}journals/journal/${searchQuery}`;
       }
-  
-      imgUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
+      img = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
     } else {
       url = searchQuery === "" ? baseURL : `${baseURL}/author/${searchQuery}`;
-      imgUrl = "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
+      img = "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
     }
   
     if (searchQuery) {
@@ -119,60 +174,35 @@ function Home() {
       fetchData(url);
     }
   
-    setImg(imgUrl);
-  }, [searchQuery, selectedOption, page]);
+    setImg(img);
+  }, [selectedOption, selectedButton, page, click]);
   
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setSearchQuery(value);
   
-    if (!value) {
-      setPostsLength(0);
-      setPosts([]);
-      setPage(1);
-  
-      let url = selectedOption === "scopus" ? `${baseURL}Scoupus/` : `${baseURL}`;
-      fetchData(url);
-    } else {
-      debounceSearch(value, fetchData);
-    }
-  };
-  
-  const handleButtonClick = (buttonType) => {
-    setSearchQuery("");
-    setPostsLength(0);
-    setPosts([]);
-    setPage(1);
-    setSelectedButton(buttonType);
-  
-    let url = buttonType === "author" ? `${baseURL}Scoupus/` : `${host}journal/`;
-    fetchData(url);
-  };
-  
-  const handleSelectChange = (event) => {
-    const value = event.target.value;
-    setSelectedOption(value);
-    setSearchQuery("");
-    setPostsLength(0);
-    setPosts([]);
-    setPage(1);
+const handleSelectChange = (event) => {
+  const value = event.target.value;
+  setSelectedOption(value);
+  setPostsLength("0");
+  setSearchQuery("");
+  setPosts([]);
+  setPage(1);
+
+  let url;
+  let img;
+
+  if (value === "scopus") {
     setSelectedButton("author");
-  
-    let url;
-    let imgUrl;
-  
-    if (value === "scopus") {
-      url = `${baseURL}Scoupus/`;
-      imgUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
-    } else {
-      url = `${baseURL}/author/`;
-      imgUrl = "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
-    }
-  
-    fetchData(url);
-    setImg(imgUrl);
-  };
-  
+    url = `${baseURL}Scopus/`;
+    img = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
+  } else {
+    setSelectedButton("");
+    url = `${baseURL}/author/`;
+    img = "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
+  }
+
+  fetchData(url);
+  setImg(img);
+};
+
   return (
     <Container
       maxWidth="xl"
@@ -180,84 +210,92 @@ function Home() {
       style={{ marginTop: "65px" }}
     >
       <div
-        className="shadow p-3 mb-5 bg-white rounded"
-        style={{ width: "100%", minHeight: "365px" }}
+        className="shadow p-3 bg-white rounded mb-5"
+        style={{ width: "100%", minHeight: "110px" }}
       >
         <div className="row">
           <div className="col-sm col-md col-lg col-xl">
-            <Typography variant="h4" className="color-blue pb-3">
-              Search Researcher
-            </Typography>
-            <TextField
-              variant="outlined"
-              label="Enter researcher name"
-              fullWidth
-              sx={{ maxWidth: "85%", height: "auto" }}
-              value={searchQuery}
-              onChange={handleChange}
-              InputProps={{
-                endAdornment: (
-                  <IconButton
-                    type="submit"
-                    sx={{ p: "10px" }}
-                    aria-label="search"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                ),
-              }}
-            />
-            {selectedOption === "scopus" && (
-              <Stack spacing={2} direction="row" className="mt-5">
-                <Button
-                  variant={
-                    selectedButton === "author" ? "contained" : "outlined"
-                  }
-                  onClick={() => handleButtonClick("author")}
-                >
-                  Author
-                </Button>
-                <Button
-                  variant={
-                    selectedButton === "journal" ? "contained" : "outlined"
-                  }
-                  onClick={() => handleButtonClick("journal")}
-                >
-                  Journal
-                </Button>
-              </Stack>
-            )}
-          </div>
-
-          <div className="col-sm col-md col-lg col-xl p-2 mt-2">
-            <div className="form-group row ml-5">
-              <span className="color-blue ubuntu pb-2">Select Source</span>
-              <select
-                className="form-select"
-                style={{ maxWidth: "50%", height: "auto" }}
-                value={selectedOption}
-                onChange={handleSelectChange}
-              >
-                <option value="scholar">Google Scholar</option>
-                <option value="scopus">Scopus</option>
-              </select>
-            </div>
             <div className="row">
-              <div className="p-2 mt-1 col">
-                <h5 className="color-blue ubuntu">{postsLength} Researchers</h5>
-              </div>
               <div className="p-2 col">
                 <img
                   src={img}
                   alt="source"
-                  style={{ maxWidth: "85%", minWidth: "65%", height: "auto" }}
+                  style={{
+                    maxWidth: selectedOption === "scopus" ? "16%" : "30%",
+                    minWidth: selectedOption === "scopus" ? "10%" : "20%",
+                    height: "auto",
+                  }}
                 />
               </div>
             </div>
+
+            <div className="d-flex justify-content-center align-items-center">
+              <TextField
+                className="mt-1"
+                variant="outlined"
+                label={selectedButton === "journal" ? "Enter journal name" : "Enter researcher name"}
+                fullWidth
+                sx={{ maxWidth: "85%", height: "auto" }}
+                value={searchQuery}
+                onChange={handleChange}
+                InputProps={{
+                  endAdornment: (
+                    <IconButton
+                      type="submit"
+                      sx={{ p: "10px" }}
+                      aria-label="search"
+                      onClick={handleClickSearch}
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  ),
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="col-sm col-md col-lg col-xl p-2 mt-2">
+            <div className="form-group row ml-5 mt-2 ">
+              <span className="color-blue ubuntu pb-2">Select Source</span>
+
+              <Select
+                value={selectedOption}
+                onChange={handleSelectChange}
+                style={{ maxWidth: "50%", height: "auto", fontSize: "15px" }}
+              >
+                <MenuItem value="scholar">Google Scholar</MenuItem>
+                <MenuItem value="scopus">Scopus</MenuItem>
+              </Select>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="row"></div>
+      {selectedOption === "scopus" && (
+        <Stack spacing={2} direction="row">
+          <Button
+            variant={selectedButton === "author" ? "contained" : "outlined"}
+            onClick={() => handleButtonClick("author")}
+          >
+            Author
+          </Button>
+          <Button
+            variant={selectedButton === "journal" ? "contained" : "outlined"}
+            onClick={() => handleButtonClick("journal")}
+          >
+            Journal
+          </Button>
+        </Stack>
+      )}
+      <div
+        className="shadow p-3 mb-5 bg-white rounded"
+        style={{ width: "100%", minHeight: "365px" }}
+      >
+        <div className="row">
+          <div className="mt-1 col">
+            <h4 className="color-blue ubuntu">{postsLength} Results</h4>
+          </div>
+        </div>
         {postsLength === 0 && isLoading === false ? (
           <div
             style={{
@@ -273,7 +311,7 @@ function Home() {
           </div>
         ) : (
           <>
-            {isLoading && page == 1 ? (
+            {isLoading && page === 1 ? (
               <div
                 style={{
                   display: "flex",
