@@ -41,6 +41,7 @@ function Home() {
   
     if (isBottom && !searchQuery) {
       setPage(prevPage => prevPage + 1);
+      if(posts.length != postsLength)
       setIsLoadingAdd(true);
     }
   };
