@@ -1,42 +1,40 @@
-import React, { useState, useEffect} from "react";
-import GraphScopus from "../component/graphScopus";
-
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 import Container from "@mui/material/Container";
 import axios from "axios";
+import $ from "jquery";
+import GraphScopus from "../component/graphScopus";
 import "../style/styles.css";
 import "../style/loader.css";
-import { useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
-import $  from "jquery";
-import "../style/styles.css";
-import { Link } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
 
 const host = "https://scrap-backend.vercel.app/";
-//const host = "http://localhost:8080/";
+// const host = "http://localhost:8080/";
 
-export default function AuthorScopusDetail() {
+const AuthorScopusDetail = () => {
   const [post, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [dataTable, setDataTable] = useState([]);
-  const [subjectArea, setSubjectArea] = React.useState([]);
+  const [subjectArea, setSubjectArea] = useState([]);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
+
   useEffect(() => {
     setIsLoading(true);
     Promise.all([
       axios.get(host + "authorsScopus/" + id),
       axios.get(host + `articlesScopus/getByArthorId/` + id),
     ])
-      .then((response) => {
-        setPosts(response[0].data[0]);
-        setSubjectArea(response[0].data[0].subject_area);
-        setDataTable(response[1].data);
+      .then(([authorResponse, articlesResponse]) => {
+        setPosts(authorResponse.data[0]);
+        setSubjectArea(authorResponse.data[0].subject_area);
+        setDataTable(articlesResponse.data);
         setIsLoading(false);
         $(document).ready(function () {
           $("#example").DataTable();
@@ -67,75 +65,57 @@ export default function AuthorScopusDetail() {
       ) : (
         <div>
           <Container maxWidth="xl" className="mb-0 mt-5">
-            <div>
-              <div
-                className="shadow p-3 mb-5 bg-white rounded"
-                style={{ width: "100%", minHeight: "365px" }}
-              >
+            <div className="author-details">
+              <div className="shadow p-3 mb-5 bg-white rounded">
                 <div className="row">
                   <div className="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center justify-content-center">
-                    <div
-                      className="shadow-sm p-3 mb-5 bg-white rounded"
-                      style={{
-                        width: "100%",
-                        maxWidth: "300px",
-                        height: "330px",
-                      }}
-                    >
+                    <div className="shadow-sm p-3 mb-5 bg-white rounded">
                       <img
                         src="https://img.freepik.com/vetores-premium/avatar-que-veste-um-tampao-da-graduacao-sobre-o-fundo-da-cerceta-ilustracao-vetorial_24877-19950.jpg?w=360"
-                        className="img-thumbnail"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "contain",
-                        }}
+                        style={{ width: "200", height:"auto" }}
                         alt="post"
                       />
-                    </div>
-                  </div>
-
-                  <div className="col-lg-4 col-md-6 col-sm-12 mt-3 p-2 mx-auto d-flex flex-column align-items-center">
-                    <h5 className="ubutu color-blue">
-                      <b>{post.author_name}</b>
-                    </h5>
-                    <br />
-                    <div className="d-flex flex-wrap justify-content-center">
-                      <div className="border-blue p-2 mt-4 text-center me-1">
-                        <span className="color-blue ubutu">
-                          <b>Research Articles: </b>
-                        </span>
-                        <span className="color-blue ubutu">
-                          {post.documents}{" "}
-                        </span>
-                      </div>
-                      <div className="border-blue p-2 mt-4 text-center me-1">
-                        <div className="text-center">
-                          <span className="color-blue ubutu">
-                            <b>h-index: </b>
-                            <span className="color-blue ubutu">
-                              {post.h_index}
+                      <div className="d-flex flex-column align-items-center mt-3">
+                        <h5 className="author-name ubutu color-blue" >
+                          <b>{post.author_name}</b>
+                        </h5>
+                        <div className="d-flex flex-wrap justify-content-center">
+                          <div className="border-blue p-2 mt-4 text-center me-1">
+                            <span className="data-label ubutu color-blue" >
+                              <b>Research Articles: </b>
                             </span>
-                          </span>
+                            <span className="data-value">
+                              {post.documents}{" "}
+                            </span>
+                          </div>
+                          <div className="border-blue p-2 mt-4 text-center me-1">
+                            <div className="text-center">
+                              <span className="data-label ubutu color-blue">
+                                <b>h-index: </b>
+                              </span>
+                              <span className="data-value">
+                                {post.h_index}
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div className="d-flex flex-wrap justify-content-center">
-                      {subjectArea.map((data) => (
-                        <div
-                          className="border btn mt-4 text-center me-1 p-1"
-                          key={data}
-                        >
-                          <span className="color-blue ubutu">{data}</span>
-                        </div>
-                      ))}
-                    </div>
                   </div>
-
-                  <div className="col-lg-4 col-md-12 pr-5 m-0 p-1">
+                  <div className="col-lg-8 col-md-12 pr-5 m-0 p-4">
                     <div className="row">
                       <div className="col-12">
                         <GraphScopus />
+                      </div>
+                    </div>
+                    <div className="row mt-5">
+                      <div className="col-12">
+                      <h5 className="ubutu color-blue" style={{ fontWeight: "bolder", fontSize: "20px" }}>Subject Area</h5>
+                        <div className="d-flex flex-wrap mt-2 text-center me-1 p-1">
+                          {subjectArea.map((data) => (
+                            <span className="data-value" key={data}> &nbsp; &nbsp;• {data} </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -170,8 +150,9 @@ export default function AuthorScopusDetail() {
                             <td class="text-center">
                               {document.document_type}
                             </td>
-                            <td class="text-center">{document.source_type}</td>
-                            <td class="text-center">{document.publisher}</td>
+                            <td class="text-center">{(document.source_type).split("•")[0].trim()}</td>
+                        
+                            <td class="text-center">{document.publisher == null? "-":document.publisher}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -185,4 +166,6 @@ export default function AuthorScopusDetail() {
       )}
     </div>
   );
-}
+};
+
+export default AuthorScopusDetail;

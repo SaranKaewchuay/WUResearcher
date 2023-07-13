@@ -75,7 +75,7 @@ function GraphScopus() {
   );
 
   const MyChart = () => (
-    <ResponsiveContainer width="95%" height={350}>
+    <ResponsiveContainer width="95%" height={280}>
       <ComposedChart data={dataGraph}>
         <XAxis dataKey="label" className="text-center" />
         <CartesianGrid strokeDasharray="3 3" />

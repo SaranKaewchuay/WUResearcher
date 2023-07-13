@@ -39,7 +39,6 @@ export default function JournalDetail() {
       axios
         .get(`${baseURL}${source_id}`)
         .then((response) => {
-
           setJournal(response.data);
           setCiteSource(response.data[0].cite_source);
           setIsLoading(false);
@@ -97,72 +96,85 @@ export default function JournalDetail() {
                   <div className="p-2">
                     <p
                       className="color-blue ubutu m-0"
-                      style={{ fontSize: "26px",fontWeight:"bolder" }}
+                      style={{ fontSize: "26px", fontWeight: "bolder" }}
                     >
                       {data.journal_name}
                     </p>
                   </div>
-                  <div className="p-2 ">
-                    <span
-                      className="color-blue ubutu"
-                      style={{ fontSize: "16px" }}
-                    >
-                      <b>Scopus coverage years: </b>
-                    </span>
-                    <span className="ubutu" style={{ fontSize: "16px" }}>
-                      {data.scopus_coverage_years}
-                    </span>
-                  </div>
-                  <div className="p-2 m-0">
-                    <span
-                      className="color-blue ubutu"
-                      style={{ fontSize: "16px" }}
-                    >
-                      <b>ISSN: </b>
-                    </span>
-                    <span className="ubutu" style={{ fontSize: "16px" }}>
-                      {data.issn}
-                    </span>
-                  </div>
-                  <div className="p-2 m-0">
-                    <span
-                      className="color-blue ubutu"
-                      style={{ fontSize: "16px" }}
-                    >
-                      <b>E-ISSN: </b>
-                    </span>
-                    <span className="ubutu" style={{ fontSize: "16px" }}>
-                      {data.eissn}
-                    </span>
-                  </div>
+                  {data.scopus_coverage_years && (
+                    <div className="p-2 ">
+                      <span
+                        className="color-blue ubutu"
+                        style={{ fontSize: "16px" }}
+                      >
+                        <div>
+                          <b>Scopus coverage years: </b>
+                          <span className="ubutu" style={{ fontSize: "16px" }}>
+                            {data.scopus_coverage_years}
+                          </span>
+                        </div>
+                      </span>
+                    </div>
+                  )}
+                  {data.issn && (
+                    <div className="p-2 m-0">
+                      <span
+                        className="color-blue ubutu"
+                        style={{ fontSize: "16px" }}
+                      >
+                        <div>
+                          <b>ISSN: </b>
+                          <span className="ubutu" style={{ fontSize: "16px" }}>
+                            {data.issn}
+                          </span>
+                        </div>
+                      </span>
+                    </div>
+                  )}
+                  {data.eissn ? (
+                    <div className="p-2 m-0">
+                      <span
+                        className="color-blue ubutu"
+                        style={{ fontSize: "16px" }}
+                      >
+                        <div>
+                          {" "}
+                          <b>E-ISSN: </b>
+                          <span className="ubutu" style={{ fontSize: "16px" }}>
+                            {data.eissn}
+                          </span>
+                        </div>
+                      </span>
+                    </div>
+                  ) : null}
 
-                  <div className="p-2 m-0">
-                    <div className="row">
-                      <div className="col-12 col-md-1">
-                        <span
-                          className="color-blue ubutu"
-                          style={{ fontSize: "16px" }}
-                        >
-                          <b>Subject Area:</b>
-                        </span>
-                      </div>
-                      <div className="col-12 col-md">
-                        <div className="d-flex flex-wrap m-0">
-                          {data.subject_area.map((subjectArea) => (
-                            <div
-                              className="border btn mt-4 text-center me-1 p-1"
-                              key={subjectArea}
-                            >
-                              <span className="ubutu">
-                                {subjectArea}
-                              </span>
-                            </div>
-                          ))}
+                  {data.subject_area && data.subject_area.length > 0 && (
+                    <div className="p-2 m-0">
+                      <div className="row">
+                        <div className="col-12 col-md-1">
+                          <span
+                            className="color-blue ubutu"
+                            style={{ fontSize: "16px" }}
+                          >
+                            <b>Subject Area:</b>
+                          </span>
+                        </div>
+                        <div className="col-12 col-md">
+                          <div className="d-flex flex-wrap m-0">
+                            {data.subject_area.map((subjectArea) => (
+                              <div
+                                className="border btn mt-4 text-center me-1 p-1"
+                                key={subjectArea}
+                              >
+                                <span className="ubutu">{subjectArea}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-
+                  )}
+                  
                   <div className="p-2 m-0">
                     <span
                       className="color-blue ubutu"
