@@ -170,23 +170,15 @@ function Home() {
             : `${baseURL}Scopus/author/${searchQuery}`;
       } else {
         if (selectedSort === "sort_name") {
-          router = `${host}journals/`;
-        } else if (selectedSort === "sort_num_article") {
-          router = `${host}journals/`;
-        } else if (selectedSort === "sort_h_index") {
-          router = `${host}journals/`;
-        }
-
-        url =
-          searchQuery === ""
-            ? router
-            : `${host}journals/journal/${searchQuery}`;
+          router = `${host}journals?sortField=journal-name&sortOrder=asc`;
+        } 
+        url = searchQuery === "" ? router : `${host}journals/journal/${searchQuery}`;
       }
       img =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
     } else {
       if (selectedSort === "sort_name") {
-        router = `${baseURL}?sortField=name&sortOrder=desc`;
+        router = `${baseURL}?sortField=name&sortOrder=asc`;
       } else if (selectedSort === "sort_num_article") {
         router = `${baseURL}?sortField=document-count&sortOrder=desc`;
       } else if (selectedSort === "sort_h_index") {
