@@ -160,7 +160,7 @@ function Home() {
         if (selectedSort === "sort_name") {
           router = `${baseURL}Scopus?sortField=name&sortOrder=asc`;
         } else if (selectedSort === "sort_num_article") {
-          router = `${baseURL}Scopus?sortField=document-count&sortOrder=desc`;
+          router = `${baseURL}Scopus?sortField=document-count&sortOrder=asc`;
         } else if (selectedSort === "sort_h_index") {
           router = `${baseURL}Scopus?sortField=h-index&sortOrder=desc`;
         }
@@ -237,10 +237,6 @@ function Home() {
   const handleSelectSortChange = (event) => {
     const value = event.target.value;
     console.log("value  = ", value);
-    setPostsLength("0");
-    setSearchQuery("");
-    setPosts([]);
-    setPage(1);
     setSelecteSort(value);
   };
 

@@ -20,28 +20,28 @@ const ScopusCard = ({ post }) => {
                   borderRadius: "7.5px",
                   padding: "2px",
                   width: "100%",
-                  height: "450px",
+                  height: "352px",
                   "@media (min-width: 600px)": {
-                    width: "150px",
-                    height: "250px",
+                    width: "120px",
+                    height: "100%",
                   },
                 }}
                 image={"https://img.freepik.com/vetores-premium/avatar-que-veste-um-tampao-da-graduacao-sobre-o-fundo-da-cerceta-ilustracao-vetorial_24877-19950.jpg?w=360"}
                 alt={post.name}
               />
             </div>
-            <div class="card-body p-5">
-              <h4 className="ubutu color-blue">{post.author_name}</h4>
-              <Typography className="ubutu gray" style={{ fontSize: "17px" }}>
+            <div class="card-body p-4" style={{marginLeft:"25px"}}>
+              <h4 className="ubutu color-blue" style={{fontSize:"21px"}}>{post.author_name}</h4>
+              <Typography className="ubutu gray" style={{ fontSize: "16px" }}>
               {post.citations} citations by {post.citations_by}
               </Typography>
               
               <div className="d-flex flex-wrap ">
                 <div className="border-blue p-2 mt-4 text-center me-1">
-                  <span className="color-blue ubutu">
+                  <span className="color-blue ubutu" style={{fontSize:"14px"}}>
                     <b>Research Articles: </b>
                   </span>
-                  <span className="color-blue ubutu">{post.documents} </span>
+                  <span className="color-blue ubutu" style={{fontSize:"14px"}}>{post.documents} </span>
                 </div>
                 <div className="border-blue p-2 mt-4 text-center me-1">
                   <div className="text-center">
@@ -52,10 +52,6 @@ const ScopusCard = ({ post }) => {
                   </div>
                 </div>
               </div>
-              {/* <Typography className="ubutu gray" style={{ fontSize: "17px" }}>
-                {post.citations_by}
-              </Typography>
-               */}
             </div>
           </div>
         </div>

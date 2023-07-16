@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-    CardMedia,
-    Typography
-  } from "@mui/material";
+import { CardMedia, Typography } from "@mui/material";
+import axios from "axios";
 
-const GoogleScholarCard = ({ post}) => {
+const host = "https://scrap-backend.vercel.app/";
+
+const GoogleScholarCard = ({ post }) => {
+  console.log("post = ",post)
+  // const [length, setLength] = useState(0);
+  // useEffect(() => {
+  //     axios.get(host + `articles/getByArthorId/${post._id}`)
+  //     .then((response) => {
+  //       setLength(response.data.length);
+  //       console.log(response.data.length)
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, []);
+
   return (
     <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
       <Link to={`/author-detail?id=${post._id}`} className="no-underline">
@@ -19,21 +32,49 @@ const GoogleScholarCard = ({ post}) => {
                   borderRadius: "7.5px",
                   padding: "2px",
                   width: "100%",
-                  height: "450px",
+                  height: "352px",
                   "@media (min-width: 600px)": {
-                    width: "150px",
-                    height: "200px",
+                    width: "120px",
+                    height: "185px",
                   },
                 }}
                 image={post.image}
                 alt={post.author_name}
               />
             </div>
-            <div class="card-body p-5">
-              <h4 className="ubutu color-blue">{post.author_name}</h4>
-              <Typography className="ubutu gray" style={{ fontSize: "17px" }}>
+            <div class="card-body p-4" style={{marginLeft:"25px"}}>
+              <h4 className="ubutu color-blue" style={{ fontSize: "21px" }}>
+                {post.author_name}
+              </h4>
+              <Typography className="ubutu gray" style={{ fontSize: "16px" }}>
                 {post.department}
               </Typography>
+
+              <div className="d-flex flex-wrap ">
+                <div className="border-blue p-2 mt-4 text-center me-1">
+                  <span className="color-blue ubutu" style={{fontSize:"14px"}}>
+                    <b>Research Articles: </b>
+                  </span>
+                  <span
+                    className="color-blue ubutu"
+                    style={{ fontSize: "14px",padding:"2px"}}
+                  >
+                    {post.document_count}
+                  </span>
+                </div>
+                <div className="border-blue p-2 mt-4 text-center me-1">
+                  <div className="text-center">
+                    <span className="color-blue ubutu">
+                      <b>h-index: </b>
+                      <span className="color-blue ubutu" style={{ fontSize: "14px",padding:"2px"}}>
+                        {/* {post.citation_by.table.find((item) => item.h_index)
+                          ?.h_index?.all }  */}
+                          {post.h_index} 
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -20,18 +20,18 @@ const ScopusCard = ({ post }) => {
                   borderRadius: "7.5px",
                   padding: "2px",
                   width: "100%",
-                  height: "450px",
+                  height: "352px",
                   "@media (min-width: 600px)": {
-                    width: "150px",
-                    height: "250px",
+                    width: "100px",
+                    height: "150px",
                   },
                 }}
                 image={"https://cdn-icons-png.flaticon.com/512/3235/3235042.png"}
                 alt={post.journal_name}
               />
             </div>
-            <div class="card-body p-5">
-              <h4 className="ubutu color-blue">{post.journal_name}</h4>
+            <div class="card-body p-4" style={{marginLeft:"25px"}}>
+              <h4 className="ubutu color-blue" style={{fontSize:"21px"}}>{post.journal_name}</h4>
               <Typography className="ubutu gray" style={{ fontSize: "17px" }}> 
                 Publisher {post.publisher}
               </Typography>

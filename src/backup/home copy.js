@@ -79,7 +79,7 @@ function Home() {
   const fetchData = async (url) => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${url}&page=${page}`);
+      const response = await axios.get(`${url}?page=${page}`);
       const newPosts = response.data;
       const length = await fetchTotal();
 
@@ -158,11 +158,11 @@ function Home() {
     if (selectedOption === "scopus") {
       if (selectedButton === "author") {
         if (selectedSort === "sort_name") {
-          router = `${baseURL}Scopus?sortField=name&sortOrder=asc`;
+          router = `${baseURL}Scopus/`;
         } else if (selectedSort === "sort_num_article") {
-          router = `${baseURL}Scopus?sortField=document-count&sortOrder=desc`;
+          router = `${baseURL}Scopus/`;
         } else if (selectedSort === "sort_h_index") {
-          router = `${baseURL}Scopus?sortField=h-index&sortOrder=desc`;
+          router = `${baseURL}Scopus/`;
         }
         url =
           searchQuery === ""
@@ -185,26 +185,20 @@ function Home() {
       img =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
     } else {
-      if (selectedSort === "sort_name") {
-        router = `${baseURL}?sortField=name&sortOrder=desc`;
-      } else if (selectedSort === "sort_num_article") {
-        router = `${baseURL}?sortField=document-count&sortOrder=desc`;
-      } else if (selectedSort === "sort_h_index") {
-        router = `${baseURL}?sortField=h-index&sortOrder=desc`;
-      }
-      url = searchQuery === "" ? router : `${baseURL}/author/${searchQuery}`;
+      // https://scrap-backend.vercel.app/authors?sortField=document-count&sortOrder=desc
+      url = searchQuery === "" ? `https://scrap-backend.vercel.app/authors?sortField=document-count&sortOrder=desc` : `${baseURL}/author/${searchQuery}`;
       img =
         "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
     }
 
-    if (click) {
+    if (searchQuery) {
       fetchSearchData(url);
-    } else if(!searchQuery) {
+    } else {
       fetchData(url);
     }
 
     setImg(img);
-  }, [selectedOption, selectedButton, page, click, selectedSort,searchQuery]);
+  }, [selectedOption, selectedButton, page, click, selectedSort]);
 
   const handleSelectChange = (event) => {
     const value = event.target.value;
@@ -213,19 +207,18 @@ function Home() {
     setSearchQuery("");
     setPosts([]);
     setPage(1);
-    setSelecteSort("sort_name");
 
     let url;
     let img;
 
     if (value === "scopus") {
       setSelectedButton("author");
-      url = `${baseURL}Scopus?sortField=name&sortOrder=asc`;
+      url = `${baseURL}Scopus/`;
       img =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Scopus_logo.svg/2560px-Scopus_logo.svg.png";
     } else {
       setSelectedButton("");
-      url = `${baseURL}?sortField=name&sortOrder=asc`;
+      url = `${baseURL}/author/`;
       img =
         "https://upload.wikimedia.org/wikipedia/commons/2/28/Google_Scholar_logo.png?20190206225436";
     }
@@ -237,10 +230,6 @@ function Home() {
   const handleSelectSortChange = (event) => {
     const value = event.target.value;
     console.log("value  = ", value);
-    setPostsLength("0");
-    setSearchQuery("");
-    setPosts([]);
-    setPage(1);
     setSelecteSort(value);
   };
 
