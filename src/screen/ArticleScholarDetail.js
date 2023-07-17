@@ -99,6 +99,8 @@ export default function ArticleScholarDetail() {
                               key !== "author_id" &&
                               value !== "" &&
                               key !== "__v" &&
+                              key !== "article_id" &&
+                              key !== "scholar_id" &&
                               key !== "url" ? (
                                 (
                                   key.charAt(0).toUpperCase() + key.slice(1)
@@ -119,6 +121,8 @@ export default function ArticleScholarDetail() {
                               key !== "article_name" &&
                               key !== "__v" &&
                               value !== "" &&
+                              key !== "article_id" &&
+                              key !== "scholar_id" &&
                               key !== "author_id" && (
                                 <>
                                   {key === "authors" ? (
