@@ -39,9 +39,9 @@ const ScopusCard = ({ post }) => {
               <div className="d-flex flex-wrap ">
                 <div className="border-blue p-2 mt-4 text-center me-1">
                   <span className="color-blue ubutu" style={{fontSize:"14px"}}>
-                    <b>Research Articles: </b>
+                    <b>Research Articles In Walailak: </b>
                   </span>
-                  <span className="color-blue ubutu" style={{fontSize:"14px"}}>{post.documents} </span>
+                  <span className="color-blue ubutu" style={{fontSize:"14px"}}>{post.wu_documents} </span>
                 </div>
                 <div className="border-blue p-2 mt-4 text-center me-1">
                   <div className="text-center">

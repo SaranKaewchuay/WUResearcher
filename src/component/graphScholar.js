@@ -13,7 +13,7 @@ import axios from "axios";
 const host = "https://scrap-backend.vercel.app/";
 //const host = "http://localhost:8080/";
 
-const baseURL = host + "authors/";
+// const baseURL = host + "authors/";
 
 function Graph() {
   const location = useLocation();
@@ -24,7 +24,7 @@ function Graph() {
 
   useEffect(() => {
     axios
-      .get(baseURL + id)
+      .get(`${host}scholar/author/${id}`)
       .then((response) => {
         setDataGraph(response.data.citation_by.graph);
       })

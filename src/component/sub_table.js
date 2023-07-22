@@ -6,7 +6,7 @@ import "../style/styles.css";
 const host = "https://scrap-backend.vercel.app/";
 //const host = "http://localhost:8080/";
 
-const baseURL = host + "authors/";
+// const baseURL = host + "authors/";
 
 function SubTable() {
   
@@ -18,7 +18,7 @@ function SubTable() {
 
   useEffect(() => {
     axios
-      .get(baseURL + id)
+      .get(`${host}scholar/author/${id}`)
       .then((response) => {
         setData(response.data.citation_by.table);
       })
@@ -28,8 +28,8 @@ function SubTable() {
   });
 
   return (
-    <div class="table-responsive">
-      <table class="table center" style={{width:"95%"}}>
+    <div class="table-responsive d-flex align-items-center justify-content-center">
+      <table class="table center" style={{width:"80%"}}>
         <thead>
           <tr>
             <th scope="col"></th>

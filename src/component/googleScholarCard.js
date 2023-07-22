@@ -59,7 +59,7 @@ const GoogleScholarCard = ({ post }) => {
                     className="color-blue ubutu"
                     style={{ fontSize: "14px",padding:"2px"}}
                   >
-                    {post.document_count}
+                    {post.documents}
                   </span>
                 </div>
                 <div className="border-blue p-2 mt-4 text-center me-1">

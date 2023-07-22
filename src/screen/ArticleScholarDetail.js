@@ -10,7 +10,7 @@ import { Typography } from "@mui/material";
 const host = "https://scrap-backend.vercel.app/";
 //const host = "http://localhost:8080/";
 
-const baseURL = host + "articles/articleId/";
+const baseURL = host + "scholar/article/";
 
 export default function ArticleScholarDetail() {
   const [posts, setPosts] = React.useState([]);

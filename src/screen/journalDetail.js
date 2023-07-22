@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 const host = "https://scrap-backend.vercel.app/";
 //const host = "http://localhost:8080/";
 
-const baseURL = host + "journals/getBySourceId/";
+const baseURL = host + "scopus/journal/";
 
 export default function JournalDetail() {
   const [journalData, setJournal] = useState([]);

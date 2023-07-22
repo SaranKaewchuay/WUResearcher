@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 const host = "https://scrap-backend.vercel.app/";
 //const host = "http://localhost:8080/";
 
-const baseURL = host + "articlesScopus/articleId/";
+const baseURL = host + "scopus/article/";
 
 export default function ArticleScopusDetail() {
   const [posts, setPosts] = React.useState([]);
@@ -24,7 +24,7 @@ export default function ArticleScopusDetail() {
   const fetchJournalNames = async (source_id) => {
     try {
       const response = await axios.get(
-        `https://scrap-backend.vercel.app/journals/getBySourceId/${source_id}`
+        `https://scrap-backend.vercel.app/scopus/journal/${source_id}`
       );
       let journalNames = response.data.map((item) => item.journal_name);
       if (journalNames.length === 0) {

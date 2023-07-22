@@ -28,8 +28,9 @@ const AuthorScopusDetail = () => {
   useEffect(() => {
     setIsLoading(true);
     Promise.all([
-      axios.get(host + "authorsScopus/" + id),
-      axios.get(host + `articlesScopus/getByArthorId/` + id),
+      axios.get(`${host}scopus/author/${id}`),
+      axios.get(`${host}scopus/article/authorId/${id}`),
+      // axios.get(host + `articlesScopus/getByArthorId/` + id),
     ])
       .then(([authorResponse, articlesResponse]) => {
         setPosts(authorResponse.data[0]);
@@ -150,7 +151,7 @@ const AuthorScopusDetail = () => {
                             <td class="text-center">
                               {document.document_type}
                             </td>
-                            <td class="text-center">{(document.source_type).split("•")[0].trim()}</td>
+                            <td class="text-center">{(document.source_type)}</td>
                         
                             <td class="text-center">{document.publisher == null? "-":document.publisher}</td>
                           </tr>
