@@ -15,6 +15,8 @@ const baseURL = host + "scopus/journal/";
 
 function JournalDetail() {
   const [journalData, setJournalData] = useState([]);
+  const [selectedYear, setSelectedYear] = useState();
+
   const [changeJournalData, setChangeJournalData] = useState([]);
   const [citeSource, setCiteSource] = useState([]);
   const [citeSourceData, setCiteSourceData] = useState([]);
@@ -25,7 +27,12 @@ function JournalDetail() {
   const queryParams = new URLSearchParams(location.search);
   const source_id = queryParams.get("sourceid");
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleSelectYear = (selectedYear) => {
+    setSelectedYear(selectedYear);
     setIsLoadingCiteScore(true);
     const filteredData = citeSource.filter(
       (data) => data.year === selectedYear
@@ -37,7 +44,7 @@ function JournalDetail() {
       $(document).ready(function () {
         $("#example").DataTable();
       });
-    }, 400);
+    }, 360);
   };
 
   const fetchData = async (id) => {
@@ -245,7 +252,34 @@ function JournalDetail() {
                   className="shadow p-3 mb-5 bg-white rounded"
                   style={{ width: "100%", minHeight: "365px" }}
                 >
-                  <div >
+                  <div>
+                    <div className="row">
+                      <div className="col-12 col-md-1 pt-2">
+                        <p
+                          className="color-blue ubuntu"
+                          style={{ fontSize: "16px", fontWeight: "bold" }}
+                        >
+                          CiteScoreYear
+                        </p>
+                      </div>
+                      <div className="col-12 col-md">
+                        <select
+                          className="form-select"
+                          aria-label="Default select example"
+                          style={{ maxWidth: "20%", height: "auto" }}
+                          value={selectedYear}
+                          onChange={(event) =>
+                            handleSelectYear(event.target.value)
+                          }
+                        >
+                          {citeSource.map((data) => (
+                            <option value={data.year} key={data.year}>
+                              {data.year}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
                     {isLoadingCiteScore ? (
                       // Show loading message or spinner if isLoading is true
                       <div
@@ -263,32 +297,6 @@ function JournalDetail() {
                       </div>
                     ) : (
                       <>
-                        <div className="row">
-                          <div className="col-12 col-md-1 pt-2">
-                            <p
-                              className="color-blue ubuntu"
-                              style={{ fontSize: "16px", fontWeight: "bold" }}
-                            >
-                              CiteScoreYear
-                            </p>
-                          </div>
-                          <div className="col-12 col-md">
-                            <select
-                              className="form-select"
-                              aria-label="Default select example"
-                              style={{ maxWidth: "20%", height: "auto" }}
-                              onChange={(event) =>
-                                handleSelectYear(event.target.value)
-                              }
-                            >
-                              {citeSource.map((data) => (
-                                <option value={data.year} key={data.year}>
-                                  {data.year}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
                         {citeSourceData.map((data) => (
                           <React.Fragment key={data.year}>
                             <div className="row">

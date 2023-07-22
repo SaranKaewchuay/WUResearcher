@@ -35,6 +35,10 @@ function Home() {
   const [selectedButton, setSelectedButton] = useState("author");
   const [click, setClick] = useState(false);
   const [checkSearch, setCheckSearch] = useState(false);
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleScroll = () => {
     const isBottom =

@@ -32,6 +32,10 @@ export default function AuthorScholarDetail() {
   const id = queryParams.get("id");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
+  useEffect(() => {
     setIsLoading(true);
     Promise.all([
       axios.get(host + "scholar/author/" + id),

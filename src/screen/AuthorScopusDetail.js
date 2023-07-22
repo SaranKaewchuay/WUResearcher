@@ -24,6 +24,9 @@ const AuthorScopusDetail = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -74,19 +77,19 @@ const AuthorScopusDetail = () => {
                       <img
                         src="https://img.freepik.com/vetores-premium/avatar-que-veste-um-tampao-da-graduacao-sobre-o-fundo-da-cerceta-ilustracao-vetorial_24877-19950.jpg?w=360"
                         style={{
-                          width: "75%", 
-                          // height: "80%", 
+                          width: "75%",
+                          // height: "80%",
                           objectFit: "contain",
                         }}
                         alt="post"
                       />
                       <div className="d-flex flex-column align-items-center mt-3">
-                        <h5 className="author-name ubutu color-blue" >
+                        <h5 className="author-name ubutu color-blue">
                           <b>{post.author_name}</b>
                         </h5>
                         <div className="d-flex flex-wrap justify-content-center">
                           <div className="border-blue p-2 mt-4 text-center me-1">
-                            <span className="data-label ubutu color-blue" >
+                            <span className="data-label ubutu color-blue">
                               <b>Research Articles: </b>
                             </span>
                             <span className="data-value">
@@ -98,9 +101,7 @@ const AuthorScopusDetail = () => {
                               <span className="data-label ubutu color-blue">
                                 <b>h-index: </b>
                               </span>
-                              <span className="data-value">
-                                {post.h_index}
-                              </span>
+                              <span className="data-value">{post.h_index}</span>
                             </div>
                           </div>
                         </div>
@@ -115,10 +116,18 @@ const AuthorScopusDetail = () => {
                     </div>
                     <div className="row mt-5">
                       <div className="col-12">
-                      <h5 className="ubutu color-blue" style={{ fontWeight: "bolder", fontSize: "20px" }}>Subject Area</h5>
+                        <h5
+                          className="ubutu color-blue"
+                          style={{ fontWeight: "bolder", fontSize: "20px" }}
+                        >
+                          Subject Area
+                        </h5>
                         <div className="d-flex flex-wrap mt-2 text-center me-1 p-1">
                           {subjectArea.map((data) => (
-                            <span className="data-value" key={data}> &nbsp; &nbsp;• {data} </span>
+                            <span className="data-value" key={data}>
+                              {" "}
+                              &nbsp; &nbsp;• {data}{" "}
+                            </span>
                           ))}
                         </div>
                       </div>
@@ -152,14 +161,20 @@ const AuthorScopusDetail = () => {
                                 {document.article_name}
                               </Link>
                             </td>
-                            <td >
-                              {document.document_type}
+                            <td>{document.document_type}</td>
+                            <td>{document.source_type}</td>
+
+                            <td
+                              style={
+                                document.publisher == null
+                                  ? { textAlign: "center" }
+                                  : {}
+                              }
+                            >
+                              {document.publisher == null
+                                ? "-"
+                                : document.publisher}
                             </td>
-                            <td >{(document.source_type)}</td>
-                        
-                            <td style={document.publisher == null ? { textAlign: "center" } : {}}>
-                              {document.publisher == null? "-":document.publisher}
-                              </td>
                           </tr>
                         ))}
                       </tbody>

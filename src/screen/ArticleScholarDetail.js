@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Container from "@mui/material/Container";
 import axios from "axios";
 import "../style/styles.css";
@@ -19,6 +19,10 @@ export default function ArticleScholarDetail() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   React.useEffect(() => {
     setIsLoading(true);
