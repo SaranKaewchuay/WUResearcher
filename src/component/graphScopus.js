@@ -25,6 +25,8 @@ function GraphScopus() {
   const id = queryParams.get("id");
 
   const [dataGraph, setDataGraph] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,52 +62,22 @@ function GraphScopus() {
           (a, b) => a.label - b.label
         );
         setDataGraph(sortedData);
+        setLoading(false);
       } catch (error) {
         console.error(error);
+        setError(true);
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [id]);
 
-  const CustomLabel = ({ text }) => (
-    <text x={0} y={0} dy={-10} fill="#666" fontSize={12} textAnchor="end">
-      {text}
-    </text>
-  );
-
-  const MyChart = () => (
-    <ResponsiveContainer width="95%" height={280}>
-      <ComposedChart data={dataGraph}>
-        <XAxis dataKey="label" className="text-center" />
-        <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="document" barSize={60} fill="#0066CC" yAxisId="left" />
-        <Line
-          type="monotone"
-          dataKey="citation"
-          stroke="#000066"
-          connectNulls={true}
-          yAxisId="right"
-        />
-        <YAxis yAxisId="left" domain={[0, "dataMax"]} />
-        <YAxis yAxisId="right" orientation="right" domain={[0, "dataMax"]} />
-        <ReferenceLine
-          y={100}
-          stroke="red"
-          strokeDasharray="3 3"
-          yAxisId="left"
-        />
-        <ReferenceLine
-          y={200}
-          stroke="green"
-          strokeDasharray="3 3"
-          yAxisId="right"
-        />
-      </ComposedChart>
-    </ResponsiveContainer>
-  );
+  // const CustomLabel = ({ text }) => (
+  //   <text x={0} y={0} dy={-10} fill="#666" fontSize={12} textAnchor="end">
+  //     {text}
+  //   </text>
+  // );
 
   return (
     <div className="App">
@@ -115,7 +87,46 @@ function GraphScopus() {
       >
         <p>Document &amp; Citation Trends</p>
       </span>
-      <MyChart />
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "200px",
+            fontWeight: "bold",
+            fontSize: "18px",
+          }}
+        >
+          <div className="loader">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      ) : error ? (
+        <div>Oops, something went wrong.</div>
+      ) : (
+        <ResponsiveContainer width="95%" height={280}>
+          <ComposedChart data={dataGraph}>
+            <XAxis dataKey="label" className="text-center" />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="document" barSize={60} fill="#0066CC" yAxisId="left" />
+            <Line
+              type="monotone"
+              dataKey="citation"
+              stroke="#000066"
+              connectNulls={true}
+              yAxisId="right"
+            />
+            <YAxis yAxisId="left" domain={[0, "dataMax"]} />
+            <YAxis yAxisId="right" orientation="right" domain={[0, "dataMax"]} />
+            <ReferenceLine y={100} stroke="red" strokeDasharray="3 3" yAxisId="left" />
+            <ReferenceLine y={200} stroke="green" strokeDasharray="3 3" yAxisId="right" />
+          </ComposedChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
 }

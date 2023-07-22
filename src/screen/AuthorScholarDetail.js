@@ -85,31 +85,29 @@ export default function AuthorScholarDetail() {
             <div className="shadow p-3 mb-5 bg-white rounded">
               <div className="row">
                 <div className="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center justify-content-center">
-                  <div className="shadow-sm p-3 mb-5 bg-white rounded">
+                  <div className="shadow-sm p-3 mb-5 bg-white rounded d-flex flex-column align-items-center">
                     <img
                       src={posts.image}
-                      className="img-thumbnail"
+                      className="img-thumbnail img-fluid"
                       style={{
-                        width: "100%",
-                        height: "100%",
+                        width: "90%",
+                        height: "80%",
                         objectFit: "contain",
                       }}
                       alt="post"
                     />
                     <div className="d-flex flex-column align-items-center mt-3">
-                      <h5 className="author-name ubutu color-blue" >
+                      <h5 className="author-name ubutu color-blue">
                         <b>{posts.author_name}</b>
                       </h5>
                       <br />
                       <h6 className="ubutu gray">{posts.department}</h6>
                       <div className="d-flex flex-wrap justify-content-center">
                         <div className="border-blue p-2 mt-4 text-center me-1">
-                          <span className="data-label ubutu color-blue" >
+                          <span className="data-label ubutu color-blue">
                             <b>Research Articles: </b>
                           </span>
-                          <span className="data-value">
-                            {length}
-                          </span>
+                          <span className="data-value">{length}</span>
                         </div>
                         <div className="border-blue p-2 mt-4 text-center me-1">
                           <div className="text-center">
@@ -127,29 +125,38 @@ export default function AuthorScholarDetail() {
                 </div>
 
                 <div className="col-lg-8 col-md-12 pr-5 m-0 p-4">
-          
                   <div className="row">
                     <div className="col-12">
-                    <h5 className="ubutu color-blue pb-2 text-center" style={{ fontWeight: "bolder", fontSize: "20px" }}>Catation Graph</h5>
                       <Graph id={id} />
                     </div>
                   </div>
 
                   <div className="row mb-4">
                     <div className="col-12">
-                    {/* <h5 className="ubutu color-blue" style={{ fontWeight: "bolder", fontSize: "20px" }}>Cited by</h5> */}
+                      {/* <h5 className="ubutu color-blue" style={{ fontWeight: "bolder", fontSize: "20px" }}>Cited by</h5> */}
                       <SubTable id={id} />
                     </div>
                   </div>
 
                   <div className="row mt-5">
                     <div className="col-12">
-                      <h5 className="ubutu color-blue" style={{ fontWeight: "bolder", fontSize: "20px" }}>Subject Area</h5>
-                      <div className="d-flex flex-wrap mt-2 text-center me-1 p-1">
-                        {subjectArea.map((data) => (
-                          <span className="data-value" key={data}> &nbsp; &nbsp;• {data} </span>
-                        ))}
-                      </div>
+                      {subjectArea.length > 0 && ( 
+                        <>
+                          <h5
+                            className="ubutu color-blue"
+                            style={{ fontWeight: "bolder", fontSize: "20px" }}
+                          >
+                            Subject Area
+                          </h5>
+                          <div className="d-flex flex-wrap mt-2 text-center me-1 p-1">
+                            {subjectArea.map((data) => (
+                              <span className="data-value" key={data}>
+                                &nbsp; • {data}
+                              </span>
+                            ))}
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

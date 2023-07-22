@@ -33,16 +33,28 @@ function Graph() {
       });
   }, [id]);
 
-  // #0d6efd
+  if (!dataGraph || dataGraph.length === 0) {
+    return null;
+  }
+
+  const maxBarWidth = 40;
   return (
-    <ResponsiveContainer width="95%" height={165}>
-      <BarChart data={dataGraph} className="m-0">
-        <Bar dataKey="citations" fill="#0a4275" />
-        <XAxis dataKey="year" />
-        <YAxis />
-        <Tooltip />
-      </BarChart>
-    </ResponsiveContainer>
+    <div>
+      <h5
+        className="ubutu color-blue pb-2 text-center"
+        style={{ fontWeight: "bolder", fontSize: "20px" }}
+      >
+        Catation Graph
+      </h5>
+      <ResponsiveContainer width="95%" height={165}>
+        <BarChart data={dataGraph} className="m-0">
+          <Bar dataKey="citations" fill="#0a4275" maxBarSize={maxBarWidth} />
+          <XAxis dataKey="year" />
+          <YAxis />
+          <Tooltip />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
 

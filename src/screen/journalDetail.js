@@ -1,64 +1,86 @@
-import * as React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import axios from "axios";
+import { Link, useLocation } from "react-router-dom";
 import "../style/styles.css";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
-import { useLocation } from "react-router-dom";
 
 const host = "https://scrap-backend.vercel.app/";
 //const host = "http://localhost:8080/";
 
 const baseURL = host + "scopus/journal/";
 
-export default function JournalDetail() {
-  const [journalData, setJournal] = useState([]);
+function JournalDetail() {
+  const [journalData, setJournalData] = useState([]);
+  const [changeJournalData, setChangeJournalData] = useState([]);
   const [citeSource, setCiteSource] = useState([]);
   const [citeSourceData, setCiteSourceData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingCiteScore, setIsLoadingCiteScore] = useState(false);
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const source_id = queryParams.get("sourceid");
 
   const handleSelectYear = (selectedYear) => {
+    setIsLoadingCiteScore(true);
     const filteredData = citeSource.filter(
       (data) => data.year === selectedYear
     );
     setCiteSourceData(filteredData);
+
+    setTimeout(() => {
+      setIsLoadingCiteScore(false);
+    }, 400);
+
     $(document).ready(function () {
       $("#example").DataTable();
     });
   };
 
-  React.useEffect(() => {
-    const fetchData = () => {
-      setIsLoading(true);
-      axios
-        .get(`${baseURL}${source_id}`)
-        .then((response) => {
-          setJournal(response.data);
-          setCiteSource(response.data[0].cite_source);
-          setIsLoading(false);
+  const fetchData = async (id) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`${baseURL}${id}`);
+      console.log("response ", response.data);
+      const data = response.data;
+      setJournalData(data);
+      setCiteSource(data[0].cite_source);
+      setIsLoading(false);
 
-          const filteredData = response.data[0].cite_source.filter(
-            (data, index) => index === 0
-          );
-          setCiteSourceData(filteredData);
-          $(document).ready(function () {
-            $("#example").DataTable();
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          setIsLoading(false);
-        });
-    };
+      if (data[0].changeJournal) {
+        const changeJournalSourceId = data[0].changeJournal.source_id;
+        const changeJournalResponse = await axios.get(
+          `${baseURL}${changeJournalSourceId}`
+        );
+        setChangeJournalData(changeJournalResponse.data[0]);
+      }
+      if (data[0].cite_source != null) {
+        const filteredData = data[0].cite_source.filter(
+          (_, index) => index === 0
+        );
+        setCiteSourceData(filteredData);
+      } else {
+        setCiteSourceData(null);
+      }
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  };
 
-    fetchData();
+  useEffect(() => {
+    fetchData(source_id);
   }, [source_id]);
+
+  useEffect(() => {
+    $(document).ready(function () {
+      $("#example").DataTable();
+    });
+  }, [citeSourceData]);
 
   return (
     <div style={{ marginTop: "110px" }}>
@@ -78,8 +100,8 @@ export default function JournalDetail() {
         </div>
       ) : (
         <>
-          {journalData.map((data) => (
-            <React.Fragment key={data.journal_name}>
+          {journalData.map((journal) => (
+            <React.Fragment key={journal.journal_name}>
               <Container maxWidth="xl" className="mb-0 mt-5">
                 <div
                   className="shadow p-3 bg-white rounded mb-3"
@@ -98,10 +120,35 @@ export default function JournalDetail() {
                       className="color-blue ubutu m-0"
                       style={{ fontSize: "26px", fontWeight: "bolder" }}
                     >
-                      {data.journal_name}
+                      {journal.journal_name}
                     </p>
                   </div>
-                  {data.scopus_coverage_years && (
+                  {journal.changeJournal && changeJournalData && (
+                    <div className="p-2">
+                      <span
+                        className="color-blue ubuntu"
+                        style={{ fontSize: "16px" }}
+                      >
+                        <div>
+                          <b>{journal.changeJournal.field}: </b>
+
+                          <Link
+                            to={`/journal-detail?sourceid=${changeJournalData.source_id}`}
+                            className="no-underline"
+                            rel="noopener noreferrer"
+                          >
+                            <span
+                              className="ubuntu"
+                              style={{ fontSize: "16px" }}
+                            >
+                              {changeJournalData.journal_name}
+                            </span>
+                          </Link>
+                        </div>
+                      </span>
+                    </div>
+                  )}
+                  {journal.scopus_coverage_years && (
                     <div className="p-2 ">
                       <span
                         className="color-blue ubutu"
@@ -110,13 +157,13 @@ export default function JournalDetail() {
                         <div>
                           <b>Scopus coverage years: </b>
                           <span className="ubutu" style={{ fontSize: "16px" }}>
-                            {data.scopus_coverage_years}
+                            {journal.scopus_coverage_years}
                           </span>
                         </div>
                       </span>
                     </div>
                   )}
-                  {data.issn && (
+                  {journal.issn && (
                     <div className="p-2 m-0">
                       <span
                         className="color-blue ubutu"
@@ -125,13 +172,13 @@ export default function JournalDetail() {
                         <div>
                           <b>ISSN: </b>
                           <span className="ubutu" style={{ fontSize: "16px" }}>
-                            {data.issn}
+                            {journal.issn}
                           </span>
                         </div>
                       </span>
                     </div>
                   )}
-                  {data.eissn ? (
+                  {journal.eissn ? (
                     <div className="p-2 m-0">
                       <span
                         className="color-blue ubutu"
@@ -141,14 +188,14 @@ export default function JournalDetail() {
                           {" "}
                           <b>E-ISSN: </b>
                           <span className="ubutu" style={{ fontSize: "16px" }}>
-                            {data.eissn}
+                            {journal.eissn}
                           </span>
                         </div>
                       </span>
                     </div>
                   ) : null}
 
-                  {data.subject_area && data.subject_area.length > 0 && (
+                  {journal.subject_area && journal.subject_area.length > 0 && (
                     <div className="p-2 m-0">
                       <div className="row">
                         <div className="col-12 col-md-1">
@@ -161,7 +208,7 @@ export default function JournalDetail() {
                         </div>
                         <div className="col-12 col-md">
                           <div className="d-flex flex-wrap m-0">
-                            {data.subject_area.map((subjectArea) => (
+                            {journal.subject_area.map((subjectArea) => (
                               <div
                                 className="border btn mt-4 text-center me-1 p-1"
                                 key={subjectArea}
@@ -174,7 +221,7 @@ export default function JournalDetail() {
                       </div>
                     </div>
                   )}
-                  
+
                   <div className="p-2 m-0">
                     <span
                       className="color-blue ubutu"
@@ -183,94 +230,157 @@ export default function JournalDetail() {
                       <b>Source type: </b>
                     </span>
                     <span className="ubutu" style={{ fontSize: "16px" }}>
-                      {data.source_type}
+                      {journal.source_type}
                     </span>
                   </div>
                 </div>
               </Container>
             </React.Fragment>
           ))}
-
-          <Container maxWidth="xl">
-            <div
-              className="shadow p-3 mb-5 bg-white rounded"
-              style={{ width: "100%", minHeight: "365px" }}
-            >
-              <div className="row">
-                <div className="col-12 col-md-1 pt-2">
-                  <p
-                    className="color-blue ubutu"
-                    style={{ fontSize: "16px", fontWeight: "bold" }}
-                  >
-                    CiteScoreYear
-                  </p>
-                </div>
-                <div className="col-12 col-md">
-                  <select
-                    className="form-select"
-                    aria-label="Default select example"
-                    style={{ maxWidth: "20%", height: "auto" }}
-                    onChange={(event) => handleSelectYear(event.target.value)}
-                  >
-                    {citeSource.map((data) => (
-                      <option value={data.year} key={data.year}>
-                        {data.year}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              {citeSourceData.map((data) => (
-                <React.Fragment key={data.year}>
-                  <div className="row">
-                    <div className="col-2">
-                      <p
-                        className="color-blue ubuntu p-0"
-                        style={{ fontSize: "40px" }}
+          {citeSourceData &&
+            Array.isArray(citeSourceData) &&
+            citeSourceData.length > 0 &&
+            citeSource !== null && (
+              <Container maxWidth="xl">
+                <div
+                  className="shadow p-3 mb-5 bg-white rounded"
+                  style={{ width: "100%", minHeight: "365px" }}
+                >
+                  <div >
+                    {isLoadingCiteScore ? (
+                      // Show loading message or spinner if isLoading is true
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          minHeight: "365px",
+                        }}
                       >
-                        CiteScore
-                      </p>
-                    </div>
-                    <div className="border btn text-center col-12 col-sm-6 col-md-4 col-lg-3 m-1 mb-3 p-0">
-                      <p
-                        className="color-blue ubuntu p-0"
-                        style={{ fontSize: "40px" }}
-                      >
-                        {data.citation}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="table-responsive">
-                    <table id="example" className="table table-striped">
-                      <thead>
-                        <tr>
-                          <th className="text-nowrap">#</th>
-                          <th className="text-nowrap">Category</th>
-                          <th className="text-nowrap">Sub Category</th>
-                          <th className="text-nowrap">Rank</th>
-                          <th className="text-nowrap">Percentile</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {data.category.map((category, index) => (
-                          <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{category.category_name}</td>
-                            <td>{category.sub_category}</td>
-                            <td>{category.rank}</td>
-                            <td>{category.percentile}</td>
-                          </tr>
+                        <div className="loader">
+                          <div></div>
+                          <div></div>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="row">
+                          <div className="col-12 col-md-1 pt-2">
+                            <p
+                              className="color-blue ubuntu"
+                              style={{ fontSize: "16px", fontWeight: "bold" }}
+                            >
+                              CiteScoreYear
+                            </p>
+                          </div>
+                          <div className="col-12 col-md">
+                            <select
+                              className="form-select"
+                              aria-label="Default select example"
+                              style={{ maxWidth: "20%", height: "auto" }}
+                              onChange={(event) =>
+                                handleSelectYear(event.target.value)
+                              }
+                            >
+                              {citeSource.map((data) => (
+                                <option value={data.year} key={data.year}>
+                                  {data.year}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                        {citeSourceData.map((data) => (
+                          <React.Fragment key={data.year}>
+                            <div className="row">
+                              <div className="col-2">
+                                <p
+                                  className="color-blue ubuntu p-0"
+                                  style={{ fontSize: "40px" }}
+                                >
+                                  CiteScore
+                                </p>
+                              </div>
+                              <div className="border btn text-center col-12 col-sm-6 col-md-4 col-lg-3 m-1 mb-3 p-0">
+                                <p
+                                  className="color-blue ubuntu p-0"
+                                  style={{ fontSize: "40px" }}
+                                >
+                                  {data.citation}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="color-blue ubuntu p-2">
+                                  Calculated on {data.calculated}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="table-responsive">
+                              <table
+                                id="example"
+                                className="table table-striped"
+                              >
+                                <thead>
+                                  <tr>
+                                    <th className="text-nowrap">#</th>
+                                    <th className="text-nowrap">Category</th>
+                                    <th className="text-nowrap">
+                                      Sub Category
+                                    </th>
+                                    <th className="text-nowrap">Rank</th>
+                                    <th className="text-nowrap">Percentile</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {data.category.map((categoryData, index) => (
+                                    <tr key={index}>
+                                      <td>{index + 1}</td>
+                                      <td>{categoryData.category_name}</td>
+                                      <td>{categoryData.sub_category}</td>
+                                      <td>{categoryData.rank}</td>
+                                      <td>{categoryData.percentile}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </React.Fragment>
                         ))}
-                      </tbody>
-                    </table>
+                      </>
+                    )}
                   </div>
-                </React.Fragment>
-              ))}
-            </div>
-          </Container>
+                </div>
+              </Container>
+            )}
+          {(!citeSourceData ||
+            !Array.isArray(citeSourceData) ||
+            citeSourceData.length === 0) && (
+            <Container maxWidth="xl" className="mb-0 mt-2">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: "120px",
+                }}
+                className="shadow p-3 bg-white rounded mb-3"
+              >
+                <p
+                  style={{
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    color: "gray",
+                  }}
+                >
+                  No data available.
+                </p>
+              </div>
+            </Container>
+          )}
         </>
       )}
     </div>
   );
 }
+
+export default JournalDetail;

@@ -70,10 +70,14 @@ const AuthorScopusDetail = () => {
               <div className="shadow p-3 mb-5 bg-white rounded">
                 <div className="row">
                   <div className="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center justify-content-center">
-                    <div className="shadow-sm p-3 mb-5 bg-white rounded">
+                    <div className="shadow-sm p-3 mb-5 bg-white rounded d-flex flex-column align-items-center">
                       <img
                         src="https://img.freepik.com/vetores-premium/avatar-que-veste-um-tampao-da-graduacao-sobre-o-fundo-da-cerceta-ilustracao-vetorial_24877-19950.jpg?w=360"
-                        style={{ width: "200", height:"auto" }}
+                        style={{
+                          width: "75%", 
+                          // height: "80%", 
+                          objectFit: "contain",
+                        }}
                         alt="post"
                       />
                       <div className="d-flex flex-column align-items-center mt-3">
@@ -148,12 +152,14 @@ const AuthorScopusDetail = () => {
                                 {document.article_name}
                               </Link>
                             </td>
-                            <td class="text-center">
+                            <td >
                               {document.document_type}
                             </td>
-                            <td class="text-center">{(document.source_type)}</td>
+                            <td >{(document.source_type)}</td>
                         
-                            <td class="text-center">{document.publisher == null? "-":document.publisher}</td>
+                            <td style={document.publisher == null ? { textAlign: "center" } : {}}>
+                              {document.publisher == null? "-":document.publisher}
+                              </td>
                           </tr>
                         ))}
                       </tbody>
