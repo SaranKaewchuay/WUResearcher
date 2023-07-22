@@ -34,11 +34,10 @@ function JournalDetail() {
 
     setTimeout(() => {
       setIsLoadingCiteScore(false);
+      $(document).ready(function () {
+        $("#example").DataTable();
+      });
     }, 400);
-
-    $(document).ready(function () {
-      $("#example").DataTable();
-    });
   };
 
   const fetchData = async (id) => {
