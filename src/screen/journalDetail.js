@@ -169,6 +169,22 @@ function JournalDetail() {
                       </span>
                     </div>
                   )}
+                  {journal.publisher ? (
+                    <div className="p-2 m-0">
+                      <span
+                        className="color-blue ubutu"
+                        style={{ fontSize: "16px" }}
+                      >
+                        <div>
+                          {" "}
+                          <b>Publisher: </b>
+                          <span className="ubutu" style={{ fontSize: "16px" }}>
+                            {journal.publisher}
+                          </span>
+                        </div>
+                      </span>
+                    </div>
+                  ) : null}
                   {journal.issn && (
                     <div className="p-2 m-0">
                       <span
@@ -254,7 +270,7 @@ function JournalDetail() {
                 >
                   <div>
                     <div className="row">
-                      <div className="col-12 col-md-1 pt-2">
+                      <div className="col-12 col-sm-3 col-md-2 col-lg-2 d-flex flex-wrap pt-2">
                         <p
                           className="color-blue ubuntu"
                           style={{ fontSize: "16px", fontWeight: "bold" }}
@@ -262,11 +278,11 @@ function JournalDetail() {
                           CiteScoreYear
                         </p>
                       </div>
-                      <div className="col-12 col-md">
+                      <div className="col-12 col-sm-4 col-md-4 col-lg-3">
                         <select
                           className="form-select"
-                          aria-label="Default select example"
-                          style={{ maxWidth: "20%", height: "auto" }}
+                          aria-label="Select a year"
+                          style={{ maxWidth: "100%", height: "auto" }}
                           value={selectedYear}
                           onChange={(event) =>
                             handleSelectYear(event.target.value)
@@ -280,6 +296,7 @@ function JournalDetail() {
                         </select>
                       </div>
                     </div>
+
                     {isLoadingCiteScore ? (
                       // Show loading message or spinner if isLoading is true
                       <div
@@ -300,20 +317,20 @@ function JournalDetail() {
                         {citeSourceData.map((data) => (
                           <React.Fragment key={data.year}>
                             <div className="row">
-                              <div className="col-2">
+                              <div className="col-12 col-sm-4 col-md-3 col-lg-2 d-flex flex-wrap">
                                 <p
-                                  className="color-blue ubuntu p-0"
-                                  style={{ fontSize: "40px" }}
+                                  className="color-blue ubuntu p-0 pt-2"
+                                  style={{ fontSize: "25px" }}
                                 >
-                                  CiteScore
+                                  <b>CiteScore</b>
                                 </p>
                               </div>
-                              <div className="border btn text-center col-12 col-sm-6 col-md-4 col-lg-3 m-1 mb-3 p-0">
+                              <div className="border text-center col-12 col-sm-7 col-md-6 col-lg-3 mb-3  p-0 rounded ">
                                 <p
                                   className="color-blue ubuntu p-0"
-                                  style={{ fontSize: "40px" }}
+                                  style={{ fontSize: "30px" }}
                                 >
-                                  {data.citation}
+                                 {data.citation}
                                 </p>
                               </div>
                               <div>
@@ -322,6 +339,7 @@ function JournalDetail() {
                                 </p>
                               </div>
                             </div>
+
                             <div className="table-responsive">
                               <table
                                 id="example"

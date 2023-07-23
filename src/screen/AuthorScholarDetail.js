@@ -94,8 +94,8 @@ export default function AuthorScholarDetail() {
                       src={posts.image}
                       className="img-thumbnail img-fluid"
                       style={{
-                        width: "90%",
-                        height: "80%",
+                        width: "350px",
+                        height: "250px",
                         objectFit: "contain",
                       }}
                       alt="post"
@@ -105,7 +105,7 @@ export default function AuthorScholarDetail() {
                         <b>{posts.author_name}</b>
                       </h5>
                       <br />
-                      <h6 className="ubutu gray">{posts.department}</h6>
+                      <h6 className="ubutu gray text-center">{posts.department}</h6>
                       <div className="d-flex flex-wrap justify-content-center">
                         <div className="border-blue p-2 mt-4 text-center me-1">
                           <span className="data-label ubutu color-blue">
