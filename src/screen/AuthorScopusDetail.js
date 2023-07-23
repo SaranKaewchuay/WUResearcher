@@ -88,12 +88,19 @@ const AuthorScopusDetail = () => {
                           <b>{post.author_name}</b>
                         </h5>
                         <div className="d-flex flex-wrap justify-content-center">
+                  
                           <div className="border-blue p-2 mt-4 text-center me-1">
-                            <span className="data-label ubutu color-blue">
-                              <b>Research Articles: </b>
+                            <span
+                              className="color-blue ubutu"
+                              style={{ fontSize: "14px" }}
+                            >
+                              <b>Research Articles In Walailak: </b>
                             </span>
-                            <span className="data-value">
-                              {post.documents}{" "}
+                            <span
+                              className="color-blue ubutu"
+                              style={{ fontSize: "14px" }}
+                            >
+                              {post.wu_documents}{" "}
                             </span>
                           </div>
                           <div className="border-blue p-2 mt-4 text-center me-1">
