@@ -115,7 +115,7 @@ const AuthorScopusDetail = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-8 col-md-12 pr-5 m-0 p-4">
+                  <div className="col-lg-8 col-md-6 col-sm-12 pr-5 m-0 p-4">
                     <div className="row">
                       <div className="col-12">
                         <GraphScopus />
@@ -170,14 +170,7 @@ const AuthorScopusDetail = () => {
                             </td>
                             <td>{document.document_type}</td>
                             <td>{document.source_type}</td>
-
-                            <td
-                              style={
-                                document.publisher == null
-                                  ? { textAlign: "center" }
-                                  : {}
-                              }
-                            >
+                            <td>
                               {document.publisher == null
                                 ? "-"
                                 : document.publisher}

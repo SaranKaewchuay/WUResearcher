@@ -35,7 +35,7 @@ function JournalDetail() {
     setSelectedYear(selectedYear);
     setIsLoadingCiteScore(true);
     const filteredData = citeSource.filter(
-      (data) => data.cite.year === selectedYear
+      (data) => data.year === selectedYear
     );
     setCiteSourceData(filteredData);
       console.log("citeSourceData : ",citeSourceData)
@@ -47,23 +47,23 @@ function JournalDetail() {
     }, 360);
   };
 
-  // async function fetchChangeJournalData(data) {
-  //   try {
-  //     console.log("data : ",data)
-  //     const changeJournalPromises = data.map(async (item) => {
-  //       const changeJournalResponse = await axios.get(`${baseURL}${item.source_id}`);
-  //       return changeJournalResponse.data[0];
-  //     });
+  async function fetchChangeJournalData(data) {
+    try {
+      console.log("data : ",data)
+      const changeJournalPromises = data.map(async (item) => {
+        const changeJournalResponse = await axios.get(`${baseURL}${item.source_id}`);
+        return changeJournalResponse.data[0];
+      });
   
-  //     const journalData = await Promise.all(changeJournalPromises);
-  //     console.log("journalData  = ",journalData )
-  //     setChangeJournalData(journalData);
-  //     console.log("changeJournalDataState : ",changeJournalData)
-  //   } catch (error) {
-  //     console.error("Error fetching change journal data:", error);
-  //     setChangeJournalData([]);
-  //   }
-  // }
+      const journalData = await Promise.all(changeJournalPromises);
+      console.log("journalData  = ",journalData )
+      setChangeJournalData(journalData);
+      console.log("changeJournalDataState : ",changeJournalData)
+    } catch (error) {
+      console.error("Error fetching change journal data:", error);
+      setChangeJournalData([]);
+    }
+  }
 
   const fetchData = async (id) => {
     setIsLoading(true);
@@ -75,8 +75,7 @@ function JournalDetail() {
       console.log("journalDatajournalData : ",journalData)
       setCiteSource(data[0].cite_source);
       if (data[0].hasOwnProperty('changeJournal') && data[0].changeJournal.length > 0) {
-        // await fetchChangeJournalData(data[0].changeJournal);
-        setChangeJournalData(data[0].changeJournal);
+        await fetchChangeJournalData(data[0].changeJournal);
       }
       
 
@@ -305,8 +304,8 @@ function JournalDetail() {
                           }
                         >
                           {citeSource.map((data) => (
-                            <option value={data.cite.year} key={data.cite.year}>
-                              {data.cite.year}
+                            <option value={data.year} key={data.year}>
+                              {data.year}
                             </option>
                           ))}
                         </select>
@@ -331,7 +330,7 @@ function JournalDetail() {
                     ) : (
                       <>
                         {citeSourceData.map((data) => (
-                          <React.Fragment key={data.cite.year}>
+                          <React.Fragment key={data.year}>
                             <div className="row">
                               <div className="col-12 col-sm-4 col-md-3 col-lg-2 d-flex flex-wrap">
                                 <p
@@ -346,7 +345,7 @@ function JournalDetail() {
                                   className="color-blue ubuntu p-0"
                                   style={{ fontSize: "30px" }}
                                 >
-                                 {data.cite.citeScore}
+                                 {data.citation}
                                 </p>
                               </div>
                               <div>

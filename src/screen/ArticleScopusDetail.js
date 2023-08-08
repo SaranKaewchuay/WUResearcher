@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import axios from "axios";
 import "../style/styles.css";
@@ -90,7 +90,7 @@ export default function ArticleScopusDetail() {
             </div>
 
             <div className="shadow-sm p-5 mb-5 bg-white rounded">
-              <div className="row">
+              <div className="row mb-3">
                 <div className="col-xl-2 col-lg-3 col-md-4 col-sm-4">
                   <span className="ubuntu gray color-blue">
                     <b>Article Source</b>
@@ -139,15 +139,21 @@ export default function ArticleScopusDetail() {
                     key !== "author_id" &&
                     key !== "article_name" &&
                     key !== "__v" &&
-                    key !== "author_scopus_id" && (
+                    key !== "author_scopus_id" &&
+                    value !== "" &&
+                    value.length > 0 &&
+                    value !== null && (
                       <div className="row">
                         <div className="col-xl-2 col-lg-3 col-md-4 col-sm-4">
                           <span className="ubuntu gray color-blue">
                             <b>
-                              {(
-                                key.charAt(0).toUpperCase() + key.slice(1)
-                              ).replace("_", " ")}
+                              {(() => {
+                                const formattedKey =
+                                  key.charAt(0).toUpperCase() + key.slice(1);
+                                return formattedKey.replace(/_/g, " ");
+                              })()}
                             </b>
+
                             {key === "url" && (
                               <Typography variant="body1">
                                 <div>
@@ -163,8 +169,12 @@ export default function ArticleScopusDetail() {
                               {Object.entries(value).map(
                                 ([key, value], index, arr) => (
                                   <span className="ubuntu" key={index}>
-                                    {value}
-                                    {index !== arr.length - 1 && " | "}
+                                    🧑‍🔬
+                                    {value.includes("*")
+                                      ? value.replace("*", "📧")
+                                      : value}
+                                    {index !== arr.length - 1 && "   "}
+                                    <br />
                                   </span>
                                 )
                               )}
@@ -185,6 +195,30 @@ export default function ArticleScopusDetail() {
                                 Read More
                               </a>
                             </Typography>
+                          ) : key === "co_author_department" ? (
+                            <div className="mb-3">
+                              {Object.entries(value).map(
+                                ([key, val], index, arr) => (
+                                  <span className="ubuntu" key={index}>
+                                    {val}
+                                    {index !== arr.length - 1 && ", "}
+                                    <br />
+                                  </span>
+                                )
+                              )}
+                            </div>
+                          ) : key === "corresponding" ? (
+                            <div className="mb-3">
+                              {Object.entries(value).map(
+                                ([key, val], index, arr) => (
+                                  <span className="ubuntu" key={index}>
+                                    {val}
+                                    {index !== arr.length - 1}
+                                    <br />
+                                  </span>
+                                )
+                              )}
+                            </div>
                           ) : (
                             <p className="ubuntu">{value}</p>
                           )}

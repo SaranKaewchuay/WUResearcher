@@ -5,7 +5,7 @@ import { CardMedia, Typography } from "@mui/material";
 
 const ScopusCard = ({ post }) => {
   return (
-    <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
+    <div class="col-lg-6 col-md-12 col-sm-12 mt-3">
       <Link
         to={`/authors-scopus-detail?id=${post.author_scopus_id}`}
         className="no-underline"

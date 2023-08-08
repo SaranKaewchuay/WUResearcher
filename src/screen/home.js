@@ -43,8 +43,7 @@ function Home() {
   const handleScroll = () => {
     const isBottom =
       window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 1;
-
+      document.documentElement.offsetHeight - 1;                    
     if (isBottom && !searchQuery) {
       setPage((prevPage) => prevPage + 1);
       if (posts.length != postsLength) setIsLoadingAdd(true);
@@ -82,28 +81,28 @@ function Home() {
   };
 
   const fetchData = async (url) => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const response = await axios.get(`${url}&page=${page}`);
       const newPosts = response.data;
       const length = await fetchTotal();
       setPostsLength(length);
-      setPosts((prevPosts) =>
-        page === 1 ? newPosts : [...prevPosts, ...newPosts]
-      );
+      setPosts((prevPosts) => (page === 1 ? newPosts : [...prevPosts, ...newPosts]));
       setIsLoading(false);
       setIsLoadingAdd(false);
     } catch (error) {
+      setIsLoading(false);
+      setIsLoadingAdd(false);
       console.error(error);
       throw error;
     }
   };
+  
 
   const fetchSearchData = async (url) => {
-    setPosts([]);
-    setIsLoading(true);
-
     try {
+      setPosts([]);
+      setIsLoading(true);
       const response = await axios.get(url);
       const newPosts = response.data;
 
@@ -114,6 +113,8 @@ function Home() {
       setClick(false);
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
+      setIsLoadingAdd(false);
     }
   };
 
@@ -155,9 +156,9 @@ function Home() {
 
     let url;
     if (buttonType === "author") {
-      url = `${host}scopus/author`;
+      url = `${host}scopus/author?sortField=name&sortOrder=asc`;
     } else if (buttonType === "journal") {
-      url = `${host}scopus/journal`;
+      url = `${host}scopus/journal?sortField=journal-name&sortOrder=asc`;
     }
     fetchData(url);
   };
