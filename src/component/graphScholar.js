@@ -9,11 +9,9 @@ import {
 } from "recharts";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import baseApi from "../baseApi/baseApi";
 
-const host = "https://scrap-backend.vercel.app/";
-//const host = "http://localhost:8080/";
-
-// const baseURL = host + "authors/";
+const host = baseApi;
 
 function Graph() {
   const location = useLocation();

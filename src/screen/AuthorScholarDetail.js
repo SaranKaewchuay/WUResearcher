@@ -14,9 +14,10 @@ import $ from "jquery";
 import "../style/styles.css";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
+import baseApi from "../baseApi/baseApi";
 
-const host = "https://scrap-backend.vercel.app/";
-//const host = "http://localhost:8080/";
+const host = baseApi;
+
 
 export default function AuthorScholarDetail() {
   const [posts, setPosts] = React.useState([]);
@@ -137,7 +138,6 @@ export default function AuthorScholarDetail() {
 
                   <div className="row mb-4">
                     <div className="col-12">
-                      {/* <h5 className="ubutu color-blue" style={{ fontWeight: "bolder", fontSize: "20px" }}>Cited by</h5> */}
                       <SubTable id={id} />
                     </div>
                   </div>

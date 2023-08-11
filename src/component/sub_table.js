@@ -2,29 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import "../style/styles.css";
+import baseApi from "../baseApi/baseApi";
 
-const host = "https://scrap-backend.vercel.app/";
-//const host = "http://localhost:8080/";
+const host = baseApi;
 
 function SubTable() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
 
-  const [data, setData] = useState([]); // Set initial value to an empty array
-  const [loading, setLoading] = useState(true); // Set initial loading state to true
+  const [data, setData] = useState([]); 
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     axios
       .get(`${host}scholar/author/${id}`)
       .then((response) => {
         setData(response.data.citation_by.table);
-        setLoading(false); // Set loading state to false after data is fetched
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
-        setLoading(false); // Set loading state to false in case of an error
-        // You may want to handle errors here, e.g., show an error message
+        setLoading(false); 
       });
   }, [id]);
 
@@ -39,7 +38,6 @@ function SubTable() {
     );
   }
 
-  // Check if all the data values are null
   const isDataEmpty =
     data.length === 0 ||
     data.every((item) => {
@@ -47,12 +45,10 @@ function SubTable() {
       return keys.every((key) => item[key].all === null && item[key].since_2018 === null);
     });
 
-  // If there is no data, return null to prevent rendering the table div
   if (isDataEmpty) {
     return null;
   }
 
-  // If there is data, render the table
   return (
     <div className="table-responsive d-flex align-items-center justify-content-center">
       <table className="table center" style={{ width: "80%" }}>
@@ -66,7 +62,6 @@ function SubTable() {
         <tbody>
           <tr>
             <td>
-              {/* Changed anchor <a> to <span> */}
               <span
                 className="no-underline"
                 title='This is the number of citations to all publications. The second column has the "recent" version of this metric which is the number of new citations in the last 5 years to all publications.'
@@ -81,7 +76,6 @@ function SubTable() {
           </tr>
           <tr>
             <td>
-              {/* Changed anchor <a> to <span> */}
               <span
                 className="gsc_rsb_f gs_ibl no-underline"
                 title='h-index is the largest number h such that h publications have at least h citations. The second column has the "recent" version of this metric which is the largest number h such that h publications have at least h new citations in the last 5 years.'
@@ -96,7 +90,6 @@ function SubTable() {
           </tr>
           <tr>
             <td>
-              {/* Changed anchor <a> to <span> */}
               <span
                 className="no-underline"
                 title='i10-index is the number of publications with at least 10 citations. The second column has the "recent" version of this metric which is the number of publications that have received at least 10 new citations in the last 5 years.'

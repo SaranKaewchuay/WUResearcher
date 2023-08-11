@@ -11,9 +11,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
+import { Typography } from "@mui/material";
+import baseApi from "../baseApi/baseApi";
 
-const host = "https://scrap-backend.vercel.app/";
-// const host = "http://localhost:8080/";
+const host = baseApi;
 
 const AuthorScopusDetail = () => {
   const [post, setPosts] = useState([]);
@@ -33,7 +34,6 @@ const AuthorScopusDetail = () => {
     Promise.all([
       axios.get(`${host}scopus/author/${id}`),
       axios.get(`${host}scopus/article/authorId/${id}`),
-      // axios.get(host + `articlesScopus/getByArthorId/` + id),
     ])
       .then(([authorResponse, articlesResponse]) => {
         setPosts(authorResponse.data[0]);
@@ -78,7 +78,6 @@ const AuthorScopusDetail = () => {
                         src="https://img.freepik.com/vetores-premium/avatar-que-veste-um-tampao-da-graduacao-sobre-o-fundo-da-cerceta-ilustracao-vetorial_24877-19950.jpg?w=360"
                         style={{
                           width: "75%",
-                          // height: "80%",
                           objectFit: "contain",
                         }}
                         alt="post"
@@ -87,8 +86,13 @@ const AuthorScopusDetail = () => {
                         <h5 className="author-name ubutu color-blue">
                           <b>{post.author_name}</b>
                         </h5>
+                        <Typography
+                          className="ubutu gray"
+                          style={{ fontSize: "16px" }}
+                        >
+                          {post.citations} citations by {post.citations_by}
+                        </Typography>
                         <div className="d-flex flex-wrap justify-content-center">
-                  
                           <div className="border-blue p-2 mt-4 text-center me-1">
                             <span
                               className="color-blue ubutu"

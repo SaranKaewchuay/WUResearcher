@@ -1,16 +1,14 @@
 import * as React from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import axios from "axios";
 import "../style/styles.css";
 import { useLocation } from "react-router-dom";
 import LinkIcon from "@mui/icons-material/Link";
 import { Typography } from "@mui/material";
+import baseApi from "../baseApi/baseApi";
 
-const host = "https://scrap-backend.vercel.app/";
-//const host = "http://localhost:8080/";
-
-const baseURL = host + "scholar/article/";
+const baseURL = baseApi + "scholar/article/";
 
 export default function ArticleScholarDetail() {
   const [posts, setPosts] = React.useState([]);
@@ -95,9 +93,6 @@ export default function ArticleScholarDetail() {
                         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
                           <span class="ubutu gray color-blue">
                             <b>
-                              {/* {index === 0 && (
-                              <p>Article Source</p>
-                            )} */}
                               {key !== "_id" &&
                               key !== "article_name" &&
                               key !== "author_id" &&

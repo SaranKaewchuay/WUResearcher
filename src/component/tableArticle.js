@@ -9,11 +9,9 @@ import $ from "jquery";
 import "../style/styles.css";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
+import baseApi from "../baseApi/baseApi";
 
-
-const host = "https://scrap-backend.vercel.app/";
-//const host = "http://localhost:8080/";
-
+const host = baseApi;
 
 function Table(props) {
   const [data, setData] = useState([]);

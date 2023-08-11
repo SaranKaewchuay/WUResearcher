@@ -3,11 +3,10 @@ import axios from "axios";
 import GoogleScholarCard from "../component/googleScholarCard";
 import JournalCard from "../component/scopusJournalCard";
 import ScopusCard from "../component/scopusCard";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {
   Container,
-  Typography,
   TextField,
   IconButton,
   Button,
@@ -16,11 +15,9 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import "../style/styles.css";
 import "../style/loader.css";
+import baseApi from "../baseApi/baseApi";
 
-const host = "https://scrap-backend.vercel.app/";
-// const host = "http://localhost:8080/";
-
-// const baseURL = host + "scraper/";
+const host = baseApi;
 
 function Home() {
   const [posts, setPosts] = useState([]);

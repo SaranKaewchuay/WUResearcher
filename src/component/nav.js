@@ -35,7 +35,6 @@ export default function Nav() {
               sx={{
                 ml: 2,
                 display: { xs: "none", md: "flex" },
-                // fontFamily: 'monospace',
                 fontSize: "1rem",
                 fontWeight: 500,
                 letterSpacing: ".1rem",
@@ -55,7 +54,6 @@ export default function Nav() {
                 ml: 2,
                 display: { xs: "flex", md: "none" },
                 flexGrow: 1,
-                //fontFamily: 'monospace',
                 fontWeight: 500,
                 fontSize: "1rem",
                 letterSpacing: ".1rem",

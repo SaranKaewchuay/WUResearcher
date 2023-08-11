@@ -7,11 +7,10 @@ import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
+import baseApi from "../baseApi/baseApi";
 
-const host = "https://scrap-backend.vercel.app/";
-//const host = "http://localhost:8080/";
 
-const baseURL = host + "scopus/journal/";
+const baseURL = baseApi + "scopus/journal/";
 
 function JournalDetail() {
   const [journalData, setJournalData] = useState([]);
@@ -64,6 +63,22 @@ function JournalDetail() {
   //     setChangeJournalData([]);
   //   }
   // }
+
+    const hasSourceId = async (source_id) =>{
+    try {
+      console.log("source_idsource_id : ",source_id)
+
+        const changeJournalResponse = await axios.get(`${baseURL}${source_id}`);
+        const length = changeJournalResponse.data.length
+        if(length > 0){
+          return true
+        }else{
+          return false
+        }
+    } catch (error) {
+      console.error("Error fetching change journal data:", error);
+    }
+  }
 
   const fetchData = async (id) => {
     setIsLoading(true);
@@ -168,6 +183,7 @@ function JournalDetail() {
                       ))}
                     </div>
                   )}
+
 
 
                   {journal.scopus_coverage_years && (

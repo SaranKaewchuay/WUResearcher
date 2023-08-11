@@ -7,16 +7,18 @@ import { useLocation } from "react-router-dom";
 import LinkIcon from "@mui/icons-material/Link";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-const host = "https://scrap-backend.vercel.app/";
-//const host = "http://localhost:8080/";
+import baseApi from "../baseApi/baseApi";
 
-const baseURL = host + "scopus/article/";
+const baseURL = baseApi + "scopus/";
 
 export default function ArticleScopusDetail() {
   const [posts, setPosts] = React.useState([]);
   const [sourceID, setSourceID] = React.useState();
   const [journalName, setJournal] = React.useState();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [corResponding, setCorresponding] = React.useState();
+  const [articleUrl, setArticleUrl] = React.useState();
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
@@ -45,9 +47,29 @@ export default function ArticleScopusDetail() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`${baseURL}${id}`);
+        const response = await axios.get(`${baseURL}article/${id}`);
         const journalName = await fetchJournalNames(response.data.source_id);
+        console.log("response.data.eid : ", response.data.eid);
+        try {
+          const responseCor = await axios.get(
+            `${baseURL}coresponding/${response.data.eid}`
+          );
+          if (responseCor.status === 200) {
+            setCorresponding(responseCor.data[0]);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+
+        // if (responseCor && responseCor.data && responseCor.data.length > 0) {
+        //   setCorresponding(responseCor.data[0]);
+        // }
+        // console.log("responseCor : ",responseCor)
+        // console.log("responseCor.data : ", responseCor.data[0]);
+
         setSourceID(response.data.source_id);
+        setArticleUrl(response.data.url);
+
         setJournal(journalName);
         setPosts(response.data);
         console.log("response.data == ", response.data);
@@ -140,6 +162,7 @@ export default function ArticleScopusDetail() {
                     key !== "article_name" &&
                     key !== "__v" &&
                     key !== "author_scopus_id" &&
+                    key !== "url" &&
                     value !== "" &&
                     value.length > 0 &&
                     value !== null && (
@@ -153,14 +176,6 @@ export default function ArticleScopusDetail() {
                                 return formattedKey.replace(/_/g, " ");
                               })()}
                             </b>
-
-                            {key === "url" && (
-                              <Typography variant="body1">
-                                <div>
-                                  <LinkIcon />
-                                </div>
-                              </Typography>
-                            )}
                           </span>
                         </div>
                         <div className="col-xl-10 col-lg-9 col-md-8 col-sm-8">
@@ -180,21 +195,6 @@ export default function ArticleScopusDetail() {
                               )}
                               <p></p>
                             </>
-                          ) : key === "url" ? (
-                            <Typography
-                              variant="body1"
-                              align="left"
-                              className="ubuntu"
-                            >
-                              <a
-                                href={value}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="color-blue"
-                              >
-                                Read More
-                              </a>
-                            </Typography>
                           ) : key === "co_author_department" ? (
                             <div className="mb-3">
                               {Object.entries(value).map(
@@ -227,6 +227,58 @@ export default function ArticleScopusDetail() {
                     )}
                 </React.Fragment>
               ))}
+              {corResponding && Object.keys(corResponding).length !== 0 ? (
+                <div className="row">
+                  <div className="col-xl-2 col-lg-3 col-md-4 col-sm-4">
+                    <span className="ubuntu gray color-blue">
+                      <b>Corresponding</b>
+                    </span>
+                  </div>
+
+                  <div className="col">
+                    <span className="ubuntu">
+                      {corResponding.correspondingData.map((data, index) => (
+                        <div key={index}>
+                          <p className="ubuntu">
+                            <span role="img" aria-label="scientist">
+                              🧑‍🔬{data.corresName}{"  "}({data.corresFullName}),{"  "}
+                              {data.address},{data.email}
+                            </span>
+                          </p>
+                        </div>
+                      ))}
+                      <br />
+                    </span>
+                  </div>
+                </div>
+              ) : null}
+
+              <div className="row">
+                <div className="col-xl-2 col-lg-3 col-md-4 col-sm-4">
+                  <Typography variant="body1">
+                    <div>
+                      <LinkIcon />
+                    </div>
+                  </Typography>
+                </div>
+
+                <div className="mb-3 col">
+                  <Typography
+                    variant="body1"
+                    align="left"
+                    className="ubuntu mb-3"
+                  >
+                    <a
+                      href={articleUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="color-blue"
+                    >
+                      Read More
+                    </a>
+                  </Typography>
+                </div>
+              </div>
             </div>
           </div>
         </div>

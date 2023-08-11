@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CardMedia, Typography } from "@mui/material";
 import axios from "axios";
+import baseApi from "../baseApi/baseApi";
 
-const host = "https://scrap-backend.vercel.app/";
+const host = baseApi;
 
 const GoogleScholarCard = ({ post }) => {
 

@@ -13,11 +13,9 @@ import {
 } from "recharts";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import baseApi from "../baseApi/baseApi";
 
-const host = "https://scrap-backend.vercel.app/";
-// const host = "http://localhost:8080/";
-
-const baseURL = host + "scopus/author/";
+const baseURL = baseApi + "scopus/author/";
 
 function GraphScopus() {
   const location = useLocation();
@@ -72,12 +70,6 @@ function GraphScopus() {
 
     fetchData();
   }, [id]);
-
-  // const CustomLabel = ({ text }) => (
-  //   <text x={0} y={0} dy={-10} fill="#666" fontSize={12} textAnchor="end">
-  //     {text}
-  //   </text>
-  // );
 
   return (
     <div className="App">
