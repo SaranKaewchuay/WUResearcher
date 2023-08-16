@@ -8,7 +8,6 @@ import LinkIcon from "@mui/icons-material/Link";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import baseApi from "../baseApi/baseApi";
-
 const baseURL = baseApi + "scopus/";
 
 export default function ArticleScopusDetail() {
@@ -52,7 +51,7 @@ export default function ArticleScopusDetail() {
         console.log("response.data.eid : ", response.data.eid);
         try {
           const responseCor = await axios.get(
-            `${baseURL}coresponding/${response.data.eid}`
+            `${baseURL}corresponding/${response.data.eid}`
           );
           if (responseCor.status === 200) {
             setCorresponding(responseCor.data[0]);
@@ -60,13 +59,6 @@ export default function ArticleScopusDetail() {
         } catch (error) {
           console.error(error);
         }
-
-        // if (responseCor && responseCor.data && responseCor.data.length > 0) {
-        //   setCorresponding(responseCor.data[0]);
-        // }
-        // console.log("responseCor : ",responseCor)
-        // console.log("responseCor.data : ", responseCor.data[0]);
-
         setSourceID(response.data.source_id);
         setArticleUrl(response.data.url);
 

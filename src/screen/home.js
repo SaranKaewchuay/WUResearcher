@@ -150,6 +150,7 @@ function Home() {
     setPosts([]);
     setPage(1);
     setSelectedButton(buttonType);
+    setSelecteSort("sort_name");
 
     let url;
     if (buttonType === "author") {

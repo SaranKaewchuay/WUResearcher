@@ -9,6 +9,7 @@ const ScopusCard = ({ post }) => {
       <Link
         to={`/journal-detail?sourceid=${post.source_id}`}
         className="no-underline"
+        target="_blank"
       >
         <div class="card">
           <div class="card-horizontal">

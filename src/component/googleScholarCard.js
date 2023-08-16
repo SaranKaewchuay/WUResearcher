@@ -8,21 +8,21 @@ const host = baseApi;
 
 const GoogleScholarCard = ({ post }) => {
 
-  const [length, setLength] = useState(0);
-  useEffect(() => {
-      axios.get(host + `scholar/article/authorId/${post._id}`)
-      .then((response) => {
-        setLength(response.data.length);
-        console.log(response.data.length)
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+  // const [length, setLength] = useState(0);
+  // useEffect(() => {
+  //     axios.get(host + `scholar/article/authorId/${post._id}`)
+  //     .then((response) => {
+  //       setLength(response.data.length);
+  //       console.log(response.data.length)
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, []);
 
   return (
     <div class="col-lg-6 col-md-12 col-sm-12 mt-3">
-      <Link to={`/author-detail?id=${post._id}`} className="no-underline">
+      <Link to={`/author-detail?id=${post._id}`} className="no-underline" target="_blank">
         <div class="card">
           <div class="card-horizontal">
             <div class="img-square-wrapper">
@@ -60,8 +60,8 @@ const GoogleScholarCard = ({ post }) => {
                     className="color-blue ubutu"
                     style={{ fontSize: "14px",padding:"2px"}}
                   >
-                    {length}
-                    {/* {post.documents} */}
+                    {/* {length} */}
+                    {post.documents}
                   </span>
                 </div>
                 <div className="border-blue p-2 mt-4 text-center me-1">

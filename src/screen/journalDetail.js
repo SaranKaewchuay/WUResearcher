@@ -15,7 +15,10 @@ const baseURL = baseApi + "scopus/journal/";
 function JournalDetail() {
   const [journalData, setJournalData] = useState([]);
   const [selectedYear, setSelectedYear] = useState();
+
   const [changeJournalData, setChangeJournalData] = useState([]);
+  const [linkJournalData, setlinkJournalData] = useState([]);
+
   const [citeSource, setCiteSource] = useState([]);
   const [citeSourceData, setCiteSourceData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,8 +39,8 @@ function JournalDetail() {
     const filteredData = citeSource.filter(
       (data) => data.cite.year === selectedYear
     );
+
     setCiteSourceData(filteredData);
-      console.log("citeSourceData : ",citeSourceData)
     setTimeout(() => {
       setIsLoadingCiteScore(false);
       $(document).ready(function () {
@@ -46,73 +49,61 @@ function JournalDetail() {
     }, 360);
   };
 
-  // async function fetchChangeJournalData(data) {
-  //   try {
-  //     console.log("data : ",data)
-  //     const changeJournalPromises = data.map(async (item) => {
-  //       const changeJournalResponse = await axios.get(`${baseURL}${item.source_id}`);
-  //       return changeJournalResponse.data[0];
-  //     });
-  
-  //     const journalData = await Promise.all(changeJournalPromises);
-  //     console.log("journalData  = ",journalData )
-  //     setChangeJournalData(journalData);
-  //     console.log("changeJournalDataState : ",changeJournalData)
-  //   } catch (error) {
-  //     console.error("Error fetching change journal data:", error);
-  //     setChangeJournalData([]);
-  //   }
-  // }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    async function fetchData() {
+      setIsLoading(true);
+      try {
+        axios.get(`${baseURL}${source_id}`).then((response) => {
+          const data = response.data;
+          setJournalData(data);
+          setCiteSource(data[0].cite_source);
+          if (data[0].hasOwnProperty('changeJournal') && data[0].changeJournal.length > 0) {
 
-    const hasSourceId = async (source_id) =>{
-    try {
-      console.log("source_idsource_id : ",source_id)
+            setChangeJournalData(data[0].changeJournal);
+          }
 
-        const changeJournalResponse = await axios.get(`${baseURL}${source_id}`);
-        const length = changeJournalResponse.data.length
-        if(length > 0){
-          return true
-        }else{
-          return false
-        }
-    } catch (error) {
-      console.error("Error fetching change journal data:", error);
-    }
-  }
-
-  const fetchData = async (id) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(`${baseURL}${id}`);
-      console.log("response ", response.data);
-      const data = response.data;
-      setJournalData(data);
-      console.log("journalDatajournalData : ",journalData)
-      setCiteSource(data[0].cite_source);
-      if (data[0].hasOwnProperty('changeJournal') && data[0].changeJournal.length > 0) {
-        // await fetchChangeJournalData(data[0].changeJournal);
-        setChangeJournalData(data[0].changeJournal);
+          if (data[0].cite_source != null) {
+            const filteredData = data[0].cite_source.filter(
+              (_, index) => index === 0
+            );
+            setCiteSourceData(filteredData);
+          } else {
+            setCiteSourceData(null);
+          }
+          setIsLoading(false);
+        })
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
       }
-      
-
-      if (data[0].cite_source != null) {
-        const filteredData = data[0].cite_source.filter(
-          (_, index) => index === 0
-        );
-        setCiteSourceData(filteredData);
-      } else {
-        setCiteSourceData(null);
-      }
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
     }
-  };
+
+    fetchData();
+  }, [source_id]);
+
+  // useEffect(async () => {
+  //   await fetchData(source_id);
+  // }, [source_id]);
 
   useEffect(() => {
-    fetchData(source_id);
-  }, [source_id]);
+    async function fetchChangeData() {
+      try {
+        const newData = [];
+        for (const data of changeJournalData) {
+          const comresponse = await axios.get(`${baseURL}changeJournal/${data.source_id}`);
+          if (comresponse.data) {
+            newData.push(data.source_id);
+          }
+        }
+        setlinkJournalData(newData);
+      } catch (error) {
+        console.error('Error fetching change data:', error);
+      }
+    }
+
+    fetchChangeData();
+  }, [changeJournalData]);
 
   useEffect(() => {
     $(document).ready(function () {
@@ -161,30 +152,38 @@ function JournalDetail() {
                       {journal.journal_name}
                     </p>
                   </div>
+
                   {journal.changeJournal && changeJournalData.length > 0 && (
                     <div>
-                      {changeJournalData.map((data, index) => (
-                        <div className="p-2" key={index}>
-                          <span className="color-blue ubuntu" style={{ fontSize: "16px" }}>
-                            <div>
-                              <b>{journal.changeJournal[index]?.field}: </b>
-                              <Link
-                                to={`/journal-detail?sourceid=${data.source_id}`}
-                                className="no-underline"
-                                rel="noopener noreferrer"
-                              >
-                                <span className="ubuntu" style={{ fontSize: "16px" }}>
-                                  {data.journal_name}
-                                </span>
-                              </Link>
-                            </div>
-                          </span>
-                        </div>
-                      ))}
+                      {changeJournalData.map((data, index) => {
+                        const matchingLink = linkJournalData.includes(data.source_id);
+                        return (
+                          <div className="p-2" key={index}>
+                            <span className="color-blue ubuntu" style={{ fontSize: "16px" }}>
+                              <div>
+                                <b>{journal.changeJournal[index]?.field}: </b>
+                                {matchingLink ? (
+                                  <Link
+                                    to={`/journal-detail?sourceid=${data.source_id}`}
+                                    className="no-underline"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <span className="ubuntu" style={{ fontSize: "16px" }}>
+                                      {data.journal_name}
+                                    </span>
+                                  </Link>
+                                ) : (
+                                  <span className="ubuntu" style={{ fontSize: "16px" }}>
+                                    {data.journal_name}
+                                  </span>
+                                )}
+                              </div>
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
-
-
 
                   {journal.scopus_coverage_years && (
                     <div className="p-2 ">
@@ -362,7 +361,7 @@ function JournalDetail() {
                                   className="color-blue ubuntu p-0"
                                   style={{ fontSize: "30px" }}
                                 >
-                                 {data.cite.citeScore}
+                                  {data.cite.citeScore}
                                 </p>
                               </div>
                               <div>
@@ -412,28 +411,28 @@ function JournalDetail() {
           {(!citeSourceData ||
             !Array.isArray(citeSourceData) ||
             citeSourceData.length === 0) && (
-            <Container maxWidth="xl" className="mb-0 mt-2">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  minHeight: "120px",
-                }}
-                className="shadow p-3 bg-white rounded mb-3"
-              >
-                <p
+              <Container maxWidth="xl" className="mb-0 mt-2">
+                <div
                   style={{
-                    fontSize: "20px",
-                    fontWeight: "bold",
-                    color: "gray",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minHeight: "120px",
                   }}
+                  className="shadow p-3 bg-white rounded mb-3"
                 >
-                  No data available.
-                </p>
-              </div>
-            </Container>
-          )}
+                  <p
+                    style={{
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                      color: "gray",
+                    }}
+                  >
+                    No data available.
+                  </p>
+                </div>
+              </Container>
+            )}
         </>
       )}
     </div>

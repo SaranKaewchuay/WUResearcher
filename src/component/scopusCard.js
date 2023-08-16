@@ -9,6 +9,7 @@ const ScopusCard = ({ post }) => {
       <Link
         to={`/authors-scopus-detail?id=${post.author_scopus_id}`}
         className="no-underline"
+        target="_blank"
       >
         <div class="card">
           <div class="card-horizontal">
