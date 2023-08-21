@@ -20,7 +20,7 @@ export default function ArticleScopusDetail() {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const id = queryParams.get("id");
+  const id = queryParams.get("eid");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -31,8 +31,8 @@ export default function ArticleScopusDetail() {
       const response = await axios.get(
         `https://scrap-backend.vercel.app/scopus/journal/${source_id}`
       );
-      let journalNames = response.data.map((item) => item.journal_name);
-      if (journalNames.length === 0) {
+      let journalNames = response.data.journal_name
+      if (!journalNames) {
         journalNames = null;
       }
       return journalNames;
@@ -54,7 +54,7 @@ export default function ArticleScopusDetail() {
             `${baseURL}corresponding/${response.data.eid}`
           );
           if (responseCor.status === 200) {
-            setCorresponding(responseCor.data[0]);
+            setCorresponding(responseCor.data);
           }
         } catch (error) {
           console.error(error);
@@ -120,7 +120,7 @@ export default function ArticleScopusDetail() {
               </div>
               {sourceID ? (
                 <Link
-                  to={`/journal-detail?sourceid=${sourceID}`}
+                  to={`/journal-detail?sourceId=${sourceID}`}
                   className="no-underline color-blue"
                 >
                   <div className="row">

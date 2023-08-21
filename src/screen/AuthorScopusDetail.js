@@ -24,7 +24,7 @@ const AuthorScopusDetail = () => {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const id = queryParams.get("id");
+  const id = queryParams.get("scopusId");
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -36,8 +36,8 @@ const AuthorScopusDetail = () => {
       axios.get(`${host}scopus/article/authorId/${id}`),
     ])
       .then(([authorResponse, articlesResponse]) => {
-        setPosts(authorResponse.data[0]);
-        setSubjectArea(authorResponse.data[0].subject_area);
+        setPosts(authorResponse.data);
+        setSubjectArea(authorResponse.data.subject_area);
         setDataTable(articlesResponse.data);
         setIsLoading(false);
         $(document).ready(function () {
@@ -166,7 +166,7 @@ const AuthorScopusDetail = () => {
                             <td>{index + 1}</td>
                             <td>
                               <Link
-                                to={`/article-scopus-detail?id=${document._id}`}
+                                to={`/article-scopus-detail?eid=${document.eid}`}
                                 className="no-underline color-blue"
                               >
                                 {document.article_name}

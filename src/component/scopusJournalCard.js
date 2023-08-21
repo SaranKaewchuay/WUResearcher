@@ -7,7 +7,7 @@ const ScopusCard = ({ post }) => {
   return (
     <div class="col-lg-6 col-md-12 col-sm-12 mt-3">
       <Link
-        to={`/journal-detail?sourceid=${post.source_id}`}
+        to={`/journal-detail?sourceId=${post.source_id}`}
         className="no-underline"
         target="_blank"
       >

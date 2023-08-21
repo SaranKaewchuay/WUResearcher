@@ -9,11 +9,10 @@ import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
 import baseApi from "../baseApi/baseApi";
 
-
 const baseURL = baseApi + "scopus/journal/";
 
 function JournalDetail() {
-  const [journalData, setJournalData] = useState([]);
+  const [journal, setJournalData] = useState([]);
   const [selectedYear, setSelectedYear] = useState();
 
   const [changeJournalData, setChangeJournalData] = useState([]);
@@ -24,10 +23,9 @@ function JournalDetail() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingCiteScore, setIsLoadingCiteScore] = useState(false);
 
-
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const source_id = queryParams.get("sourceid");
+  const source_id = queryParams.get("sourceId");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -57,14 +55,16 @@ function JournalDetail() {
         axios.get(`${baseURL}${source_id}`).then((response) => {
           const data = response.data;
           setJournalData(data);
-          setCiteSource(data[0].cite_source);
-          if (data[0].hasOwnProperty('changeJournal') && data[0].changeJournal.length > 0) {
-
-            setChangeJournalData(data[0].changeJournal);
+          setCiteSource(data.cite_source);
+          if (
+            data.hasOwnProperty("changeJournal") &&
+            data.changeJournal.length > 0
+          ) {
+            setChangeJournalData(data.changeJournal);
           }
 
-          if (data[0].cite_source != null) {
-            const filteredData = data[0].cite_source.filter(
+          if (data.cite_source != null) {
+            const filteredData = data.cite_source.filter(
               (_, index) => index === 0
             );
             setCiteSourceData(filteredData);
@@ -72,7 +72,7 @@ function JournalDetail() {
             setCiteSourceData(null);
           }
           setIsLoading(false);
-        })
+        });
       } catch (error) {
         console.error(error);
         setIsLoading(false);
@@ -91,14 +91,16 @@ function JournalDetail() {
       try {
         const newData = [];
         for (const data of changeJournalData) {
-          const comresponse = await axios.get(`${baseURL}changeJournal/${data.source_id}`);
+          const comresponse = await axios.get(
+            `${baseURL}changeJournal/${data.source_id}`
+          );
           if (comresponse.data) {
             newData.push(data.source_id);
           }
         }
         setlinkJournalData(newData);
       } catch (error) {
-        console.error('Error fetching change data:', error);
+        console.error("Error fetching change data:", error);
       }
     }
 
@@ -129,167 +131,179 @@ function JournalDetail() {
         </div>
       ) : (
         <>
-          {journalData.map((journal) => (
-            <React.Fragment key={journal.journal_name}>
-              <Container maxWidth="xl" className="mb-0 mt-5">
-                <div
-                  className="shadow p-3 bg-white rounded mb-3"
-                  style={{ width: "100%" }}
-                >
-                  <h2 className="ubuntu color-blue">
-                    <b>Source Details</b>
-                  </h2>
+          <React.Fragment key={journal.journal_name}>
+            <Container maxWidth="xl" className="mb-0 mt-5">
+              <div
+                className="shadow p-3 bg-white rounded mb-3"
+                style={{ width: "100%" }}
+              >
+                <h2 className="ubuntu color-blue">
+                  <b>Source Details</b>
+                </h2>
+              </div>
+              <div
+                className="shadow p-3 mb-3 bg-white rounded"
+                style={{ width: "100%", minHeight: "365px" }}
+              >
+                <div className="p-2">
+                  <p
+                    className="color-blue ubutu m-0"
+                    style={{ fontSize: "26px", fontWeight: "bolder" }}
+                  >
+                    {journal.journal_name}
+                  </p>
                 </div>
-                <div
-                  className="shadow p-3 mb-3 bg-white rounded"
-                  style={{ width: "100%", minHeight: "365px" }}
-                >
-                  <div className="p-2">
-                    <p
-                      className="color-blue ubutu m-0"
-                      style={{ fontSize: "26px", fontWeight: "bolder" }}
-                    >
-                      {journal.journal_name}
-                    </p>
-                  </div>
 
-                  {journal.changeJournal && changeJournalData.length > 0 && (
-                    <div>
-                      {changeJournalData.map((data, index) => {
-                        const matchingLink = linkJournalData.includes(data.source_id);
-                        return (
-                          <div className="p-2" key={index}>
-                            <span className="color-blue ubuntu" style={{ fontSize: "16px" }}>
-                              <div>
-                                <b>{journal.changeJournal[index]?.field}: </b>
-                                {matchingLink ? (
-                                  <Link
-                                    to={`/journal-detail?sourceid=${data.source_id}`}
-                                    className="no-underline"
-                                    rel="noopener noreferrer"
-                                  >
-                                    <span className="ubuntu" style={{ fontSize: "16px" }}>
-                                      {data.journal_name}
-                                    </span>
-                                  </Link>
-                                ) : (
-                                  <span className="ubuntu" style={{ fontSize: "16px" }}>
-                                    {data.journal_name}
-                                  </span>
-                                )}
-                              </div>
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {journal.scopus_coverage_years && (
-                    <div className="p-2 ">
-                      <span
-                        className="color-blue ubutu"
-                        style={{ fontSize: "16px" }}
-                      >
-                        <div>
-                          <b>Scopus coverage years: </b>
-                          <span className="ubutu" style={{ fontSize: "16px" }}>
-                            {journal.scopus_coverage_years}
-                          </span>
-                        </div>
-                      </span>
-                    </div>
-                  )}
-                  {journal.publisher ? (
-                    <div className="p-2 m-0">
-                      <span
-                        className="color-blue ubutu"
-                        style={{ fontSize: "16px" }}
-                      >
-                        <div>
-                          {" "}
-                          <b>Publisher: </b>
-                          <span className="ubutu" style={{ fontSize: "16px" }}>
-                            {journal.publisher}
-                          </span>
-                        </div>
-                      </span>
-                    </div>
-                  ) : null}
-                  {journal.issn && (
-                    <div className="p-2 m-0">
-                      <span
-                        className="color-blue ubutu"
-                        style={{ fontSize: "16px" }}
-                      >
-                        <div>
-                          <b>ISSN: </b>
-                          <span className="ubutu" style={{ fontSize: "16px" }}>
-                            {journal.issn}
-                          </span>
-                        </div>
-                      </span>
-                    </div>
-                  )}
-                  {journal.eissn ? (
-                    <div className="p-2 m-0">
-                      <span
-                        className="color-blue ubutu"
-                        style={{ fontSize: "16px" }}
-                      >
-                        <div>
-                          {" "}
-                          <b>E-ISSN: </b>
-                          <span className="ubutu" style={{ fontSize: "16px" }}>
-                            {journal.eissn}
-                          </span>
-                        </div>
-                      </span>
-                    </div>
-                  ) : null}
-
-                  {journal.subject_area && journal.subject_area.length > 0 && (
-                    <div className="p-2 m-0">
-                      <div className="row">
-                        <div className="col-12 col-md-1">
+                {journal.changeJournal && changeJournalData.length > 0 && (
+                  <div>
+                    {changeJournalData.map((data, index) => {
+                      const matchingLink = linkJournalData.includes(
+                        data.source_id
+                      );
+                      console.log("linkJournalData : ", linkJournalData);
+                      console.log("matchingLink : ", matchingLink);
+                      return (
+                        <div className="p-2" key={index}>
                           <span
-                            className="color-blue ubutu"
+                            className="color-blue ubuntu"
                             style={{ fontSize: "16px" }}
                           >
-                            <b>Subject Area:</b>
+                            <div>
+                              <b>{journal.changeJournal[index]?.field}: </b>
+                              {matchingLink ? (
+                                <Link
+                                  to={`/journal-detail?sourceid=${data.source_id}`}
+                                  className="no-underline"
+                                  rel="noopener noreferrer"
+                                >
+                                  <span
+                                    className="ubuntu"
+                                    style={{ fontSize: "16px" }}
+                                  >
+                                    {data.journal_name}
+                                  </span>
+                                </Link>
+                              ) : (
+                                <span
+                                  className="ubuntu"
+                                  style={{ fontSize: "16px" }}
+                                >
+                                  {data.journal_name}
+                                </span>
+                              )}
+                            </div>
                           </span>
                         </div>
-                        <div className="col-12 col-md">
-                          <div className="d-flex flex-wrap m-0">
-                            {journal.subject_area.map((subjectArea) => (
-                              <div
-                                className="border btn mt-4 text-center me-1 p-1"
-                                key={subjectArea}
-                              >
-                                <span className="ubutu">{subjectArea}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                      );
+                    })}
+                  </div>
+                )}
 
+                {journal.scopus_coverage_years && (
+                  <div className="p-2 ">
+                    <span
+                      className="color-blue ubutu"
+                      style={{ fontSize: "16px" }}
+                    >
+                      <div>
+                        <b>Scopus coverage years: </b>
+                        <span className="ubutu" style={{ fontSize: "16px" }}>
+                          {journal.scopus_coverage_years}
+                        </span>
+                      </div>
+                    </span>
+                  </div>
+                )}
+                {journal.publisher ? (
                   <div className="p-2 m-0">
                     <span
                       className="color-blue ubutu"
                       style={{ fontSize: "16px" }}
                     >
-                      <b>Source type: </b>
-                    </span>
-                    <span className="ubutu" style={{ fontSize: "16px" }}>
-                      {journal.source_type}
+                      <div>
+                        {" "}
+                        <b>Publisher: </b>
+                        <span className="ubutu" style={{ fontSize: "16px" }}>
+                          {journal.publisher}
+                        </span>
+                      </div>
                     </span>
                   </div>
+                ) : null}
+                {journal.issn && (
+                  <div className="p-2 m-0">
+                    <span
+                      className="color-blue ubutu"
+                      style={{ fontSize: "16px" }}
+                    >
+                      <div>
+                        <b>ISSN: </b>
+                        <span className="ubutu" style={{ fontSize: "16px" }}>
+                          {journal.issn}
+                        </span>
+                      </div>
+                    </span>
+                  </div>
+                )}
+                {journal.eissn ? (
+                  <div className="p-2 m-0">
+                    <span
+                      className="color-blue ubutu"
+                      style={{ fontSize: "16px" }}
+                    >
+                      <div>
+                        {" "}
+                        <b>E-ISSN: </b>
+                        <span className="ubutu" style={{ fontSize: "16px" }}>
+                          {journal.eissn}
+                        </span>
+                      </div>
+                    </span>
+                  </div>
+                ) : null}
+
+                {journal.subject_area && journal.subject_area.length > 0 && (
+                  <div className="p-2 m-0">
+                    <div className="row">
+                      <div className="col-12 col-md-1">
+                        <span
+                          className="color-blue ubutu"
+                          style={{ fontSize: "16px" }}
+                        >
+                          <b>Subject Area:</b>
+                        </span>
+                      </div>
+                      <div className="col-12 col-md">
+                        <div className="d-flex flex-wrap m-0">
+                          {journal.subject_area.map((subjectArea) => (
+                            <div
+                              className="border btn mt-4 text-center me-1 p-1"
+                              key={subjectArea}
+                            >
+                              <span className="ubutu">{subjectArea}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="p-2 m-0">
+                  <span
+                    className="color-blue ubutu"
+                    style={{ fontSize: "16px" }}
+                  >
+                    <b>Source type: </b>
+                  </span>
+                  <span className="ubutu" style={{ fontSize: "16px" }}>
+                    {journal.source_type}
+                  </span>
                 </div>
-              </Container>
-            </React.Fragment>
-          ))}
+              </div>
+            </Container>
+          </React.Fragment>
+
           {citeSourceData &&
             Array.isArray(citeSourceData) &&
             citeSourceData.length > 0 &&
@@ -411,28 +425,28 @@ function JournalDetail() {
           {(!citeSourceData ||
             !Array.isArray(citeSourceData) ||
             citeSourceData.length === 0) && (
-              <Container maxWidth="xl" className="mb-0 mt-2">
-                <div
+            <Container maxWidth="xl" className="mb-0 mt-2">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: "120px",
+                }}
+                className="shadow p-3 bg-white rounded mb-3"
+              >
+                <p
                   style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    minHeight: "120px",
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    color: "gray",
                   }}
-                  className="shadow p-3 bg-white rounded mb-3"
                 >
-                  <p
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                      color: "gray",
-                    }}
-                  >
-                    No data available.
-                  </p>
-                </div>
-              </Container>
-            )}
+                  No data available.
+                </p>
+              </div>
+            </Container>
+          )}
         </>
       )}
     </div>

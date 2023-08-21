@@ -20,7 +20,7 @@ const baseURL = baseApi + "scopus/author/";
 function GraphScopus() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const id = queryParams.get("id");
+  const id = queryParams.get("scopusId");
 
   const [dataGraph, setDataGraph] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,7 +30,7 @@ function GraphScopus() {
     const fetchData = async () => {
       try {
         const response = await axios.get(baseURL + id);
-        const { citations_graph, documents_graph } = response.data[0];
+        const { citations_graph, documents_graph } = response.data;
 
         const mappedCitations = citations_graph.map((item) => ({
           label: item.year,
