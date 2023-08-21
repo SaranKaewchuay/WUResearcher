@@ -380,7 +380,7 @@ function JournalDetail() {
                               </div>
                               <div>
                                 <p className="color-blue ubuntu p-2">
-                                  Calculated on {data.calculated}
+                                  Calculated on {data.cite.calculatedDate}
                                 </p>
                               </div>
                             </div>
