@@ -7,7 +7,6 @@ import baseApi from "../baseApi/baseApi";
 const host = baseApi;
 
 const GoogleScholarCard = ({ post }) => {
-
   // const [length, setLength] = useState(0);
   // useEffect(() => {
   //     axios.get(host + `scholar/article/authorId/${post._id}`)
@@ -22,7 +21,7 @@ const GoogleScholarCard = ({ post }) => {
 
   return (
     <div class="col-lg-6 col-md-12 col-sm-12 mt-3">
-      <Link to={`/author-detail?id=${post._id}`} className="no-underline" target="_blank">
+      <Link to={`/author-detail?scholar_id=${post.scholar_id}`} className="no-underline" target="_blank">
         <div class="card">
           <div class="card-horizontal">
             <div class="img-square-wrapper">

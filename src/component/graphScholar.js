@@ -16,7 +16,7 @@ const host = baseApi;
 function Graph() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const id = queryParams.get("id");
+  const id = queryParams.get("scholar_id");
 
   const [dataGraph, setDataGraph] = useState([]);
 
