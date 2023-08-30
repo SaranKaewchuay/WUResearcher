@@ -9,14 +9,15 @@ import { Typography } from "@mui/material";
 import baseApi from "../baseApi/baseApi";
 
 const baseURL = baseApi + "scholar/article/";
-
+// http://localhost:8000/scholar/article?scholar_id=WQoNUVUAAAAJ&article_id=Se3iqnhoufwC
 export default function ArticleScholarDetail() {
   const [posts, setPosts] = React.useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const id = queryParams.get("id");
+  const scholar_id = queryParams.get("scholar_id");
+  const article_id = queryParams.get("article_id");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -26,7 +27,7 @@ export default function ArticleScholarDetail() {
     setIsLoading(true);
 
     axios
-      .get(baseURL + id)
+      .get(`${baseURL}?scholar_id=${scholar_id}&article_id=${article_id}`)
       .then((response) => {
         setPosts(response.data);
         setIsLoading(false);

@@ -18,7 +18,6 @@ import baseApi from "../baseApi/baseApi";
 
 const host = baseApi;
 
-
 export default function AuthorScholarDetail() {
   const [posts, setPosts] = React.useState([]);
   const [data, setData] = React.useState([]);
@@ -35,7 +34,7 @@ export default function AuthorScholarDetail() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   useEffect(() => {
     setIsLoading(true);
     Promise.all([
@@ -106,7 +105,9 @@ export default function AuthorScholarDetail() {
                         <b>{posts.author_name}</b>
                       </h5>
                       <br />
-                      <h6 className="ubutu gray text-center">{posts.department}</h6>
+                      <h6 className="ubutu gray text-center">
+                        {posts.department}
+                      </h6>
                       <div className="d-flex flex-wrap justify-content-center">
                         <div className="border-blue p-2 mt-4 text-center me-1">
                           <span className="data-label ubutu color-blue">
@@ -128,7 +129,7 @@ export default function AuthorScholarDetail() {
                     </div>
                   </div>
                 </div>
-               
+
                 <div className="col-lg-8 col-md-6 col-sm-12 pr-5 m-0 p-4">
                   <div className="row">
                     <div className="col-12">
@@ -144,7 +145,7 @@ export default function AuthorScholarDetail() {
 
                   <div className="row mt-5">
                     <div className="col-12">
-                      {subjectArea.length > 0 && ( 
+                      {subjectArea.length > 0 && (
                         <>
                           <h5
                             className="ubutu color-blue"
@@ -184,8 +185,12 @@ export default function AuthorScholarDetail() {
                         <tr key={index}>
                           <td>{index + 1}</td>
                           <td>
-                            <Link
+                            {/* <Link
                               to={`/article-detail?id=${document._id}`}
+                              className="no-underline color-blue"
+                            > */}
+                            <Link
+                              to={`/article-detail?scholar_id=${document.scholar_id}&article_id=${document.article_id}`}
                               className="no-underline color-blue"
                             >
                               {document.article_name}
