@@ -9,7 +9,7 @@ import { Typography } from "@mui/material";
 import baseApi from "../baseApi/baseApi";
 
 const baseURL = baseApi + "scholar/article/";
-// http://localhost:8000/scholar/article?scholar_id=WQoNUVUAAAAJ&article_id=Se3iqnhoufwC
+
 export default function ArticleScholarDetail() {
   const [posts, setPosts] = React.useState([]);
   const [isLoading, setIsLoading] = useState(false);
