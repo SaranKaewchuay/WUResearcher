@@ -185,10 +185,6 @@ export default function AuthorScholarDetail() {
                         <tr key={index}>
                           <td>{index + 1}</td>
                           <td>
-                            {/* <Link
-                              to={`/article-detail?id=${document._id}`}
-                              className="no-underline color-blue"
-                            > */}
                             <Link
                               to={`/article-detail?scholar_id=${document.scholar_id}&article_id=${document.article_id}`}
                               className="no-underline color-blue"
