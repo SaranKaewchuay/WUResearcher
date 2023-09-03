@@ -51,7 +51,7 @@ export default function AuthorScholarDetail() {
         }
 
         setSubjectArea(response[0].data.subject_area);
-        setLength(response[1].data.length);
+        setLength(response[1].data.length > 0 ? response[1].data.length : 0)
         setDataTable(response[1].data);
         setIsLoading(false);
         $(document).ready(function () {
