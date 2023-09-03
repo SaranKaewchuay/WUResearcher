@@ -146,46 +146,60 @@ const AuthorScopusDetail = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
-                <Row>
-                  <Col>
-                    <table id="example" className="table table-striped">
-                      <thead>
-                        <tr>
-                          <th className="text-nowrap">#</th>
-                          <th className="text-nowrap">Document title</th>
-                          <th className="text-nowrap">Document Type</th>
-                          <th className="text-nowrap">Source Type</th>
-                          <th className="text-nowrap">Publisher</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {dataTable.map((document, index) => (
-                          <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>
-                              <Link
-                                to={`/article-scopus-detail?eid=${document.eid}`}
-                                className="no-underline color-blue"
-                              >
-                                {document.article_name}
-                              </Link>
-                            </td>
-                            <td>{document.document_type}</td>
-                            <td>{document.source_type}</td>
-                            <td>
-                              {document.publisher == null
-                                ? "-"
-                                : document.publisher}
-                            </td>
+              {dataTable.length > 0 ? (
+                <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
+                  <Row>
+                    <Col>
+                      <table id="example" className="table table-striped">
+                        <thead>
+                          <tr>
+                            <th className="text-nowrap">#</th>
+                            <th className="text-nowrap">Document title</th>
+                            <th className="text-nowrap">Document Type</th>
+                            <th className="text-nowrap">Source Type</th>
+                            <th className="text-nowrap">Publisher</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </Col>
-                </Row>
-              </div>
+                        </thead>
+                        <tbody>
+                          {dataTable.map((document, index) => (
+                            <tr key={index}>
+                              <td>{index + 1}</td>
+                              <td>
+                                <Link
+                                  to={`/article-scopus-detail?eid=${document.eid}`}
+                                  className="no-underline color-blue"
+                                >
+                                  {document.article_name}
+                                </Link>
+                              </td>
+                              <td>{document.document_type}</td>
+                              <td>{document.source_type}</td>
+                              <td>
+                                {document.publisher == null
+                                  ? "-"
+                                  : document.publisher}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </Col>
+                  </Row>
+                </div>
+              ) : (
+                <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
+                  <p
+                  className="text-center"
+                  style={{
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    color: "gray",
+                  }}
+                >
+                  No data available.
+                </p>
+                </div>
+              )}
             </div>
           </Container>
         </div>

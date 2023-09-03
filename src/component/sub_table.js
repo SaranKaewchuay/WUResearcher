@@ -41,11 +41,6 @@ function SubTable() {
   }
 
   const isDataEmpty = Object.keys(citationBy).length == 0
-    // data.length === 0 ||
-    // data.every((item) => {
-    //   const keys = Object.keys(item);
-    //   return keys.every((key) => item[key].all === null && item[key].since_2018 === null);
-    // }); 
 
   if (isDataEmpty) {
     return null;

@@ -181,45 +181,60 @@ export default function AuthorScholarDetail() {
               </div>
             </div>
 
-            <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
-              <Row>
-                <Col>
-                  <table id="example" className="table table-striped">
-                    <thead>
-                      <tr>
-                        <th className="text-nowrap">#</th>
-                        <th className="text-nowrap">Document title</th>
-                        <th className="text-nowrap">Cited By</th>
-                        <th className="text-nowrap">Year</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {dataTable.map((document, index) => (
-                        <tr key={index}>
-                          <td>{index + 1}</td>
-                          <td>
-                            <Link
-                              to={`/article-detail?scholar_id=${document.scholar_id}&article_id=${document.article_id}`}
-                              className="no-underline color-blue"
-                            >
-                              {document.article_name}
-                            </Link>
-                          </td>
-                          <td className="text-center">
-                            {document.total_citations == null
-                              ? "-"
-                              : document.total_citations}
-                          </td>
-                          <td className="text-center">
-                            {split_year(document.publication_date)}
-                          </td>
+            {dataTable.length > 0 ? (
+              <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
+                <Row>
+                  <Col>
+                    <table id="example" className="table table-striped">
+                      <thead>
+                        <tr>
+                          <th className="text-nowrap">#</th>
+                          <th className="text-nowrap">Document title</th>
+                          <th className="text-nowrap">Cited By</th>
+                          <th className="text-nowrap">Year</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </Col>
-              </Row>
-            </div>
+                      </thead>
+                      <tbody>
+                        {dataTable.map((document, index) => (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>
+                              <Link
+                                to={`/article-detail?scholar_id=${document.scholar_id}&article_id=${document.article_id}`}
+                                className="no-underline color-blue"
+                              >
+                                {document.article_name}
+                              </Link>
+                            </td>
+                            <td className="text-center">
+                              {document.total_citations == null
+                                ? "-"
+                                : document.total_citations}
+                            </td>
+                            <td className="text-center">
+                              {split_year(document.publication_date)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </Col>
+                </Row>
+              </div>
+            ) : (
+              <div className="shadow p-4 mb-5 bg-white rounded table-responsive">
+                <p
+                  className="text-center"
+                  style={{
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    color: "gray",
+                  }}
+                >
+                  No data available.
+                </p>
+              </div>
+            )}
           </Container>
         </div>
       )}
