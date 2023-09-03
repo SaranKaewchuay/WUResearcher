@@ -70,7 +70,8 @@ const GoogleScholarCard = ({ post }) => {
                       <span className="color-blue ubutu" style={{ fontSize: "14px",padding:"2px"}}>
                         {/* {post.citation_by.table.find((item) => item.h_index)
                           ?.h_index?.all }  */}
-                          {post.h_index} 
+                          {post.h_index == null ? 0 : post.h_index}
+                          {/* {post.h_index}  */}
                       </span>
                     </span>
                   </div>

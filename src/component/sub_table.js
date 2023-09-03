@@ -9,9 +9,10 @@ const host = baseApi;
 function SubTable() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const id = queryParams.get("id");
+  const id = queryParams.get("scholar_id");
 
   const [data, setData] = useState([]); 
+  const [citationBy, setCitationBy] = useState(); 
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
@@ -19,6 +20,7 @@ function SubTable() {
       .get(`${host}scholar/author/${id}`)
       .then((response) => {
         setData(response.data.citation_by.table);
+        setCitationBy(response.data.citation_by);
         setLoading(false);
       })
       .catch((error) => {
@@ -38,12 +40,12 @@ function SubTable() {
     );
   }
 
-  const isDataEmpty =
-    data.length === 0 ||
-    data.every((item) => {
-      const keys = Object.keys(item);
-      return keys.every((key) => item[key].all === null && item[key].since_2018 === null);
-    });
+  const isDataEmpty = Object.keys(citationBy).length == 0
+    // data.length === 0 ||
+    // data.every((item) => {
+    //   const keys = Object.keys(item);
+    //   return keys.every((key) => item[key].all === null && item[key].since_2018 === null);
+    // }); 
 
   if (isDataEmpty) {
     return null;

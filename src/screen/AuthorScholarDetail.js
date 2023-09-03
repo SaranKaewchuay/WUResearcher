@@ -31,6 +31,7 @@ export default function AuthorScholarDetail() {
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("scholar_id");
 
+  console.log("id  : ", id);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -38,12 +39,17 @@ export default function AuthorScholarDetail() {
   useEffect(() => {
     setIsLoading(true);
     Promise.all([
-      axios.get(host + "scholar/author/" + id),
-      axios.get(host + `scholar/article/authorId/` + id),
+      axios.get(`${host}scholar/author/${id}`),
+      axios.get(`${host}scholar/article/authorId/${id}`),
     ])
       .then((response) => {
         setPosts(response[0].data);
-        setData(response[0].data.citation_by.table);
+        if (Object.keys(response[0].data.citation_by).length !== 0) {
+          setData(response[0].data.citation_by.table);
+        } else {
+          setData(null);
+        }
+
         setSubjectArea(response[0].data.subject_area);
         setLength(response[1].data.length);
         setDataTable(response[1].data);
@@ -120,9 +126,16 @@ export default function AuthorScholarDetail() {
                             <span className="data-label ubutu color-blue">
                               <b>h-index: </b>
                             </span>
-                            <span className="data-value">
-                              {data.find((item) => item.h_index)?.h_index?.all}
-                            </span>
+                            {data !== null ? (
+                              <span className="data-value">
+                                {
+                                  data.find((item) => item.h_index)?.h_index
+                                    ?.all
+                                }
+                              </span>
+                            ) : (
+                              <span>0</span>
+                            )}
                           </div>
                         </div>
                       </div>

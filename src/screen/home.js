@@ -81,6 +81,7 @@ function Home() {
     try {
       setIsLoading(true);
       const response = await axios.get(`${url}&page=${page}`);
+      console.log("page : ",page)
       const newPosts = response.data;
       const length = await fetchTotal();
       setPostsLength(length);
